@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MutuoChiaro — Presentazione</title>
+  <style>
+    :root{
+      --ink:#183138; --deep:#0f343b; --paper:#f3f6f8; --surface:#fff;
+      --teal:#24b89a; --teal-soft:#49d7b6; --primary:#145b65;
+      --blue:#3b78d8; --gold:#c98516; --coral:#d55f5f; --purple:#7c63d8;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;overflow:hidden;background:#0a2429;color:#fff;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+
+    /* ---------- struttura del deck ---------- */
+    .deck{height:100vh;position:relative}
+    .slide{position:absolute;inset:0;padding:7vh 7vw 8vh;display:grid;align-content:center;
+      background:var(--deep);opacity:0;pointer-events:none;transform:translateX(32px);
+      transition:.42s ease;overflow:hidden}
+    .slide.active{opacity:1;pointer-events:auto;transform:none}
+    .slide.light{background:var(--paper);color:var(--ink)}
+
+    .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:5.5vw;align-items:center}
+    .eyebrow{color:var(--teal-soft);font-size:12px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+    .light .eyebrow{color:var(--primary)}
+    h1{font-size:clamp(58px,7.6vw,124px);line-height:.85;letter-spacing:-.07em;margin:20px 0 26px}
+    h2{font-size:clamp(40px,5.4vw,76px);line-height:.95;letter-spacing:-.055em;margin:16px 0 22px}
+    .lead{max-width:820px;color:#a9c4c7;font-size:clamp(17px,1.65vw,26px);line-height:1.45}
+    .light .lead{color:#61777d}
+    .lead b{color:#fff}.light .lead b{color:var(--ink)}
+    .tagline{display:inline-flex;margin-top:30px;padding:12px 18px;border:1px solid #2d5b62;
+      border-radius:999px;background:rgba(36,184,154,.08);color:#cfe7e6;font-size:13px}
+    .light .tagline{border-color:#cfdee0;background:var(--surface);color:#3d5a60}
+
+    .brand{position:absolute;left:7vw;top:5vh;display:flex;align-items:center;gap:12px}
+    .mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+      background:linear-gradient(145deg,#49d7b6,#148c7b);box-shadow:0 12px 26px rgba(20,220,180,.22)}
+    .mark svg{width:24px;height:24px;display:block}
+    .brand strong{font-size:15px;letter-spacing:-.02em}
+    .brand small{display:block;margin-top:1px;color:rgba(255,255,255,.55);font-size:9.5px;
+      text-transform:uppercase;letter-spacing:.1em}
+    .light .brand small{color:#7b9096}
+
+    .number{position:absolute;right:4vw;bottom:-5vh;font-size:40vw;font-weight:950;line-height:.8;
+      letter-spacing:-.11em;color:rgba(255,255,255,.035)}
+    .light .number{color:rgba(24,49,56,.04)}
+    .footer-note{position:absolute;left:7vw;bottom:4.5vh;color:#6f8b90;font-size:10px}
+
+    /* ---------- componenti ---------- */
+    .cards{display:grid;gap:13px}
+    .card{padding:20px;border:1px solid #2b565d;border-radius:18px;background:#12414a}
+    .light .card{border-color:#dce6e8;background:var(--surface);box-shadow:0 14px 40px rgba(18,50,58,.07)}
+    .card span{color:#8fb3b6;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
+    .light .card span{color:#7b9096}
+    .card strong{display:block;margin-top:7px;font-size:21px;letter-spacing:-.035em;line-height:1.15}
+    .card p{margin:8px 0 0;color:#9dbabd;font-size:13px;line-height:1.5}
+    .light .card p{color:#61777d}
+
+    .quote{padding:24px 0 24px 24px;border-left:4px solid var(--teal);
+      font-size:clamp(27px,3.5vw,52px);font-weight:850;line-height:1.06;letter-spacing:-.045em}
+    .persona{display:flex;align-items:center;gap:15px;margin-top:24px}
+    .avatar{width:54px;height:54px;display:grid;place-items:center;border-radius:17px;
+      background:linear-gradient(145deg,#49d7b6,#148c7b);color:#0c3239;font-weight:950;font-size:21px}
+    .persona strong{font-size:16px}
+    .persona small{display:block;margin-top:3px;color:#7b9096}
+
+    .rates{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
+    .rate{padding:22px;border-radius:18px;background:#12414a;border-top:4px solid var(--teal)}
+    .rate:nth-child(2){border-color:var(--blue)}
+    .rate:nth-child(3){border-color:var(--gold)}
+    .rate b{font-size:15px}
+    .rate em{display:block;margin-top:4px;color:#8fb3b6;font-size:11px;font-style:normal;
+      text-transform:uppercase;letter-spacing:.1em}
+    .rate strong{display:block;margin:16px 0 6px;font-size:clamp(30px,3.4vw,42px);letter-spacing:-.06em}
+    .rate small{color:#9dbabd;line-height:1.4;display:block}
+    .rate small.warn{color:var(--gold)}
+    .baseline{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
+    .baseline div{padding:14px 18px;border:1px dashed #3a656c;border-radius:14px}
+    .baseline span{display:block;color:#8fb3b6;font-size:11px}
+    .baseline strong{display:block;margin-top:4px;font-size:26px;letter-spacing:-.05em}
+
+    .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:36px}
+    .flow div{position:relative;min-height:168px;padding:20px 15px;border-radius:16px;
+      background:var(--surface);color:var(--ink);box-shadow:0 14px 40px rgba(18,50,58,.07)}
+    .flow div:not(:last-child):after{content:"→";position:absolute;right:-15px;top:44%;z-index:2;
+      color:#9bb2b6;font-size:19px}
+    .flow span{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;
+      background:#dff7f0;color:#0d424a;font-weight:950}
+    .flow strong{display:block;margin-top:20px;font-size:15px;letter-spacing:-.02em}
+    .flow small{display:block;margin-top:6px;color:#61777d;font-size:12px;line-height:1.42}
+
+    .architecture{display:grid;grid-template-columns:1fr 118px 1fr;align-items:center;gap:18px}
+    .agents{display:grid;gap:13px}
+    .agent{padding:18px;border:1px solid #2b565d;border-radius:16px;background:#12414a}
+    .agent b{display:inline-grid;place-items:center;width:31px;height:31px;margin-right:11px;
+      border-radius:10px;background:var(--teal);color:#0c3239;font-size:13px}
+    .agent span{font-size:16px;font-weight:850}
+    .agent p{margin:7px 0 0 42px;color:#8fb3b6;font-size:12px;line-height:1.45}
+    .tools{padding:20px;border:1px dashed #4a7a80;border-radius:50%;text-align:center;color:#9dbabd}
+    .tools strong{display:block;color:#fff;font-size:14px}
+    .tools small{display:block;margin-top:6px;font-size:11px;line-height:1.5}
+
+    .trace{display:grid;gap:8px;margin-top:8px}
+    .trace code{padding:10px 14px;border-radius:11px;background:#12414a;border:1px solid #2b565d;
+      color:#b7dcd6;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+    .trace code b{color:#fff;font-weight:700}
+    .impact-bar{margin-top:22px;padding:16px 20px;border-radius:15px;background:#12414a;
+      border-left:4px solid var(--teal)}
+    .impact-bar span{display:block;color:#8fb3b6;font-size:11px;text-transform:uppercase;letter-spacing:.11em}
+    .impact-bar strong{display:block;margin-top:6px;font-size:20px;letter-spacing:-.03em}
+
+    .lenses{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:28px}
+    .lens{padding:19px 15px;border-radius:16px;background:var(--surface);color:var(--ink);
+      box-shadow:0 14px 40px rgba(18,50,58,.07)}
+    .lens b{display:block;font-size:13px;color:#61777d}
+    .lens strong{display:block;margin-top:16px;font-size:clamp(18px,1.9vw,24px);letter-spacing:-.04em;line-height:1.1}
+    .lens small{display:block;margin-top:7px;color:#7b9096;font-size:12px;line-height:1.4}
+    .no-winner{margin-top:22px;padding:14px;border:1px solid #cfdee0;border-radius:13px;
+      background:var(--surface);color:#3d5a60;text-align:center;font-weight:800;font-size:14px}
+    .slide:not(.light) .no-winner{border-color:#3a656c;background:transparent;color:#bdd8d8}
+
+    .scenarios{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:32px}
+    .scn{padding:20px;border-radius:17px;background:#12414a;border:1px solid #2b565d}
+    .scn em{display:block;font-size:10px;font-style:normal;font-weight:800;letter-spacing:.11em;
+      text-transform:uppercase;color:var(--teal-soft)}
+    .scn strong{display:block;margin-top:9px;font-size:17px;letter-spacing:-.03em}
+    .scn p{margin:12px 0 0;color:#9dbabd;font-size:12.5px;line-height:1.5}
+    .scn p b{color:#fff}
+
+    .missing{display:grid;gap:11px}
+    .miss{display:flex;gap:12px;align-items:flex-start;padding:15px 17px;border-radius:14px;
+      background:var(--surface);box-shadow:0 10px 30px rgba(18,50,58,.06)}
+    .miss i{flex:0 0 26px;width:26px;height:26px;display:grid;place-items:center;border-radius:8px;
+      background:#fff4dd;color:#8a5a0c;font-style:normal;font-weight:950;font-size:12px}
+    .miss div strong{display:block;font-size:14px}
+    .miss div p{margin:4px 0 0;color:#61777d;font-size:12px;line-height:1.45}
+    .ask{margin-top:16px;padding:16px 18px;border-radius:14px;border:1px solid #cfdee0;
+      background:#e4f1f0;color:#0d424a;font-size:14px;line-height:1.5}
+    .ask span{display:block;margin-bottom:6px;font-size:10px;font-weight:900;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--primary)}
+
+    .guardrails{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .guard{display:flex;gap:12px;padding:16px;border:1px solid #d6e3e5;border-radius:15px;background:var(--surface)}
+    .guard i{flex:0 0 28px;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;
+      background:#dff7f0;color:#118c75;font-style:normal;font-weight:950;font-size:13px}
+    .guard strong{font-size:13.5px}
+    .guard p{margin:5px 0 0;color:#61777d;font-size:11.5px;line-height:1.45}
+
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:34px}
+    .stat{padding:22px 20px;border-radius:17px;background:#12414a;border-bottom:4px solid var(--teal)}
+    .stat strong{display:block;font-size:clamp(32px,3.6vw,46px);letter-spacing:-.06em}
+    .stat span{display:block;margin-top:8px;color:#9dbabd;font-size:12.5px;line-height:1.4}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:22px}
+
+    .score{display:flex;align-items:center;justify-content:center;gap:34px}
+    .score div{text-align:center}
+    .score span{display:block;color:#8fb3b6;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    .score strong{display:block;margin-top:6px;font-size:clamp(70px,9vw,112px);line-height:1;letter-spacing:-.09em}
+    .score .after strong{color:var(--teal-soft)}
+    .score-arrow{font-size:38px;color:#5a8288}
+    .score-label{margin-top:14px;text-align:center;color:#9dbabd;font-size:14px}
+    .proof{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:32px}
+    .proof .card strong{font-size:18px}
+
+    .closing{max-width:1080px}
+    .closing h2{font-size:clamp(54px,7.4vw,106px)}
+    .closing .tagline{margin-top:34px;font-size:17px;border-color:#3a757b;background:rgba(36,184,154,.12)}
+
+    /* ---------- controlli ---------- */
+    .controls{position:fixed;z-index:20;right:24px;bottom:20px;display:flex;align-items:center;gap:8px}
+    .controls button{width:38px;height:38px;border:1px solid #3a656c;border-radius:11px;
+      background:#12414a;color:#fff;cursor:pointer;font-size:15px}
+    .controls button:hover{background:#185662}
+    .counter{min-width:60px;text-align:center;color:#8aa8ac;font-size:11px}
+    .progress{position:fixed;z-index:20;left:0;bottom:0;height:4px;
+      background:linear-gradient(90deg,#49d7b6,#148c7b);transition:width .35s ease}
+
+    @media(max-width:900px){
+      .slide{padding:9vh 6vw}
+      .grid,.architecture{grid-template-columns:1fr}
+      .rates,.lenses,.proof,.scenarios,.stats,.baseline{grid-template-columns:1fr 1fr}
+      .flow{grid-template-columns:1fr 1fr}
+      .flow div:after{display:none}
+      .tools{border-radius:16px}
+      .number{display:none}
+    }
+  </style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 01 · copertina -->
+  <section class="slide active" data-title="MutuoChiaro">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>agentic financial inclusion</small></div></div>
+    <div class="grid">
+      <div>
+        <span class="eyebrow">Agentic Coding · Tema 02 · Inclusione finanziaria</span>
+        <h1>Capisci<br>l'impatto.<br>Decidi tu.</h1>
+        <p class="lead">Un sistema agentico che traduce tre offerte di mutuo disomogenee nell'impatto concreto sul bilancio mensile e sulla liquidità di una persona specifica.</p>
+        <span class="tagline">Non dice quale mutuo scegliere. Mostra cosa cambia.</span>
+      </div>
+      <div class="cards">
+        <div class="card"><span>Persona</span><strong>Andrea, 32 anni · prima casa</strong></div>
+        <div class="card"><span>Problema</span><strong>Confronta soltanto la rata mensile</strong></div>
+        <div class="card"><span>Risultato del run</span><strong>Criteri di confronto 1 → 13</strong></div>
+      </div>
+    </div>
+    <div class="number">01</div>
+  </section>
+
+  <!-- 02 · problema -->
+  <section class="slide light" data-title="Problema">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>il problema</small></div></div>
+    <div class="grid">
+      <div>
+        <span class="eyebrow">01 · Problema concreto</span>
+        <h2>Un solo numero<br>sembra confrontabile.</h2>
+        <p class="lead">Le tre offerte hanno durate diverse, tipi di tasso diversi, costi distribuiti in voci diverse e, in un caso, un costo obbligatorio non indicato. La rata è l'unico dato omogeneo, quindi diventa il criterio predefinito anche quando non è quello decisivo.</p>
+      </div>
+      <div>
+        <div class="quote">«Guarderei soltanto la rata più bassa.»</div>
+        <div class="persona"><span class="avatar">A</span><div><strong>Andrea, 32 anni</strong><small>Alfabetizzazione finanziaria bassa o media · prima casa · profilo sintetico</small></div></div>
+      </div>
+    </div>
+    <div class="number">02</div>
+  </section>
+
+  <!-- 03 · before -->
+  <section class="slide" data-title="Prima">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>prima dell'intervento</small></div></div>
+    <span class="eyebrow">02 · Before</span>
+    <h2>Tre offerte.<br>Tre rate. Nient'altro.</h2>
+    <div class="rates">
+      <div class="rate"><b>Stabilità 20</b><em>Fisso · 20 anni</em><strong>1.231,16 €</strong><small>TAN 3,1% · interessi simulati 75.478 €</small></div>
+      <div class="rate"><b>Casa Lunga 30</b><em>Fisso · 30 anni</em><strong>981,77 €</strong><small>TAN 3,45% · interessi simulati 133.437 €</small></div>
+      <div class="rate"><b>Orizzonte Variabile</b><em>Variabile · 30 anni</em><strong>886,52 €</strong><small class="warn">TAN 2,65% · costo polizza obbligatoria assente</small></div>
+    </div>
+    <div class="baseline">
+      <div><span>Criteri di confronto usati</span><strong>1</strong></div>
+      <div><span>Termini finanziari spiegati</span><strong>0</strong></div>
+      <div><span>Dati mancanti individuati</span><strong>0</strong></div>
+    </div>
+    <div class="number">03</div>
+  </section>
+
+  <!-- 04 · percorso -->
+  <section class="slide light" data-title="Percorso">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>il percorso</small></div></div>
+    <span class="eyebrow">03 · Cinque tappe</span>
+    <h2>Chiedi. Normalizza.<br>Simula. Verifica. Conferma.</h2>
+    <div class="flow">
+      <div><span>1</span><strong>Profilo</strong><small>Solo i dati con impatto sul confronto. I valori impossibili non entrano nel runtime.</small></div>
+      <div><span>2</span><strong>Domanda decisiva</strong><small>Un dato alla volta, scelto per impatto. Non un questionario.</small></div>
+      <div><span>3</span><strong>MutuoSpecchio</strong><small>Dodici righe identiche e la provenienza su ogni numero.</small></div>
+      <div><span>4</span><strong>Scenari</strong><small>Quattro ipotesi dichiarate, etichettate come ipotesi.</small></div>
+      <div><span>5</span><strong>Comprensione</strong><small>Tre concetti verificati, poi la conferma umana.</small></div>
+    </div>
+    <div class="number">04</div>
+  </section>
+
+  <!-- 05 · architettura -->
+  <section class="slide" data-title="Architettura">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>agentic architecture</small></div></div>
+    <div class="grid">
+      <div>
+        <span class="eyebrow">04 · Agentic depth</span>
+        <h2>Autorità<br>separate.</h2>
+        <p class="lead">Due agenti, cinque skill, cinque tool deterministici. Ogni capacità ha <b>un solo</b> titolare: nessun componente aggiunto per gonfiare il conto.</p>
+      </div>
+      <div class="architecture">
+        <div class="agents">
+          <div class="agent"><b>O</b><span>Orchestrator</span><p>Unico proprietario dello stato · transizioni legali · handoff · gate</p></div>
+          <div class="agent"><b>P</b><span>Profile &amp; Property</span><p>Lacune e incoerenze · prossima domanda decisiva</p></div>
+          <div class="agent"><b>C</b><span>Offer Clarity</span><p>Testi neutrali · dati mancanti dichiarati · feedback del quiz</p></div>
+        </div>
+        <div class="tools"><strong>5 TOOL</strong><small>rata<br>liquidità<br>schema<br>metriche<br>policy</small></div>
+        <div class="cards">
+          <div class="card"><span>Invariante</span><strong>Le formule vivono in un solo file</strong><p>Raggiungibile solo dal registry: un calcolo inline fa fallire tre test.</p></div>
+          <div class="card"><span>Stato</span><strong>Snapshot congelato in profondità</strong><p>Mutabile solo con il token dell'orchestratore.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="number">05</div>
+  </section>
+
+  <!-- 06 · domanda decisiva -->
+  <section class="slide light" data-title="Domanda decisiva">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>il nucleo agentico</small></div></div>
+    <div class="grid">
+      <div>
+        <span class="eyebrow">05 · Il percorso non è prefissato</span>
+        <h2>Una domanda,<br>non un modulo.</h2>
+        <p class="lead">L'orchestratore passa lo stato all'agente, riceve i dati mancanti <b>ordinati per impatto sul confronto</b> e ne sceglie uno. Quale domanda porre dipende da cosa manca e da quanto sposta il confronto.</p>
+        <div class="ask"><span>Domanda selezionata · impatto 0,85</span>«Hai prestiti, finanziamenti o altre rate mensili già attive? Questo dato incide sul margine che rimane dopo il pagamento del mutuo.»</div>
+      </div>
+      <div>
+        <div class="trace">
+          <code><b>handoff.started</b> → profile-property-agent</code>
+          <code><b>agent.started</b> · input artifact salvato</code>
+          <code><b>skill.started</b> build-financial-profile</code>
+          <code><b>skill.started</b> select-next-decisive-question</code>
+          <code><b>missing_data.detected</b> existingMonthlyDebts</code>
+          <code><b>question.selected</b> impact 0.85</code>
+          <code><b>agent.completed</b> → <b>handoff.completed</b></code>
+        </div>
+        <p class="lead" style="margin-top:20px;font-size:14px">Sequenza reale del run canonico, con <b>inputRef</b> e <b>outputRef</b> apribili dall'interfaccia. Nessun log scritto a mano.</p>
+      </div>
+    </div>
+    <div class="number">06</div>
+  </section>
+
+  <!-- 07 · MutuoSpecchio -->
+  <section class="slide" data-title="MutuoSpecchio">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>MutuoSpecchio</small></div></div>
+    <span class="eyebrow">06 · Confronto normalizzato</span>
+    <h2>La rata più bassa<br>non è il costo più basso.</h2>
+    <div class="lenses">
+      <div class="lens"><b>Rata iniziale</b><strong>886,52 €</strong><small>Orizzonte Variabile, la più bassa delle tre</small></div>
+      <div class="lens"><b>Interessi simulati</b><strong>75.478 €</strong><small>Stabilità 20, che ha la rata più alta</small></div>
+      <div class="lens"><b>Interessi simulati</b><strong>99.147 €</strong><small>Orizzonte Variabile, la rata più bassa</small></div>
+      <div class="lens"><b>Liquidità residua</b><strong>Negativa<br>su tutte e tre</strong><small>Servono ~110.000 € contro 100.000 € di risparmi</small></div>
+      <div class="lens"><b>Rata / reddito</b><strong>54,7% · 43,6% · 39,4%</strong><small>Dato assente dalle offerte: dipende dal profilo</small></div>
+    </div>
+    <div class="no-winner">Dodici righe identiche · provenienza su ogni cella · nessun punteggio, nessuna classifica, nessuna raccomandazione</div>
+    <div class="number">07</div>
+  </section>
+
+  <!-- 08 · scenari -->
+  <section class="slide" data-title="Scenari">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>scenari ipotetici</small></div></div>
+    <span class="eyebrow">07 · Cosa cambierebbe se</span>
+    <h2>Quattro scenari.<br>Ipotesi dichiarate.</h2>
+    <div class="scenarios">
+      <div class="scn"><em>Base</em><strong>Condizioni costanti</strong><p>Tasso e reddito fermi, perizia pari al prezzo. <b>Liquidità residua già negativa.</b></p></div>
+      <div class="scn"><em>Perizia −10%</em><strong>Il mutuo si calcola sulla perizia</strong><p>Anticipo aggiuntivo: <b>+4.000 €</b> per due offerte, <b>+17.500 €</b> per la terza.</p></div>
+      <div class="scn"><em>Tasso +2 punti</em><strong>Solo il variabile si muove</strong><p>Da <b>886,52 €</b> a <b>1.134,40 €</b>: supera il fisso a 30 anni. Le fisse restano identiche.</p></div>
+      <div class="scn"><em>Reddito −20% / 6 mesi</em><strong>Il margine si comprime</strong><p>Margine mensile da <b>1.080 €</b> a <b>630 €</b>, rata/reddito al <b>49,3%</b>.</p></div>
+    </div>
+    <p class="lead" style="margin-top:28px">Ogni valore che dipende da un'ipotesi è etichettato <b>«ipotesi»</b> e non «calcolo» — compresi i valori derivati. Gli scenari non sono previsioni.</p>
+    <div class="number">08</div>
+  </section>
+
+  <!-- 09 · dato mancante -->
+  <section class="slide light" data-title="Dato mancante">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>failure branch</small></div></div>
+    <div class="grid">
+      <div>
+        <span class="eyebrow">08 · Un costo obbligatorio assente</span>
+        <h2>Quello che<br>il sistema non fa.</h2>
+        <p class="lead">Orizzonte Variabile dichiara una polizza obbligatoria e non ne indica il costo. Il sistema non stima, non usa una media, non riempie il buco: il campo resta <b>null</b> nello stato e <b>MISSING</b> in interfaccia.</p>
+        <div class="ask"><span>Domanda generata per la banca</span>«Qual è il costo della polizza assicurativa indicata come obbligatoria, e come viene pagata — una tantum, annuale o inclusa nella rata?»</div>
+      </div>
+      <div class="missing">
+        <div class="miss"><i>!</i><div><strong>Totali marcati parziali</strong><p>Costo totale simulato e costi iniziali riportano «Parziale: costo polizza non noto».</p></div></div>
+        <div class="miss"><i>!</i><div><strong>Sottostima dichiarata</strong><p>Costo totale e liquidità necessaria sono più bassi del reale di un importo non noto.</p></div></div>
+        <div class="miss"><i>✓</i><div><strong>Confronti ancora possibili, elencati</strong><p>Rata, TAN, TAEG dichiarato, durata, interessi, margine, scenari. E quelli bloccati, dichiarati come tali.</p></div></div>
+        <div class="miss"><i>✓</i><div><strong>L'offerta resta nel confronto</strong><p>Fase OFFERS_INCOMPLETE → OFFERS_NORMALIZED: il run prosegue in modalità parziale.</p></div></div>
+      </div>
+    </div>
+    <div class="number">09</div>
+  </section>
+
+  <!-- 10 · controllo -->
+  <section class="slide light" data-title="Controllo">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>risk &amp; clarity</small></div></div>
+    <div class="grid">
+      <div>
+        <span class="eyebrow">09 · Controllo umano e limiti</span>
+        <h2>Sa anche<br>quando fermarsi.</h2>
+        <p class="lead">La sessione non si chiude da sola. Il gate finale non chiede ad Andrea di scegliere il mutuo vincente: chiede di <b>prendere atto</b> che questa è una simulazione educativa con dati sintetici.</p>
+      </div>
+      <div class="guardrails">
+        <div class="guard"><i>✓</i><div><strong>Null resta null</strong><p>Nessun dato assente viene stimato o completato con medie.</p></div></div>
+        <div class="guard"><i>✓</i><div><strong>SafetyGuard in esecuzione</strong><p>Blocca «migliore», classifiche e stime di approvazione prima della UI, ed emette l'evento.</p></div></div>
+        <div class="guard"><i>✓</i><div><strong>Loop limitati</strong><p>Tre giri di domande, tre tentativi di quiz. Nessun loop dipende da un modello.</p></div></div>
+        <div class="guard"><i>✓</i><div><strong>Gate umano bloccante</strong><p>COMPLETED richiede quattro requisiti più la conferma esplicita.</p></div></div>
+        <div class="guard"><i>✓</i><div><strong>Transizioni rifiutate</strong><p>Approvazione in fase errata: errore 409, evento registrato, fase invariata.</p></div></div>
+        <div class="guard"><i>✓</i><div><strong>Offline e sintetico</strong><p>Nessuna API esterna, nessuno scraping, nessun dato personale reale.</p></div></div>
+      </div>
+    </div>
+    <div class="number">10</div>
+  </section>
+
+  <!-- 11 · osservabilità -->
+  <section class="slide" data-title="Osservabilità">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>evidenza eseguibile</small></div></div>
+    <span class="eyebrow">10 · Tutto passa da un kernel unico</span>
+    <h2>Non è dichiarato.<br>È tracciato.</h2>
+    <div class="stats">
+      <div class="stat"><strong>138</strong><span>eventi nel run canonico, su un vocabolario chiuso di 25 tipi</span></div>
+      <div class="stat"><strong>33</strong><span>invocazioni di tool, 11 di skill, 6 di agente</span></div>
+      <div class="stat"><strong>116</strong><span>test automatici, più 31 controlli strutturali sul codice compilato</span></div>
+      <div class="stat"><strong>26</strong><span>pagine di wiki come layer di conoscenza persistente</span></div>
+    </div>
+    <div class="split">
+      <div class="card"><span>Artifact store</span><strong>Ogni chiamata ha inputRef e outputRef</strong><p>Apribili dall'interfaccia: si vede l'input reale che l'agente ha ricevuto, non un riassunto.</p></div>
+      <div class="card"><span>Fallimenti osservabili</span><strong>Tool non disponibile → ESCALATED</strong><p>tool.failed su chiamato e chiamante, errore salvato come artifact, banner in interfaccia. Nessun numero improvvisato.</p></div>
+    </div>
+    <div class="number">11</div>
+  </section>
+
+  <!-- 12 · impatto -->
+  <section class="slide" data-title="Impatto">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>before / after</small></div></div>
+    <span class="eyebrow">11 · Metriche prodotte dal run</span>
+    <div class="score">
+      <div><span>Prima</span><strong>1</strong></div>
+      <span class="score-arrow">→</span>
+      <div class="after"><span>Dopo</span><strong>13</strong></div>
+    </div>
+    <p class="score-label">Criteri di confronto disponibili, misurati dal <b>MetricsEngine</b> nel run canonico</p>
+    <div class="proof">
+      <div class="card"><span>Termini finanziari spiegati</span><strong>0 → 14</strong></div>
+      <div class="card"><span>Dati mancanti individuati</span><strong>0 → 1, con la domanda da porre</strong></div>
+      <div class="card"><span>Concetti verificati</span><strong>3 su 3, al secondo tentativo</strong></div>
+    </div>
+    <p class="lead" style="margin-top:26px">Obiettivo funzionale della demo su una persona sintetica: non è il risultato di uno studio con utenti reali.</p>
+    <div class="number">12</div>
+  </section>
+
+  <!-- 13 · chiusura -->
+  <section class="slide" data-title="Chiusura">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>finale</small></div></div>
+    <div class="closing">
+      <span class="eyebrow">MutuoChiaro</span>
+      <h2>Non scegliamo<br>al posto tuo.</h2>
+      <p class="lead">Tre offerte disomogenee diventano trade-off visibili, dati mancanti dichiarati e una domanda da portare in banca. La decisione resta di Andrea.</p>
+      <span class="tagline">Capisci l'impatto. Decidi tu.</span>
+    </div>
+    <div class="footer-note">Dati sintetici · simulazione educativa · nessuna consulenza, proposta o delibera bancaria</div>
+    <div class="number">13</div>
+  </section>
+
+</div>
+
+<div class="controls">
+  <button id="prev" aria-label="Slide precedente">←</button>
+  <span class="counter" id="counter">1 / 13</span>
+  <button id="next" aria-label="Slide successiva">→</button>
+</div>
+<div class="progress" id="progress"></div>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  const counter = document.getElementById('counter');
+  const progress = document.getElementById('progress');
+  let index = 0;
+
+  function show(next){
+    index = (next + slides.length) % slides.length;
+    slides.forEach((s, i) => s.classList.toggle('active', i === index));
+    counter.textContent = `${index + 1} / ${slides.length}`;
+    progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+    document.title = `${slides[index].dataset.title} · MutuoChiaro`;
+  }
+
+  document.getElementById('prev').onclick = () => show(index - 1);
+  document.getElementById('next').onclick = () => show(index + 1);
+  addEventListener('keydown', e => {
+    if (['ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); show(index + 1); }
+    if (['ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); show(index - 1); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+  });
+  show(0);
+</script>
+</body>
+</html>
