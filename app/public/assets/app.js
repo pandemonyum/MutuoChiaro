@@ -53,10 +53,72 @@
   const label = (field) => FIELD_LABELS[field] || field;
   const labelList = (fields) => (fields || []).map(label).join(', ');
 
+  /**
+   * Spiegazioni in linguaggio quotidiano delle voci tecniche.
+   * Mostrate accanto al valore, non in una pagina separata: chi non conosce
+   * il termine non sa di doverlo cercare in un glossario.
+   */
+  const TERM_HELP = {
+    rataIniziale: 'La somma che paghi alla banca ogni mese. Una parte restituisce i soldi prestati, una parte sono interessi.',
+    tan: 'Il tasso di interesse "puro" sul denaro prestato. Non comprende le spese obbligatorie, quindi da solo non dice quanto costa davvero il mutuo.',
+    taegDichiarato: 'Il costo complessivo del mutuo in percentuale: comprende il tasso di interesse più le spese obbligatorie. È il numero che permette di confrontare due offerte.',
+    durataAnni: 'Per quanti anni pagherai la rata. Una durata più lunga abbassa la rata mensile ma aumenta gli interessi totali.',
+    tipoTasso: 'Fisso: la rata resta uguale per tutta la durata. Variabile: la rata può salire o scendere se cambiano i tassi di mercato.',
+    costoTotaleSimulato: 'Tutto quello che avrai versato alla fine: i soldi prestati, gli interessi e i costi ricorrenti. Serve a vedere il prezzo reale del prestito.',
+    interessiTotaliSimulati: 'Quanto paghi alla banca solo come costo del prestito, oltre a restituire la somma ricevuta.',
+    costiIniziali: 'Le spese da pagare subito alla firma: perizia, istruttoria e altri costi indicati nell’offerta.',
+    liquiditaResidua: 'I soldi che ti restano il giorno dopo l’acquisto, una volta pagati anticipo, spese, lavori e costi iniziali. Se è negativa, i risparmi non bastano.',
+    rapportoRataReddito: 'Quanta parte delle tue entrate mensili se ne va nella rata. Più la percentuale è alta, meno margine hai per le spese impreviste.',
+    margineMensile: 'Quello che ti resta ogni mese dopo aver pagato la rata del mutuo e le altre rate già attive.',
+    sensibilitaScenari: 'Quanto questa offerta reagisce se le condizioni cambiano, per esempio se i tassi salgono.',
+
+    // Parole del prodotto e del runtime. Sulla panoramica l'utente le incontra
+    // per la prima volta, senza il contesto che le altre pagine forniscono.
+    mutuoSpecchio: 'La tabella che mette le offerte una accanto all’altra sulle stesse righe: rata, costo totale, spese iniziali, soldi che ti restano. Serve a confrontarle senza dover interpretare tre documenti scritti in modo diverso.',
+    tracciaAgentica: 'L’elenco in ordine di tempo di ogni passo fatto dal sistema: quale componente ha lavorato, con quali dati e con quale esito. È la pagina che dice da dove arriva ogni numero.',
+    datiSintetici: 'I dati di questa demo sono inventati a scopo didattico. La persona, la casa e le tre offerte non sono reali e nessuna banca riceve informazioni.',
+    offerteNormalizzate: 'Le offerte vengono riscritte nello stesso formato, con le stesse voci e le stesse unità di misura. Senza questo passaggio confronteresti numeri calcolati in modi diversi.',
+    scenari: 'Simulazioni del tipo “cosa succede se”: la perizia vale meno del prezzo, i tassi salgono, il reddito cala per qualche mese. Sono ipotesi da esplorare, non previsioni.',
+    fondoEmergenza: 'La somma che decidi di non spendere nell’acquisto, per coprire gli imprevisti. La soglia la scegli tu: il sistema segnala quando un’offerta la intacca.',
+    domandaDecisiva: 'Fra tutti i dati che mancano, il sistema ti chiede solo quello che cambia davvero il confronto fra le offerte. Le altre domande vengono rimandate.',
+    controlloComprensione: 'Tre domande sui concetti chiave prima della conferma finale. Non è un esame: serve a evitare che tu confermi qualcosa che non ti è chiaro.',
+    run: 'Una sessione di lavoro completa, dal profilo alla conferma finale. Ha un codice così che ogni passo resti ricollegabile alla traccia.',
+  };
+
+  /** Nome leggibile dei termini di prodotto, usato nell'etichetta del bottone "?". */
+  const TERM_LABELS = {
+    mutuoSpecchio: 'MutuoSpecchio',
+    tracciaAgentica: 'traccia agentica',
+    datiSintetici: 'dati sintetici',
+    offerteNormalizzate: 'offerte messe sullo stesso metro',
+    scenari: 'scenari',
+    fondoEmergenza: 'fondo di emergenza',
+    domandaDecisiva: 'domanda decisiva',
+    controlloComprensione: 'controllo di comprensione',
+    run: 'sessione di lavoro',
+  };
+
   const PHASE_STEP = {
     START: 0, PROFILE_INCOMPLETE: 1, PROFILE_READY: 2, OFFERS_INCOMPLETE: 3,
     OFFERS_NORMALIZED: 4, SCENARIOS_READY: 5, UNDERSTANDING_CHECK: 6,
     AWAITING_HUMAN_CONFIRMATION: 7, COMPLETED: 8, ESCALATED: 8,
+  };
+
+  /**
+   * Le fasi dette in parole di tutti i giorni. Il nome tecnico resta visibile
+   * accanto, perche' e' la chiave per ritrovare il passo nella traccia.
+   */
+  const PHASE_LABEL = {
+    START: 'Si parte dai tuoi dati',
+    PROFILE_INCOMPLETE: 'Mancano dati che cambiano il confronto',
+    PROFILE_READY: 'I tuoi dati sono sufficienti',
+    OFFERS_INCOMPLETE: 'Alcune offerte sono incomplete',
+    OFFERS_NORMALIZED: 'Offerte pronte da confrontare',
+    SCENARIOS_READY: 'Scenari calcolati',
+    UNDERSTANDING_CHECK: 'Controllo di comprensione in corso',
+    AWAITING_HUMAN_CONFIRMATION: 'Manca solo la tua conferma',
+    COMPLETED: 'Percorso concluso',
+    ESCALATED: 'Percorso interrotto',
   };
 
   const SCENARIO_META = {
@@ -88,6 +150,50 @@
     const [cls, label] = PROV[provenance] || PROV.MISSING;
     return el('span', { class: 'source-tag ' + cls, text: label });
   }
+
+  /** Bottone "?" che apre la spiegazione della voce accanto al valore. */
+  function termHelp(key) {
+    const text = TERM_HELP[key];
+    if (!text) return null;
+    const tip = el('span', { class: 'term-tip', role: 'tooltip', text: text });
+    const btn = el('button', {
+      class: 'term-help-btn', type: 'button',
+      'aria-label': 'Che cosa significa: ' + (TERM_LABELS[key] || FIELD_LABELS[key] || key),
+      'aria-expanded': 'false',
+      text: '?',
+    });
+    const wrap = el('span', { class: 'term-help-wrap' }, [btn, tip]);
+    btn.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      const open = !wrap.classList.contains('open');
+      $$('.term-help-wrap.open').forEach((other) => {
+        other.classList.remove('open');
+        const b = other.querySelector('.term-help-btn');
+        if (b) b.setAttribute('aria-expanded', 'false');
+      });
+      wrap.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    return wrap;
+  }
+
+  /** Testo seguito dal "?" che ne spiega il termine, quando la spiegazione esiste. */
+  function withHelp(text, key) {
+    const frag = document.createDocumentFragment();
+    frag.append(document.createTextNode(text));
+    const help = termHelp(key);
+    if (help) frag.append(help);
+    return frag;
+  }
+
+  // Un clic altrove chiude la spiegazione aperta.
+  document.addEventListener('click', () => {
+    $$('.term-help-wrap.open').forEach((w) => {
+      w.classList.remove('open');
+      const b = w.querySelector('.term-help-btn');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    });
+  });
 
   /** Cella con valore, etichetta di provenienza e nota. */
   function cell(traced, format) {
@@ -213,11 +319,14 @@
       const percent = Math.round((step / 8) * 100);
       box.replaceChildren(
         el('div', { class: 'row' }, [
-          el('strong', { text: 'Run ' + s.runId }),
+          el('strong', { text: PHASE_LABEL[s.currentPhase] || s.currentPhase }),
           el('span', { text: percent + '%' }),
         ]),
         el('div', { class: 'progress-track' }, [el('i', { style: 'width:' + percent + '%' })]),
-        el('p', { text: 'Fase ' + s.currentPhase + '. ' + store.view.nextAction }),
+        el('p', { text: store.view.nextAction }),
+        // Codice tecnico in coda: serve a ritrovare il passo nella traccia,
+        // non e' l'informazione che l'utente deve leggere per prima.
+        el('p', { class: 'side-code', text: 'Sessione ' + s.runId + ' · fase ' + s.currentPhase }),
       );
     }
 
@@ -265,23 +374,119 @@
   const PAGES = {};
 
   // ---------------------------------------------------------- panoramica
+
+  /**
+   * Il passo successivo detto come azione dell'utente, non come nome di fase.
+   * Ogni voce dichiara anche dove porta il pulsante: sulla panoramica non si
+   * avviano passi a sorpresa, l'azione vera vive nella pagina che la spiega.
+   */
+  function nextStep(s, view) {
+    const q = s.selectedQuestion;
+    switch (s.currentPhase) {
+      case 'START':
+        return {
+          title: 'Controlla i tuoi dati di partenza',
+          why: 'Reddito, risparmi, prezzo della casa e soldi da tenere da parte sono il metro con cui le offerte verranno confrontate. Sono già compilati con dati di esempio: puoi cambiarli.',
+          cta: 'Apri i tuoi dati', href: 'profilo.html', where: 'alla pagina «Profilo e casa»',
+        };
+      case 'PROFILE_INCOMPLETE':
+        return q ? {
+          title: 'Rispondi a una domanda',
+          why: q.question + ' — ' + q.why,
+          cta: 'Rispondi qui sotto', href: '#prossima-domanda', where: 'alla scheda verde qui a fianco',
+        } : {
+          title: 'Completa i dati che mancano',
+          why: 'Alcune informazioni sul tuo profilo non ci sono e senza di esse il confronto resterebbe impreciso.',
+          cta: 'Apri i tuoi dati', href: 'profilo.html', where: 'alla pagina «Profilo e casa»',
+        };
+      case 'PROFILE_READY':
+        return {
+          title: 'Metti le offerte sullo stesso metro',
+          why: 'Ogni banca scrive le condizioni a modo suo. Il sistema le riscrive con le stesse voci, così i numeri diventano confrontabili davvero.',
+          cta: 'Apri le offerte', href: 'offerte.html', where: 'alla pagina «Offerte»',
+        };
+      case 'OFFERS_INCOMPLETE':
+        return {
+          title: 'Guarda quali dati mancano alle offerte',
+          why: 'Il confronto va avanti, ma resta parziale: le voci assenti non vengono inventate, vanno chieste alla banca.',
+          cta: 'Vedi cosa manca', href: 'offerte.html', where: 'alla pagina «Offerte»',
+        };
+      case 'OFFERS_NORMALIZED':
+        return {
+          title: 'Guarda cosa succede se qualcosa cambia',
+          why: 'Perizia più bassa del prezzo, tassi che salgono, reddito che cala per sei mesi: tre ipotesi da esplorare, non previsioni su quello che accadrà.',
+          cta: 'Apri gli scenari', href: 'scenari.html', where: 'alla pagina «Scenari»',
+        };
+      case 'SCENARIOS_READY':
+        return {
+          title: 'Verifica di aver capito i numeri',
+          why: 'Tre domande sui concetti chiave. Non è un esame: serve a evitare che tu confermi qualcosa che non ti è chiaro.',
+          cta: 'Inizia il controllo', href: 'comprensione.html', where: 'alla pagina «Comprensione»',
+        };
+      case 'UNDERSTANDING_CHECK':
+        return {
+          title: 'Completa il controllo di comprensione',
+          why: 'Sei al tentativo ' + (s.comprehensionResult.attemptsUsed + 1) + ' di ' + s.comprehensionResult.maxAttempts + '. Le risposte sbagliate vengono spiegate, non penalizzate.',
+          cta: 'Torna alle domande', href: 'comprensione.html', where: 'alla pagina «Comprensione»',
+        };
+      case 'AWAITING_HUMAN_CONFIRMATION':
+        return {
+          title: 'Manca solo la tua conferma',
+          why: 'Il sistema non chiude niente al posto tuo: serve che tu dichiari di aver capito che questa è una simulazione educativa su dati inventati.',
+          cta: 'Vai alla conferma', href: 'comprensione.html', where: 'alla pagina «Comprensione»',
+        };
+      case 'COMPLETED':
+        return {
+          title: 'Hai finito il percorso',
+          why: 'Qui non trovi una classifica né un consiglio su quale banca scegliere: la decisione resta tua. Il confronto resta consultabile.',
+          cta: 'Rivedi il confronto', href: 'mutuospecchio.html', where: 'alla pagina «MutuoSpecchio»',
+        };
+      case 'ESCALATED':
+        return {
+          title: 'Il percorso si è fermato',
+          why: (s.escalation.reason || 'Il run è stato interrotto.') + ' Il sistema si ferma invece di produrre numeri inventati.',
+          cta: 'Vedi cosa è successo', href: 'traccia.html', where: 'alla traccia dei passaggi',
+        };
+      default:
+        return { title: 'Prosegui il percorso', why: view.nextAction, cta: 'Apri i tuoi dati', href: 'profilo.html', where: 'alla pagina «Profilo e casa»' };
+    }
+  }
+
   PAGES.home = function (s, view) {
+    const stepHost = $('[data-render="next-step"]');
+    if (stepHost) {
+      const step = PHASE_STEP[s.currentPhase] || 0;
+      const next = nextStep(s, view);
+      stepHost.replaceChildren(
+        el('span', { class: 'next-step-kicker', text: 'Adesso tocca a te · percorso al ' + Math.round((step / 8) * 100) + '%' }),
+        el('strong', { class: 'next-step-title', text: next.title }),
+        el('p', { class: 'next-step-why', text: next.why }),
+        el('a', { class: 'btn btn-accent', href: next.href }, [
+          document.createTextNode(next.cta), icon('<path d="M5 12h14M13 6l6 6-6 6"/>'),
+        ]),
+        el('span', { class: 'next-step-note' }, [
+          withHelp('Il pulsante ti porta ' + next.where + '. I dati sono sintetici', 'datiSintetici'),
+          document.createTextNode(': nessuna richiesta viene inviata a una banca.'),
+        ]),
+      );
+    }
+
     const host = $('[data-render="stats"]');
     if (host) {
       const stats = [
-        ['teal', 'Dato utente', eur0(s.syntheticProfile.savings), 'Risparmi dichiarati'],
-        ['blue', 'Immobile', eur0(s.property.price), 'Prezzo della casa'],
-        ['purple', 'Sintetiche', String(s.offers.length), 'Offerte da comprendere'],
-        ['gold', 'Soglia personale', eur0(s.syntheticProfile.emergencyFundMin), 'Fondo da preservare'],
+        ['teal', 'Lo hai detto tu', eur0(s.syntheticProfile.savings), 'Risparmi che hai da parte', null],
+        ['blue', 'Dato della casa', eur0(s.property.price), 'Prezzo della casa che vuoi comprare', null],
+        ['purple', 'Esempio didattico', String(s.offers.length), 'Offerte di mutuo da confrontare', 'datiSintetici'],
+        ['gold', 'Soglia che scegli tu', eur0(s.syntheticProfile.emergencyFundMin), 'Soldi da non toccare per gli imprevisti', 'fondoEmergenza'],
       ];
-      host.replaceChildren(...stats.map(([color, trend, value, label]) =>
+      host.replaceChildren(...stats.map(([color, trend, value, caption, term]) =>
         el('article', { class: 'card stat-card' }, [
           el('div', { class: 'stat-top' }, [
             el('span', { class: 'stat-icon ' + color }, [icon(ICON_CHECK)]),
             el('span', { class: 'trend', text: trend }),
           ]),
           el('div', { class: 'stat-value', text: value }),
-          el('div', { class: 'stat-label', text: label }),
+          el('div', { class: 'stat-label' }, [withHelp(caption, term)]),
         ])));
     }
 
@@ -289,26 +494,60 @@
     if (journey) {
       const step = PHASE_STEP[s.currentPhase] || 0;
       const items = [
-        { href: 'profilo.html', n: '01', title: 'Profilo economico', note: 'Reddito, risparmi e soglia di emergenza', at: 1 },
-        { href: 'profilo.html', n: '02', title: 'Prossima domanda decisiva', note: s.selectedQuestion ? s.selectedQuestion.question : 'Nessun dato mancante con impatto', at: 2 },
-        { href: 'offerte.html', n: '03', title: 'Offerte normalizzate', note: s.normalizedOffers.length ? s.normalizedOffers.length + ' offerte sullo stesso schema' : 'Non ancora normalizzate', at: 4 },
-        { href: 'scenari.html', n: '04', title: 'Scenari', note: s.scenarios.length ? s.scenarios.length + ' scenari calcolati' : 'Perizia, tasso e reddito temporaneo', at: 5 },
-        { href: 'comprensione.html', n: '05', title: 'Comprensione e conferma', note: 'Tre domande prima della conferma finale', at: 7 },
+        { href: 'profilo.html', n: '01', title: 'I tuoi dati e la casa', at: 1,
+          note: 'Reddito, risparmi, prezzo e soldi da tenere da parte' },
+        { href: 'profilo.html', n: '02', title: 'La domanda che pesa di più', at: 2, term: 'domandaDecisiva',
+          note: s.selectedQuestion ? s.selectedQuestion.question : 'Nessun dato mancante cambia il confronto' },
+        { href: 'offerte.html', n: '03', title: 'Le offerte sullo stesso metro', at: 4, term: 'offerteNormalizzate',
+          note: s.normalizedOffers.length ? s.normalizedOffers.length + ' offerte riscritte con le stesse voci' : 'Voci e unità di misura ancora diverse fra loro' },
+        { href: 'scenari.html', n: '04', title: 'Cosa succede se qualcosa cambia', at: 5, term: 'scenari',
+          note: s.scenarios.length ? s.scenarios.length + ' ipotesi calcolate' : 'Perizia più bassa, tassi in salita, reddito ridotto' },
+        { href: 'comprensione.html', n: '05', title: 'Verifichi di aver capito, poi confermi tu', at: 7, term: 'controlloComprensione',
+          note: 'Senza la tua conferma esplicita il percorso non si chiude' },
       ];
       journey.replaceChildren(...items.map((it) => {
         const done = step >= it.at;
         const active = !done && step >= it.at - 1;
-        const status = done ? 'Completato' : active ? 'Da fare ora' : 'Non iniziato';
+        const status = done ? 'Fatto' : active ? 'Tocca a te' : 'Si sblocca dopo';
         return el('a', { class: 'journey-item' + (done ? ' done' : active ? ' active' : ''), href: it.href }, [
           el('span', { class: 'step-dot' }, [done ? icon(ICON_CHECK) : document.createTextNode(it.n)]),
-          el('div', {}, [el('h4', { text: it.title }), el('p', { text: it.note })]),
+          el('div', {}, [
+            el('h4', {}, [withHelp(it.title, it.term)]),
+            el('p', { text: it.note }),
+          ]),
           el('span', { class: 'status', text: status }),
         ]);
       }));
     }
 
+    renderGlossaryHome($('[data-render="glossary-home"]'));
     renderQuestionCard($('[data-render="question-home"]'), s, view);
   };
+
+  /**
+   * Glossario aperto in pagina: il "?" accanto ai valori aiuta chi sa di non
+   * sapere, questo elenco aiuta chi legge una parola e tira a indovinare.
+   * Le voci finanziarie arrivano dal runtime, quelle di prodotto dal client.
+   */
+  function renderGlossaryHome(host) {
+    if (!host) return;
+    const fromServer = (store.meta && store.meta.glossary) || {};
+    const entries = [
+      ['MutuoSpecchio', TERM_HELP.mutuoSpecchio],
+      ['Traccia agentica', TERM_HELP.tracciaAgentica],
+      ['Dati sintetici', TERM_HELP.datiSintetici],
+      ['Scenari', TERM_HELP.scenari],
+      ['TAEG', fromServer.TAEG],
+      ['Liquidità residua', fromServer['Liquidità residua']],
+      ['Fondo di emergenza', TERM_HELP.fondoEmergenza],
+      ['Controllo di comprensione', TERM_HELP.controlloComprensione],
+    ].filter(([, text]) => Boolean(text));
+    host.replaceChildren(...entries.map(([term, text]) =>
+      el('article', { class: 'card card-pad glossary-item' }, [
+        el('h4', { text: term }),
+        el('p', { text: text }),
+      ])));
+  }
 
   /** Card della prossima domanda decisiva, condivisa fra panoramica e profilo. */
   function renderQuestionCard(host, s, view) {
@@ -320,31 +559,32 @@
     // che è diverso dall'essere stato valutato e risultare completo.
     if (!q && !view.profileAgent) {
       host.append(
-        el('span', { class: 'agent-chip', text: 'Profile & Property Agent' }),
-        el('h3', { text: 'Profilo non ancora valutato' }),
-        el('p', { text: 'Conferma il profilo per far analizzare i dati dall’agente: individuerà quali informazioni mancano e quale domanda ha il maggiore impatto sul confronto.' }),
+        el('span', { class: 'agent-chip', text: 'Assistente profilo e casa' }),
+        el('h3', { text: 'I tuoi dati non sono ancora stati letti' }),
+        el('p', { text: 'Premi il pulsante: l’assistente legge i dati che hai inserito, ti dice quali informazioni mancano e quale singola domanda cambierebbe di più il confronto fra le offerte.' }),
         el('button', {
           class: 'btn btn-primary', type: 'button', style: 'margin-top:14px;width:100%',
-          text: 'Valuta il profilo',
+          text: 'Controlla i miei dati',
           onclick: () => act('POST', '/api/run/' + store.runId + '/profile', {},
-            ['Profilo valutato', 'L’agente ha individuato i dati mancanti con impatto sul confronto.']),
+            ['Dati controllati', 'L’assistente ha individuato le informazioni mancanti che pesano sul confronto.']),
         }),
+        el('p', { class: 'card-note', style: 'margin-top:10px', text: 'Componente che lavora: Profile & Property Agent. Ogni suo passo compare nella traccia.' }),
       );
       return;
     }
 
     if (!q) {
       host.append(
-        el('span', { class: 'agent-chip', text: 'Profile & Property Agent' }),
-        el('h3', { text: 'Nessun dato mancante con impatto sul confronto' }),
-        el('p', { text: 'Il profilo è sufficiente per il confronto. I dati ancora assenti riguardano le offerte e vanno chiesti alla banca.' }),
+        el('span', { class: 'agent-chip', text: 'Assistente profilo e casa' }),
+        el('h3', { text: 'Non manca nessun dato importante' }),
+        el('p', { text: 'I tuoi dati bastano per confrontare le offerte. Quello che ancora manca riguarda le offerte stesse: sono informazioni da chiedere alla banca, non a te.' }),
         el('p', { class: 'card-note', style: 'margin-top:10px', text: view.profileAgent.questionRationale }),
       );
       return;
     }
     const input = el('input', { type: 'number', min: '0', step: '10', 'aria-label': q.question });
     host.append(
-      el('span', { class: 'agent-chip', text: 'Prossima domanda decisiva' }),
+      el('span', { class: 'agent-chip' }, [withHelp('La domanda che pesa di più', 'domandaDecisiva')]),
       el('h3', { text: q.question }),
       el('p', { text: q.why }),
       el('div', { class: 'answer-row' }, [
@@ -360,8 +600,16 @@
         text: 'Rispondi e ricalcola',
         onclick: () => answer(q.field, input.value === '' ? 0 : Number(input.value)),
       }),
-      el('p', { class: 'card-note', style: 'margin-top:10px', text: 'Impatto dichiarato sul confronto: ' + q.decisionImpact + (view.profileAgent ? ' · ' + view.profileAgent.questionRationale : '') }),
+      el('p', { class: 'card-note', style: 'margin-top:10px', text: 'Quanto questa risposta cambia il confronto: ' + impactWord(q.decisionImpact) + ' (' + NUM.format(q.decisionImpact) + ' su 1)' + (view.profileAgent ? ' · ' + view.profileAgent.questionRationale : '') }),
     );
+  }
+
+  /** Il punteggio di impatto dell'agente detto a parole, senza nascondere il numero. */
+  function impactWord(impact) {
+    if (impact === null || impact === undefined) return 'non dichiarato';
+    if (impact >= 0.85) return 'molto';
+    if (impact >= 0.6) return 'abbastanza';
+    return 'poco';
   }
 
   function answer(field, value) {
