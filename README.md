@@ -109,6 +109,25 @@ Proprietà imposte dal codice, non dichiarate nei prompt:
 Dettaglio, contratti degli agenti, macchina a stati ed eventi:
 [docs/AGENTIC_ARCHITECTURE.md](docs/AGENTIC_ARCHITECTURE.md) e [OVERVIEW.md](OVERVIEW.md).
 
+### Pacchetto operativo degli agenti
+
+La struttura di `agents/` riprende quella del progetto di riferimento
+`DryRunHackaton/MutuoChiaro`, adattata al runtime locale:
+
+- [AGENTS.md](AGENTS.md): accordo di lavoro per sviluppo e revisione.
+- [agents/AGENTS.md](agents/AGENTS.md): indice, contratti e corrispondenza dei ruoli.
+- File separati per orchestratore, profilo, analista delle offerte, tutor e policy gate.
+- [agents/knowledge/index.md](agents/knowledge/index.md): frammenti da consultare per
+  singolo concetto, inclusi perizia e liquidita', pertinenti al quiz attuale.
+- [agents/evals/demo-cases.md](agents/evals/demo-cases.md) e
+  [agents/evals/failure-cases.md](agents/evals/failure-cases.md): casi verificabili con
+  rimandi ai test e alle evidenze della demo.
+
+Questi documenti non vengono caricati automaticamente dal runtime e non aggiungono
+agenti selezionabili in VS Code. I componenti eseguibili restano quelli sopra:
+analista e tutor sono ruoli distribuiti tra agenti, skill e tool esistenti.
+Stati, schemi, dati sintetici, interfaccia e gate restano quelli di questo progetto.
+
 ## 5. Avvio rapido
 
 Requisiti: **Node.js ≥ 22** (usa il test runner integrato). Nessuna dipendenza di runtime.
@@ -136,7 +155,7 @@ Esegue in sequenza:
 | Comando | Cosa fa | Esito |
 | --- | --- | --- |
 | `npm run typecheck` | `tsc --noEmit`, TypeScript strict | nessun errore |
-| `npm test` | build + 113 test (`node --test`) | 113 pass / 0 fail |
+| `npm test` | build + 116 test (`node --test`) | 116 pass / 0 fail |
 | `npm run audit:structure` | 31 controlli strutturali sul codice compilato | 31/31 |
 
 Altri comandi utili:
@@ -157,7 +176,7 @@ Cosa coprono i test (`app/tests/`):
 | `safetyGuard.test.ts` | 10 frasi vietate bloccate, 6 ammesse, categorie, blocco nel percorso reale |
 | `registry.test.ts` | sequenza started/completed/failed, inputRef/outputRef, invocazioni annidate, vocabolario eventi, conteggi di delega |
 | `journey.e2e.test.ts` | percorso completo `START → COMPLETED`, handoff reali, domanda dinamica, assenza di classifiche, modifica offerta, loop limitato |
-| `schemas.test.ts` | allineamento fra gli schemi JSON in `agents/schemas/` e il runtime: fasi, vocabolario eventi, righe di MutuoSpecchio, campi dello stato, pattern dei riferimenti agli artifact |
+| `schemas.test.ts` | allineamento fra schemi JSON e runtime; struttura e collegamenti del pacchetto agentico; corrispondenza fra domande, scenari e frammenti knowledge |
 
 **Un test fallisce se si rimuove una vera invocazione dal registry**: sostituendo
 `ctx.invoke('MortgageCalculator', …)` con una chiamata diretta alla funzione, falliscono
@@ -211,7 +230,10 @@ Elenco completo con ipotesi e confine rispetto alla consulenza:
 | [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) | Demo da tre minuti |
 | [docs/AGENTIC_ARCHITECTURE.md](docs/AGENTIC_ARCHITECTURE.md) | Contratti, stato, transizioni, eventi, failure path |
 | [OVERVIEW.md](OVERVIEW.md) | Componenti, matrice, dipendenze, macchina a stati |
-| [agents/AGENTS.md](agents/AGENTS.md) | Contratti degli agenti in forma tabellare |
+| [AGENTS.md](AGENTS.md) | Accordo di lavoro e vincoli per le modifiche |
+| [agents/AGENTS.md](agents/AGENTS.md) | Indice operativo, mappa dei ruoli e contratti degli agenti |
+| [agents/knowledge/index.md](agents/knowledge/index.md) | Conoscenza selettiva per concetto |
+| [agents/evals/](agents/evals/) | Casi canonici e avversariali collegati ai test |
 | [agents/schemas/](agents/schemas/) | Schemi JSON di stato, evento e busta agentica |
 
 ## 10. Provenienza dei dati
@@ -230,9 +252,18 @@ Ogni numero mostrato nell'interfaccia porta un'etichetta di provenienza:
 
 ```text
 MutuoChiaro/
-├── README.md · OVERVIEW.md
+├── README.md · OVERVIEW.md · AGENTS.md
 ├── docs/                       evidenze, demo, rischi, architettura
-├── agents/                     contratti e schemi JSON
+├── agents/
+│   ├── AGENTS.md · workflow.md  indice, contratti e sequenza reale
+│   ├── orchestrator.md         controllo del percorso
+│   ├── profile-property.md     profilo e domanda decisiva
+│   ├── offer-analyst.md         ruolo analitico su skill e tool
+│   ├── adaptive-tutor.md        ruolo didattico e verifica
+│   ├── policy-gate.md           guardrail dei testi
+│   ├── knowledge/              indice e frammenti per concetto
+│   ├── evals/                  casi demo e failure collegati ai test
+│   └── schemas/                schemi JSON allineati al runtime
 └── app/
     ├── src/
     │   ├── core/               types, errori, stato, macchina a stati, registry,
@@ -245,6 +276,6 @@ MutuoChiaro/
     │   ├── runtime/            composizione e registrazione dei componenti
     │   └── server/             API HTTP e file statici
     ├── public/                 interfaccia italiana (HTML/CSS/JS, zero dipendenze)
-    ├── tests/                  113 test
+    ├── tests/                  116 test
     └── scripts/                audit strutturale, run di evidenza
 ```

@@ -157,13 +157,29 @@ POST /api/run/:id/simulate-outage   { component: "MortgageCalculator" }
 restituite sono quelle calcolate dall'ultimo avanzamento reale. La traccia cresce solo per
 effetto di azioni vere, non per il polling dell'interfaccia.
 
+## Contesto selettivo e verifica dei passaggi
+
+Le istruzioni operative sono indicizzate in [AGENTS.md](AGENTS.md). Per un intervento
+sul profilo consultare [profile-property.md](profile-property.md), per evidenze e
+normalizzazione [offer-analyst.md](offer-analyst.md), per feedback e spiegazioni
+[adaptive-tutor.md](adaptive-tutor.md). Il controllo dei testi e' descritto in
+[policy-gate.md](policy-gate.md).
+
+Per il solo concetto corrente caricare il frammento indicato da
+[knowledge/index.md](knowledge/index.md). Non aggiungere tutti i documenti al contesto:
+lo stato variabile resta nel run e i valori sono consultabili negli artifact.
+Questa e' una regola per sviluppo e revisione, non un caricamento Markdown a runtime.
+
+Verificare gli handoff con [evals/demo-cases.md](evals/demo-cases.md) e i rami di errore
+con [evals/failure-cases.md](evals/failure-cases.md), collegati alle suite esistenti.
+
 ## Ordine di verifica del progetto
 
 ```bash
 cd app
 npm install
 npm run typecheck        # tsc --noEmit
-npm test                 # build + 113 test
+npm test                 # build + 116 test
 npm run audit:structure  # 31 controlli strutturali sul codice compilato
 node scripts/demo-run.mjs > ../docs/BEFORE_AFTER_EVIDENCE.md
 ```

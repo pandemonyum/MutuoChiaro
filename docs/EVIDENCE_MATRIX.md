@@ -9,7 +9,7 @@ Comando che riesegue tutte le verifiche di questa tabella:
 cd app && npm run verify
 ```
 
-`npm run verify` = `typecheck` (`tsc --noEmit`) + `test` (113 test) + `audit:structure`
+`npm run verify` = `typecheck` (`tsc --noEmit`) + `test` (116 test) + `audit:structure`
 (31 controlli su codice compilato).
 
 ---
@@ -55,6 +55,7 @@ cd app && npm run verify
 | C5 | Cinque skill realmente invocate dal runtime | [`app/src/skills/`](../app/src/skills/) | `skill.started` / `skill.completed` | `registry.test` › *il conteggio delle invocazioni dimostra la delega ai tool* | 0:55–2:40 |
 | C6 | Cinque tool deterministici separati | [`app/src/tools/`](../app/src/tools/) | `tool.started` / `tool.completed` | `registry.test` › *ogni componente atteso e registrato una sola volta*; audit › *registry: 5 tool, 5 skill, 2 agent* | 1:15–2:20 |
 | C7 | Il modello non esegue calcoli, validazione o transizioni | formule solo in `mortgageCalculator.ts`; validazione solo in `offerSchemaValidator.ts`; transizioni solo in `stateMachine.ts` | — | `scenarios.test` › *ogni invocazione dello scenario passa dal MortgageCalculator registrato* (**fallisce se si sostituisce l'invocazione con un calcolo inline**) | — |
+| C8 | Pacchetto operativo con ruoli separati, knowledge selettiva ed eval | [agents/AGENTS.md](../agents/AGENTS.md), [knowledge/index.md](../agents/knowledge/index.md), [evals/](../agents/evals/) | Documenti per sviluppo e revisione, non caricati dal runtime | `schemas.test` › *Pacchetto operativo degli agenti*: struttura, link e corrispondenza quiz/scenari/knowledge | Consultazione dei contratti e dei casi |
 
 ## D. Invocation layer ed eventi
 
@@ -114,7 +115,7 @@ cd app && npm run verify
 | Comando | Cosa verifica | Esito registrato |
 | --- | --- | --- |
 | `npm run typecheck` | TypeScript strict, `noUncheckedIndexedAccess`, `noUnusedLocals` | nessun errore |
-| `npm test` | 113 test in 8 file | 113 pass / 0 fail |
+| `npm test` | 116 test in 8 file | 116 pass / 0 fail |
 | `npm run audit:structure` | 31 controlli strutturali su codice compilato | 31/31 |
 | `node scripts/demo-run.mjs` | rigenera [BEFORE_AFTER_EVIDENCE.md](BEFORE_AFTER_EVIDENCE.md) dal run reale | — |
 

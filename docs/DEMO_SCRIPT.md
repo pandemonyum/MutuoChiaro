@@ -229,7 +229,7 @@ modo **sbagliato** (opzione «Perché il prezzo dell'immobile aumenta automatica
 
 ```bash
 cd app
-npm run verify     # typecheck + 113 test + audit strutturale
+npm run verify     # typecheck + 116 test + audit strutturale
 ```
 
 - [ ] `npm run verify` verde

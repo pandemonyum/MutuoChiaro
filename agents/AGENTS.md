@@ -3,6 +3,42 @@
 I contratti non sono solo documentazione: sono definiti nel codice come oggetti congelati
 accanto all'implementazione e verificati dai test.
 
+## Come usare il pacchetto agentico
+
+La struttura riprende il pacchetto `agents/` del progetto di riferimento
+`DryRunHackaton/MutuoChiaro`: istruzioni per ruolo, workflow, policy, knowledge indicizzata,
+schemi ed eval. I contenuti sono adattati al runtime di questo progetto, non copiati
+come se i due sistemi avessero gli stessi stati, dati o componenti.
+
+| Documento operativo | Responsabilita' nel runtime locale |
+| --- | --- |
+| [orchestrator.md](orchestrator.md) | `MortgageJourneyOrchestrator`: stato, handoff, limiti e gate umano |
+| [profile-property.md](profile-property.md) | `profile-property-agent`: profilo, immobile e domanda decisiva |
+| [offer-analyst.md](offer-analyst.md) | Ruolo analitico realizzato da `OfferSchemaValidator`, `normalize-mortgage-offers` e tool di calcolo |
+| [adaptive-tutor.md](adaptive-tutor.md) | Ruolo didattico realizzato da `offer-clarity-agent` e `assess-user-understanding` |
+| [policy-gate.md](policy-gate.md) | `SafetyGuard`: controllo lessicale e riscrittura neutrale |
+| [workflow.md](workflow.md) | Sequenza reale, transizioni e failure branch |
+| [knowledge/index.md](knowledge/index.md) | Selezione di un solo frammento per concetto |
+| [evals/demo-cases.md](evals/demo-cases.md) | Casi canonici con evidenze verificabili |
+| [evals/failure-cases.md](evals/failure-cases.md) | Casi avversariali, limiti e test corrispondenti |
+
+**Confine di esecuzione:** questi Markdown guidano sviluppo e revisione. Non sono prompt
+caricati automaticamente, agenti selezionabili in VS Code o nuovi componenti registrati.
+Gli agenti eseguibili restano i due elencati nei contratti sotto; analista e tutor sono
+ruoli operativi distribuiti fra i componenti esistenti. Il feedback e' definito in
+[quizBank.ts](../app/src/data/quizBank.ts), non letto dalla knowledge base a runtime.
+
+**Adattamenti espliciti:** Andrea e MutuoSpecchio sostituiscono la persona e le cinque
+lenti del riferimento. `COMPLETED` sostituisce `DONE`; il tool failure termina in
+`ESCALATED`, non in `DEMO_FALLBACK`. Il quiz consente tre tentativi totali, non i due
+del riferimento. Un blocco lessicale produce testi sostitutivi e un evento osservabile:
+non impedisce da solo il completamento dopo il gate umano. Restano autorevoli i tre
+schemi locali, gia' verificati contro il codice, senza introdurre schemi incompatibili.
+
+Caricare prima questo indice, poi il solo ruolo pertinente. Per un dubbio educativo
+seguire [knowledge/index.md](knowledge/index.md); per la verifica scegliere il caso
+in `evals/`. Non concatenare tutta la knowledge o la cronologia del run.
+
 | Contratto | Definizione nel codice | Test |
 | --- | --- | --- |
 | `PROFILE_AGENT_CONTRACT` | [`app/src/agents/profilePropertyAgent.ts`](../app/src/agents/profilePropertyAgent.ts) | `journey.e2e` › *i contratti degli agenti dichiarano divieti e condizione di completamento* |

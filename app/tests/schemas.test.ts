@@ -1,7 +1,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { EVENT_KINDS, PHASES } from '../src/core/types.js';
@@ -28,6 +28,64 @@ const SCHEMA_DIR = join(
 function loadSchema(name: string): Record<string, unknown> {
   return JSON.parse(readFileSync(join(SCHEMA_DIR, name), 'utf8')) as Record<string, unknown>;
 }
+
+describe('Pacchetto operativo degli agenti', () => {
+  const agentDir = dirname(SCHEMA_DIR);
+
+  test('ruoli, knowledge ed eval sono presenti e raggiungibili dall indice', () => {
+    const index = readFileSync(join(agentDir, 'AGENTS.md'), 'utf8');
+    for (const relative of [
+      'orchestrator.md',
+      'profile-property.md',
+      'offer-analyst.md',
+      'adaptive-tutor.md',
+      'policy-gate.md',
+      'workflow.md',
+      'knowledge/index.md',
+      'evals/demo-cases.md',
+      'evals/failure-cases.md',
+    ]) {
+      assert.ok(statSync(join(agentDir, relative)).isFile(), relative);
+      assert.ok(index.includes(`](${relative})`), `documento non indicizzato: ${relative}`);
+    }
+  });
+
+  test('i collegamenti locali del pacchetto e dell accordo di lavoro sono validi', () => {
+    const documents = [join(agentDir, '..', 'AGENTS.md')];
+    function collectDocuments(directory: string): void {
+      for (const entry of readdirSync(directory, { withFileTypes: true })) {
+        const path = join(directory, entry.name);
+        if (entry.isDirectory()) collectDocuments(path);
+        else if (entry.name.endsWith('.md')) documents.push(path);
+      }
+    }
+    collectDocuments(agentDir);
+    for (const document of documents) {
+      const text = readFileSync(document, 'utf8');
+      for (const match of text.matchAll(/\]\(([^)]+)\)/g)) {
+        const target = match[1]!;
+        if (/^(?:[a-z]+:|#)/i.test(target)) continue;
+        const path = resolve(dirname(document), decodeURIComponent(target.split('#')[0]!));
+        assert.ok(statSync(path), `collegamento non valido in ${document}: ${target}`);
+      }
+    }
+  });
+
+  test('ogni domanda del quiz ha un frammento e lo scenario corretto nella knowledge', () => {
+    const index = readFileSync(join(agentDir, 'knowledge', 'index.md'), 'utf8');
+    for (const question of QUIZ_QUESTIONS) {
+      const rows = index.split('\n').filter((line) => line.includes(`\`${question.id}\``));
+      assert.equal(rows.length, 1, `domanda non indicizzata una sola volta: ${question.id}`);
+      const row = rows[0]!;
+      assert.ok(row.includes(`\`${question.reopenScenario}\``), question.id);
+      const link = /\]\(([^)]+\.md)\)/.exec(row);
+      assert.ok(link, `frammento mancante: ${question.id}`);
+      const fragment = readFileSync(join(agentDir, 'knowledge', link[1]!), 'utf8');
+      assert.ok(fragment.includes(`\`${question.id}\``), question.id);
+      assert.ok(fragment.includes(`\`${question.reopenScenario}\``), question.reopenScenario);
+    }
+  });
+});
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function at(schema: unknown, path: string[]): any {
