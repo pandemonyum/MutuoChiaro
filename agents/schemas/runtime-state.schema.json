@@ -1,13 +1,463 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "RuntimeState",
+  "$id": "https://mutuochiaro.local/schemas/runtime-state.schema.json",
+  "title": "RunState",
+  "description": "Stato esterno e tipizzato di un run di MutuoChiaro. Sorgente di verita: app/src/core/types.ts (interface RunState). Tutti i dati sono sintetici.",
   "type": "object",
-  "required": ["runId", "phase", "attempts", "humanApproved"],
+  "additionalProperties": false,
+  "required": [
+    "runId",
+    "currentPhase",
+    "syntheticProfile",
+    "property",
+    "offers",
+    "offerValidations",
+    "normalizedOffers",
+    "missingData",
+    "resolvedMissingData",
+    "selectedQuestion",
+    "answeredQuestions",
+    "questionRounds",
+    "maxQuestionRounds",
+    "scenarios",
+    "comprehensionAttempts",
+    "comprehensionResult",
+    "warnings",
+    "confidence",
+    "artifactReferences",
+    "humanApproval",
+    "before",
+    "escalation",
+    "timestamps"
+  ],
   "properties": {
-    "runId": {"type": "string"},
-    "phase": {"type": "string"},
-    "attempts": {"type": "integer", "minimum": 0},
-    "humanApproved": {"type": "boolean"},
-    "issues": {"type": "array", "items": {"type": "string"}}
+    "runId": { "type": "string", "minLength": 1 },
+    "currentPhase": { "$ref": "#/$defs/phase" },
+    "syntheticProfile": { "$ref": "#/$defs/financialProfile" },
+    "property": { "$ref": "#/$defs/propertyPlan" },
+    "offers": { "type": "array", "items": { "$ref": "#/$defs/mortgageOffer" } },
+    "offerValidations": { "type": "array", "items": { "$ref": "#/$defs/offerValidation" } },
+    "normalizedOffers": { "type": "array", "items": { "$ref": "#/$defs/normalizedOffer" } },
+    "missingData": { "type": "array", "items": { "$ref": "#/$defs/fieldIssue" } },
+    "resolvedMissingData": {
+      "description": "Campi inizialmente mancanti e poi forniti dall'utente.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "selectedQuestion": {
+      "description": "Prossima domanda decisiva attiva, oppure null.",
+      "oneOf": [{ "$ref": "#/$defs/decisiveQuestion" }, { "type": "null" }]
+    },
+    "answeredQuestions": { "type": "array", "items": { "type": "string" } },
+    "questionRounds": { "type": "integer", "minimum": 0 },
+    "maxQuestionRounds": {
+      "description": "Limite esplicito del loop di domande.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "scenarios": { "type": "array", "items": { "$ref": "#/$defs/scenarioResult" } },
+    "comprehensionAttempts": { "type": "array", "items": { "$ref": "#/$defs/quizAttempt" } },
+    "comprehensionResult": { "$ref": "#/$defs/comprehensionResult" },
+    "warnings": {
+      "description": "Segnalazioni registrate nello stato: un fallimento non resta solo in console.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "artifactReferences": { "type": "array", "items": { "type": "string" } },
+    "humanApproval": { "$ref": "#/$defs/humanApproval" },
+    "before": { "$ref": "#/$defs/beforeSnapshot" },
+    "escalation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["escalated", "reason"],
+      "properties": {
+        "escalated": { "type": "boolean" },
+        "reason": { "type": ["string", "null"] }
+      }
+    },
+    "timestamps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["createdAt", "updatedAt", "completedAt"],
+      "properties": {
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "completedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "description": "COMPLETED richiede la conferma umana ricevuta.",
+      "if": { "properties": { "currentPhase": { "const": "COMPLETED" } }, "required": ["currentPhase"] },
+      "then": {
+        "properties": {
+          "humanApproval": { "properties": { "received": { "const": true } }, "required": ["received"] },
+          "scenarios": { "minItems": 1 },
+          "comprehensionResult": {
+            "properties": { "status": { "enum": ["PASSED", "NOT_VERIFIED"] } },
+            "required": ["status"]
+          },
+          "timestamps": { "properties": { "completedAt": { "type": "string" } } }
+        }
+      }
+    },
+    {
+      "description": "ESCALATED richiede un motivo registrato.",
+      "if": { "properties": { "currentPhase": { "const": "ESCALATED" } }, "required": ["currentPhase"] },
+      "then": {
+        "properties": {
+          "escalation": {
+            "properties": { "escalated": { "const": true }, "reason": { "type": "string" } },
+            "required": ["escalated", "reason"]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "phase": {
+      "enum": [
+        "START",
+        "PROFILE_INCOMPLETE",
+        "PROFILE_READY",
+        "OFFERS_INCOMPLETE",
+        "OFFERS_NORMALIZED",
+        "SCENARIOS_READY",
+        "UNDERSTANDING_CHECK",
+        "AWAITING_HUMAN_CONFIRMATION",
+        "COMPLETED",
+        "ESCALATED"
+      ]
+    },
+    "provenance": {
+      "description": "Provenienza obbligatoria di ogni valore mostrato.",
+      "enum": ["USER_INPUT", "SYNTHETIC_OFFER", "CALCULATED", "SCENARIO_ASSUMPTION", "MISSING"]
+    },
+    "traced": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "provenance"],
+      "properties": {
+        "value": { "type": ["number", "null"] },
+        "provenance": { "$ref": "#/$defs/provenance" },
+        "note": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "description": "Un valore assente e sempre etichettato MISSING: nessuna stima sostitutiva.",
+          "if": { "properties": { "value": { "type": "null" } }, "required": ["value"] },
+          "then": { "properties": { "provenance": { "const": "MISSING" } } }
+        }
+      ]
+    },
+    "financialProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "personaName",
+        "syntheticData",
+        "monthlyNetIncome",
+        "otherMonthlyIncome",
+        "existingMonthlyDebts",
+        "savings",
+        "emergencyFundMin"
+      ],
+      "properties": {
+        "personaName": { "type": "string" },
+        "syntheticData": { "const": true },
+        "monthlyNetIncome": { "type": ["number", "null"], "minimum": 0 },
+        "otherMonthlyIncome": { "type": ["number", "null"], "minimum": 0 },
+        "existingMonthlyDebts": {
+          "description": "null = non dichiarato: attiva la prossima domanda decisiva.",
+          "type": ["number", "null"],
+          "minimum": 0
+        },
+        "savings": { "type": ["number", "null"], "minimum": 0 },
+        "emergencyFundMin": { "type": ["number", "null"], "minimum": 0 }
+      }
+    },
+    "propertyPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["price", "accessoryCosts", "plannedWorks", "requestedLoanAmount", "assumedYears", "firstHome"],
+      "properties": {
+        "price": { "type": ["number", "null"], "minimum": 0 },
+        "accessoryCosts": { "type": ["number", "null"], "minimum": 0 },
+        "plannedWorks": { "type": ["number", "null"], "minimum": 0 },
+        "requestedLoanAmount": { "type": ["number", "null"], "minimum": 0 },
+        "assumedYears": { "type": ["number", "null"], "minimum": 1, "maximum": 40 },
+        "firstHome": { "type": "boolean" }
+      }
+    },
+    "mortgageOffer": {
+      "type": "object",
+      "required": ["id", "displayName", "syntheticData", "provenance"],
+      "properties": {
+        "id": { "type": "string" },
+        "displayName": { "type": "string" },
+        "syntheticData": { "const": true },
+        "amount": { "type": ["number", "null"], "minimum": 1 },
+        "years": { "type": ["number", "null"], "minimum": 1, "maximum": 40 },
+        "rateType": { "enum": ["FIXED", "VARIABLE", null] },
+        "tanPct": { "type": ["number", "null"], "minimum": 0, "maximum": 25 },
+        "declaredTaegPct": { "type": ["number", "null"], "minimum": 0, "maximum": 30 },
+        "declaredInitialPayment": { "type": ["number", "null"], "minimum": 0 },
+        "arrangementFee": { "type": ["number", "null"], "minimum": 0 },
+        "appraisalFee": { "type": ["number", "null"], "minimum": 0 },
+        "otherUpfrontCosts": { "type": ["number", "null"], "minimum": 0 },
+        "insuranceRequired": { "type": ["boolean", "null"] },
+        "insuranceCost": {
+          "description": "null con insuranceRequired=true e il failure branch principale: il costo non viene mai stimato.",
+          "type": ["number", "null"],
+          "minimum": 0
+        },
+        "recurringMonthlyCost": { "type": ["number", "null"], "minimum": 0 },
+        "maxLtvPct": { "type": ["number", "null"], "minimum": 10, "maximum": 100 },
+        "provenance": {
+          "description": "Provenienza dichiarata campo per campo.",
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/provenance" }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "fieldIssue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "code", "message", "decisionImpact"],
+      "properties": {
+        "field": { "type": "string" },
+        "code": {
+          "enum": ["MISSING", "NEGATIVE", "ZERO_INCOME", "OUT_OF_RANGE", "INCONSISTENT", "NOT_A_NUMBER"]
+        },
+        "message": { "type": "string" },
+        "decisionImpact": {
+          "description": "Peso dell'impatto sul confronto fra offerte.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "offerValidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "offerId",
+        "valid",
+        "partial",
+        "missingFields",
+        "inconsistencies",
+        "typeErrors",
+        "blockedComparisons",
+        "availableComparisons",
+        "questionForBank"
+      ],
+      "properties": {
+        "offerId": { "type": "string" },
+        "valid": { "type": "boolean" },
+        "partial": {
+          "description": "true = usabile solo per confronti parziali, mai rimossa dal confronto.",
+          "type": "boolean"
+        },
+        "missingFields": { "type": "array", "items": { "type": "string" } },
+        "inconsistencies": { "type": "array", "items": { "$ref": "#/$defs/fieldIssue" } },
+        "typeErrors": { "type": "array", "items": { "$ref": "#/$defs/fieldIssue" } },
+        "blockedComparisons": { "type": "array", "items": { "type": "string" } },
+        "availableComparisons": { "type": "array", "items": { "type": "string" } },
+        "questionForBank": { "type": ["string", "null"] }
+      }
+    },
+    "normalizedOffer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["offerId", "displayName", "rateType", "partial", "missingFields", "rows"],
+      "properties": {
+        "offerId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "rateType": { "enum": ["FIXED", "VARIABLE", null] },
+        "partial": { "type": "boolean" },
+        "missingFields": { "type": "array", "items": { "type": "string" } },
+        "rows": {
+          "description": "Schema identico per tutte le offerte. Nessun campo di ranking o punteggio.",
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/traced" },
+          "propertyNames": {
+            "enum": [
+              "rataIniziale",
+              "tan",
+              "taegDichiarato",
+              "durataAnni",
+              "costoTotaleSimulato",
+              "interessiTotaliSimulati",
+              "costiIniziali",
+              "liquiditaResidua",
+              "rapportoRataReddito",
+              "margineMensile",
+              "tipoTasso",
+              "sensibilitaScenari"
+            ]
+          }
+        },
+        "tradeoffNote": { "type": "string" }
+      }
+    },
+    "decisiveQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "field", "question", "why", "inputType", "decisionImpact"],
+      "properties": {
+        "id": { "type": "string" },
+        "field": { "type": "string" },
+        "question": { "type": "string" },
+        "why": { "type": "string" },
+        "inputType": { "enum": ["number", "boolean"] },
+        "unit": { "type": "string" },
+        "decisionImpact": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "scenarioResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scenarioId", "label", "assumptions", "warnings", "offers"],
+      "properties": {
+        "scenarioId": {
+          "enum": ["BASE", "APPRAISAL_MINUS_10", "RATE_PLUS_2PP", "INCOME_MINUS_20_6M"]
+        },
+        "label": { "type": "string" },
+        "assumptions": {
+          "description": "Ipotesi dichiarate, mai implicite.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "offers": { "type": "array", "items": { "$ref": "#/$defs/scenarioOfferResult" } }
+      }
+    },
+    "scenarioOfferResult": {
+      "type": "object",
+      "required": [
+        "offerId",
+        "displayName",
+        "applicable",
+        "partial",
+        "monthlyPayment",
+        "paymentToIncomePct",
+        "monthlyMargin",
+        "liquidityNeeded",
+        "liquidityRemaining",
+        "emergencyFundBreach",
+        "totalCostSimulated",
+        "totalInterestSimulated"
+      ],
+      "properties": {
+        "offerId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "applicable": { "type": "boolean" },
+        "partial": { "type": "boolean" },
+        "monthlyPayment": { "$ref": "#/$defs/traced" },
+        "paymentToIncomePct": { "$ref": "#/$defs/traced" },
+        "monthlyMargin": { "$ref": "#/$defs/traced" },
+        "liquidityNeeded": { "$ref": "#/$defs/traced" },
+        "liquidityRemaining": { "$ref": "#/$defs/traced" },
+        "emergencyFundBreach": { "type": ["boolean", "null"] },
+        "totalCostSimulated": { "$ref": "#/$defs/traced" },
+        "totalInterestSimulated": { "$ref": "#/$defs/traced" },
+        "deltaVsBase": { "type": "object", "additionalProperties": { "type": ["number", "null"] } }
+      }
+    },
+    "quizAttempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attempt", "ts", "answers", "wrongQuestionIds", "passed"],
+      "properties": {
+        "attempt": { "type": "integer", "minimum": 1, "maximum": 3 },
+        "ts": { "type": "string", "format": "date-time" },
+        "answers": { "type": "object", "additionalProperties": { "type": "string" } },
+        "wrongQuestionIds": { "type": "array", "items": { "type": "string" } },
+        "passed": { "type": "boolean" }
+      }
+    },
+    "comprehensionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "attemptsUsed",
+        "maxAttempts",
+        "conceptsUnderstood",
+        "conceptsNotUnderstood",
+        "feedback"
+      ],
+      "properties": {
+        "status": {
+          "description": "IN_PROGRESS e NOT_STARTED bloccano il completamento; NOT_VERIFIED lo consente con i risultati consultabili.",
+          "enum": ["NOT_STARTED", "IN_PROGRESS", "PASSED", "NOT_VERIFIED"]
+        },
+        "attemptsUsed": { "type": "integer", "minimum": 0 },
+        "maxAttempts": { "type": "integer", "minimum": 1 },
+        "conceptsUnderstood": { "type": "array", "items": { "type": "string" } },
+        "conceptsNotUnderstood": { "type": "array", "items": { "type": "string" } },
+        "feedback": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["questionId", "concept", "explanation", "reopenScenario"],
+            "properties": {
+              "questionId": { "type": "string" },
+              "concept": { "type": "string" },
+              "explanation": {
+                "description": "Spiegazione mirata: non si limita a indicare l'errore.",
+                "type": "string",
+                "minLength": 80
+              },
+              "reopenScenario": {
+                "enum": ["BASE", "APPRAISAL_MINUS_10", "RATE_PLUS_2PP", "INCOME_MINUS_20_6M"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "humanApproval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "received", "statement", "receivedAt", "actor"],
+      "properties": {
+        "required": { "const": true },
+        "received": { "type": "boolean" },
+        "statement": { "type": "string", "minLength": 40 },
+        "receivedAt": { "type": ["string", "null"], "format": "date-time" },
+        "actor": { "type": ["string", "null"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "received": { "const": true } }, "required": ["received"] },
+          "then": {
+            "properties": {
+              "receivedAt": { "type": "string" },
+              "actor": { "type": "string" }
+            }
+          }
+        }
+      ]
+    },
+    "beforeSnapshot": {
+      "description": "Punto di partenza della persona sintetica, usato per il confronto before/after.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question", "answer", "comparisonCriteriaUsed", "offersShownRaw", "termsExplained"],
+      "properties": {
+        "question": { "type": "string" },
+        "answer": { "type": "string" },
+        "comparisonCriteriaUsed": { "type": "array", "items": { "type": "string" } },
+        "offersShownRaw": { "type": "integer", "minimum": 0 },
+        "termsExplained": { "type": "integer", "minimum": 0 }
+      }
+    }
   }
 }

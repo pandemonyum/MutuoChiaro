@@ -1,0 +1,21 @@
+{
+  "name": "mutuochiaro-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "MutuoChiaro - runtime agentico educativo (dati sintetici)",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "test": "npm run build && node --test \"dist/tests/*.test.js\"",
+    "test:only": "node --test \"dist/tests/*.test.js\"",
+    "start": "npm run build && node dist/src/server/index.js",
+    "dev": "node dist/src/server/index.js",
+    "audit:structure": "npm run build && node scripts/audit-structure.mjs",
+    "verify": "npm run typecheck && npm run test && npm run audit:structure"
+  },
+  "devDependencies": {
+    "typescript": "5.9.2",
+    "@types/node": "22.15.3"
+  }
+}

@@ -1,16 +1,161 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mutuochiaro.local/schemas/runtime-event.schema.json",
   "title": "RuntimeEvent",
+  "description": "Evento emesso dal kernel di invocazione o dall'orchestratore. Sorgente di verita: app/src/core/types.ts (interface RuntimeEvent, EVENT_KINDS). La traccia agentica dell'interfaccia legge esclusivamente questi eventi: nessuna riga e precompilata.",
   "type": "object",
-  "required": ["runId", "kind", "actor", "status", "message"],
+  "additionalProperties": false,
+  "required": ["seq", "runId", "ts", "kind", "actor", "actorKind", "status", "message"],
   "properties": {
-    "runId": {"type": "string"},
-    "kind": {"type": "string"},
-    "actor": {"type": "string"},
-    "status": {"type": "string"},
-    "message": {"type": "string"},
-    "inputRef": {"type": "string"},
-    "outputRef": {"type": "string"},
-    "durationMs": {"type": "number", "minimum": 0}
+    "seq": {
+      "description": "Progressivo per run: la traccia di ogni run parte da 1.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "runId": { "type": "string", "minLength": 1 },
+    "ts": { "type": "string", "format": "date-time" },
+    "kind": { "$ref": "#/$defs/eventKind" },
+    "actor": {
+      "description": "Nome del componente registrato, oppure MortgageJourneyOrchestrator, oppure la coppia di un handoff.",
+      "type": "string",
+      "minLength": 1
+    },
+    "actorKind": { "enum": ["agent", "skill", "tool", "orchestrator", "human", "system"] },
+    "status": { "enum": ["started", "completed", "failed", "info"] },
+    "message": { "type": "string", "minLength": 1 },
+    "inputRef": {
+      "description": "Riferimento all'artifact di input, risolvibile via GET /api/artifact/:ref.",
+      "type": "string",
+      "pattern": "^art:in:[0-9]{4}:[0-9a-f]{8}$"
+    },
+    "outputRef": {
+      "description": "Riferimento all'artifact di output. Presente anche sui fallimenti, dove contiene l'errore serializzato.",
+      "type": "string",
+      "pattern": "^art:out:[0-9]{4}:[0-9a-f]{8}$"
+    },
+    "durationMs": { "type": "number", "minimum": 0 },
+    "phaseAfter": { "$ref": "#/$defs/phase" }
+  },
+  "allOf": [
+    {
+      "description": "Un'invocazione avviata cita sempre l'input salvato.",
+      "if": {
+        "properties": { "kind": { "enum": ["agent.started", "skill.started", "tool.started"] } },
+        "required": ["kind"]
+      },
+      "then": { "required": ["inputRef"], "properties": { "status": { "const": "started" } } }
+    },
+    {
+      "description": "Un'invocazione completata cita input, output e durata.",
+      "if": {
+        "properties": { "kind": { "enum": ["agent.completed", "skill.completed", "tool.completed"] } },
+        "required": ["kind"]
+      },
+      "then": {
+        "required": ["inputRef", "outputRef", "durationMs"],
+        "properties": { "status": { "const": "completed" } }
+      }
+    },
+    {
+      "description": "Un fallimento e sempre marcato failed e conserva l'errore come artifact, tranne quando il componente non esiste e non c'e stato alcun input da salvare.",
+      "if": {
+        "properties": { "kind": { "enum": ["agent.failed", "skill.failed", "tool.failed"] } },
+        "required": ["kind"]
+      },
+      "then": { "properties": { "status": { "const": "failed" } } }
+    },
+    {
+      "description": "Una transizione rifiutata e un fallimento osservabile e riporta la fase rimasta invariata.",
+      "if": {
+        "properties": { "kind": { "const": "state.transition_rejected" } },
+        "required": ["kind"]
+      },
+      "then": {
+        "required": ["phaseAfter"],
+        "properties": {
+          "status": { "const": "failed" },
+          "actorKind": { "const": "orchestrator" }
+        }
+      }
+    },
+    {
+      "description": "Il cambio di fase e emesso solo dall'orchestratore e dichiara la fase risultante.",
+      "if": { "properties": { "kind": { "const": "state.changed" } }, "required": ["kind"] },
+      "then": {
+        "required": ["phaseAfter"],
+        "properties": { "actorKind": { "const": "orchestrator" } }
+      }
+    },
+    {
+      "description": "La chiusura del run e emessa dall'orchestratore dopo la conferma umana.",
+      "if": { "properties": { "kind": { "const": "run.completed" } }, "required": ["kind"] },
+      "then": {
+        "properties": {
+          "actorKind": { "const": "orchestrator" },
+          "phaseAfter": { "const": "COMPLETED" }
+        }
+      }
+    },
+    {
+      "description": "L'escalation dichiara la fase terminale.",
+      "if": { "properties": { "kind": { "const": "run.escalated" } }, "required": ["kind"] },
+      "then": {
+        "properties": {
+          "actorKind": { "const": "orchestrator" },
+          "phaseAfter": { "const": "ESCALATED" }
+        }
+      }
+    },
+    {
+      "description": "Il blocco di un testo non conforme e emesso dal componente che lo ha prodotto o dal guard.",
+      "if": { "properties": { "kind": { "const": "safety_guard.blocked" } }, "required": ["kind"] },
+      "then": { "properties": { "actorKind": { "enum": ["agent", "tool", "orchestrator"] } } }
+    }
+  ],
+  "$defs": {
+    "eventKind": {
+      "description": "Vocabolario chiuso. Nessun evento fuori da questo elenco puo comparire nella traccia: verificato da registry.test.ts e dall'audit strutturale. state.transition_rejected e skill.failed sono estensioni rispetto all'elenco minimo del brief.",
+      "enum": [
+        "run.started",
+        "state.changed",
+        "state.transition_rejected",
+        "handoff.started",
+        "handoff.completed",
+        "agent.started",
+        "agent.completed",
+        "agent.failed",
+        "skill.started",
+        "skill.completed",
+        "skill.failed",
+        "tool.started",
+        "tool.completed",
+        "tool.failed",
+        "missing_data.detected",
+        "question.selected",
+        "offer.incomplete",
+        "scenario.completed",
+        "safety_guard.blocked",
+        "understanding.failed",
+        "understanding.passed",
+        "human_approval.required",
+        "human_approval.received",
+        "run.completed",
+        "run.escalated"
+      ]
+    },
+    "phase": {
+      "enum": [
+        "START",
+        "PROFILE_INCOMPLETE",
+        "PROFILE_READY",
+        "OFFERS_INCOMPLETE",
+        "OFFERS_NORMALIZED",
+        "SCENARIOS_READY",
+        "UNDERSTANDING_CHECK",
+        "AWAITING_HUMAN_CONFIRMATION",
+        "COMPLETED",
+        "ESCALATED"
+      ]
+    }
   }
 }

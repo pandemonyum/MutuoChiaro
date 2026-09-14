@@ -1,0 +1,15 @@
+{
+  "name": "mutuochiaro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MutuoChiaro - prototipo agentico educativo sui mutui (dati sintetici). Hackathon Agentic Coding, Tema 02.",
+  "scripts": {
+    "postinstall": "npm install --prefix app --no-audit --no-fund",
+    "build": "npm run build --prefix app",
+    "typecheck": "npm run typecheck --prefix app",
+    "test": "npm run test --prefix app",
+    "start": "npm run start --prefix app",
+    "audit:structure": "npm run audit:structure --prefix app",
+    "verify": "npm run verify --prefix app"
+  }
+}

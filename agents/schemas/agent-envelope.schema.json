@@ -1,13 +1,251 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mutuochiaro.local/schemas/agent-envelope.schema.json",
   "title": "AgentEnvelope",
+  "description": "Busta restituita da ogni agente. Sorgente di verita: app/src/core/types.ts (interface AgentEnvelope). L'orchestratore legge status, confidence e nextAction per decidere la transizione, e li riporta nel messaggio dell'evento handoff.completed.",
   "type": "object",
-  "required": ["status", "output", "evidence", "issues", "nextAction"],
+  "additionalProperties": false,
+  "required": [
+    "agent",
+    "status",
+    "output",
+    "evidence",
+    "issues",
+    "prohibitionsRespected",
+    "confidence",
+    "nextAction",
+    "doneCondition"
+  ],
   "properties": {
-    "status": {"enum": ["success", "needs-data", "human-review", "fallback"]},
-    "output": {},
-    "evidence": {"type": "array", "items": {"type": "string"}},
-    "issues": {"type": "array", "items": {"type": "string"}},
-    "nextAction": {"type": "string"}
+    "agent": {
+      "description": "Nome con cui l'agente e registrato nel kernel di invocazione.",
+      "enum": ["profile-property-agent", "offer-clarity-agent"]
+    },
+    "status": {
+      "description": "needs-data: serve un dato all'utente. human-review: input non valido, l'orchestratore escala. fallback: esito degradato ma utilizzabile (per esempio testi bloccati dal SafetyGuard, o giri di domande esauriti).",
+      "enum": ["success", "needs-data", "human-review", "fallback"]
+    },
+    "output": {
+      "description": "Payload strutturato, specifico dell'agente.",
+      "type": "object"
+    },
+    "evidence": {
+      "description": "Componenti realmente invocati e conteggi, citabili nella traccia.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "issues": {
+      "description": "Problemi rilevati: dati mancanti, incoerenze, testi bloccati.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "prohibitionsRespected": {
+      "description": "Divieti del contratto che l'agente dichiara di aver rispettato in questa esecuzione.",
+      "type": "array",
+      "minItems": 4,
+      "items": { "type": "string" }
+    },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "nextAction": {
+      "description": "Azione proposta all'orchestratore. L'agente propone, l'orchestratore decide: nessuna di queste stringhe applica da se una transizione.",
+      "enum": [
+        "ASK_DECISIVE_QUESTION",
+        "PROCEED_WITH_PARTIAL_PROFILE",
+        "NORMALIZE_OFFERS",
+        "CORRECT_PROFILE_INPUT",
+        "SHOW_MUTUOSPECCHIO",
+        "REVIEW_BLOCKED_TEXTS"
+      ]
+    },
+    "doneCondition": {
+      "description": "Condizione di completamento dichiarata dal contratto dell'agente.",
+      "type": "string",
+      "minLength": 20
+    }
+  },
+  "allOf": [
+    {
+      "description": "Il Profile & Property Agent usa solo le proprie nextAction e non produce testi comparativi.",
+      "if": { "properties": { "agent": { "const": "profile-property-agent" } }, "required": ["agent"] },
+      "then": {
+        "properties": {
+          "nextAction": {
+            "enum": [
+              "ASK_DECISIVE_QUESTION",
+              "PROCEED_WITH_PARTIAL_PROFILE",
+              "NORMALIZE_OFFERS",
+              "CORRECT_PROFILE_INPUT"
+            ]
+          },
+          "output": { "$ref": "#/$defs/profileAgentOutput" }
+        }
+      }
+    },
+    {
+      "description": "L'Offer Clarity Agent usa solo le proprie nextAction e dichiara sempre l'esito del SafetyGuard.",
+      "if": { "properties": { "agent": { "const": "offer-clarity-agent" } }, "required": ["agent"] },
+      "then": {
+        "properties": {
+          "nextAction": { "enum": ["SHOW_MUTUOSPECCHIO", "REVIEW_BLOCKED_TEXTS"] },
+          "status": { "enum": ["success", "fallback"] },
+          "output": { "$ref": "#/$defs/clarityAgentOutput" }
+        }
+      }
+    },
+    {
+      "description": "status=needs-data implica una domanda selezionata.",
+      "if": { "properties": { "status": { "const": "needs-data" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "output": { "properties": { "question": { "type": "object" } }, "required": ["question"] }
+        }
+      }
+    },
+    {
+      "description": "status=human-review implica almeno un problema dichiarato e nessuna prosecuzione.",
+      "if": { "properties": { "status": { "const": "human-review" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "issues": { "minItems": 1 },
+          "confidence": { "const": 0 },
+          "nextAction": { "const": "CORRECT_PROFILE_INPUT" }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "profileAgentOutput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "issues",
+        "derived",
+        "summaryForUser",
+        "question",
+        "questionRationale",
+        "candidates",
+        "profileComplete",
+        "questionsExhausted"
+      ],
+      "properties": {
+        "issues": { "type": "array" },
+        "derived": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "totalMonthlyIncome",
+            "downPayment",
+            "cashNeededBeforeOfferCosts",
+            "loanToPricePct"
+          ],
+          "properties": {
+            "totalMonthlyIncome": { "type": ["number", "null"] },
+            "downPayment": { "type": ["number", "null"] },
+            "cashNeededBeforeOfferCosts": { "type": ["number", "null"] },
+            "loanToPricePct": { "type": ["number", "null"] }
+          }
+        },
+        "summaryForUser": { "type": "array", "items": { "type": "string" } },
+        "question": { "type": ["object", "null"] },
+        "questionRationale": {
+          "description": "Motivazione esplicita della scelta, mostrata all'utente.",
+          "type": "string",
+          "minLength": 20
+        },
+        "candidates": {
+          "description": "Graduatoria dei dati mancanti per impatto sul confronto.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["field", "decisionImpact", "reason"],
+            "properties": {
+              "field": { "type": "string" },
+              "decisionImpact": { "type": "number", "minimum": 0, "maximum": 1 },
+              "reason": { "type": "string" }
+            }
+          }
+        },
+        "profileComplete": { "type": "boolean" },
+        "questionsExhausted": { "type": "boolean" }
+      }
+    },
+    "clarityAgentOutput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "perOffer",
+        "crossOffer",
+        "missingDataNotes",
+        "scenarioNotes",
+        "quizFeedback",
+        "disclaimers",
+        "safety"
+      ],
+      "properties": {
+        "perOffer": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["offerId", "lines"],
+            "properties": {
+              "offerId": { "type": "string" },
+              "lines": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "crossOffer": { "type": "array", "items": { "type": "string" } },
+        "missingDataNotes": { "type": "array", "items": { "type": "string" } },
+        "scenarioNotes": { "type": "array", "items": { "type": "string" } },
+        "quizFeedback": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["concept", "explanation", "reopenScenario"],
+            "properties": {
+              "concept": { "type": "string" },
+              "explanation": { "type": "string" },
+              "reopenScenario": { "type": "string" }
+            }
+          }
+        },
+        "disclaimers": {
+          "description": "Limiti dichiarati, sempre presenti.",
+          "type": "array",
+          "minItems": 3,
+          "items": { "type": "string" }
+        },
+        "safety": {
+          "description": "Esito del controllo di formulazione neutrale. I testi originali bloccati restano qui come pista di audit e non vengono mostrati dall'interfaccia.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["blocked", "blockedCount", "matches"],
+          "properties": {
+            "blocked": { "type": "boolean" },
+            "blockedCount": { "type": "integer", "minimum": 0 },
+            "matches": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["index", "original", "pattern", "category", "replacement"],
+                "properties": {
+                  "index": { "type": "integer", "minimum": 0 },
+                  "original": { "type": "string" },
+                  "pattern": { "type": "string" },
+                  "category": {
+                    "enum": ["RECOMMENDATION", "RANKING", "APPROVAL_ESTIMATE", "SUITABILITY"]
+                  },
+                  "replacement": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
