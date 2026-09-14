@@ -6,12 +6,13 @@
   <title>MutuoChiaro — Presentazione</title>
   <style>
     :root{
-      --ink:#183138; --deep:#0f343b; --paper:#f3f6f8; --surface:#fff;
-      --teal:#24b89a; --teal-soft:#49d7b6; --primary:#145b65;
-      --blue:#3b78d8; --gold:#c98516; --coral:#d55f5f; --purple:#7c63d8;
+      /* Sistema visivo Accenture, allineato a hagenthon-temi-sfida-2.html */
+      --purple:#A100FF; --purple-light:#BE82FF; --purple-dark:#460073;
+      --rose:#FF50A0; --ink:#0A0014; --black:#050008;
+      --deep:#0A0014; --paper:#ffffff; --surface:#fff;
     }
     *{box-sizing:border-box}
-    body{margin:0;overflow:hidden;background:#0a2429;color:#fff;
+    body{margin:0;overflow:hidden;background:#050008;color:#fff;
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 
     /* ---------- struttura del deck ---------- */
@@ -23,159 +24,217 @@
     .slide.light{background:var(--paper);color:var(--ink)}
 
     .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:5.5vw;align-items:center}
-    .eyebrow{color:var(--teal-soft);font-size:12px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
-    .light .eyebrow{color:var(--primary)}
+
+    /* Etichetta a pillola, come nel documento dei temi della sfida. */
+    .eyebrow{display:inline-block;padding:6px 16px;border:1px solid rgba(255,255,255,.15);
+      border-radius:999px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.7);
+      font-size:11px;font-weight:600;letter-spacing:.25em;text-transform:uppercase}
+    .light .eyebrow{border-color:rgba(10,0,20,.12);background:rgba(161,0,255,.06);color:var(--purple)}
+
+    /* Parola in gradiente: si usa una volta per slide, sul concetto portante. */
+    .grad{background:linear-gradient(90deg,var(--purple-light),var(--purple));
+      -webkit-background-clip:text;background-clip:text;color:transparent}
     h1{font-size:clamp(58px,7.6vw,124px);line-height:.85;letter-spacing:-.07em;margin:20px 0 26px}
     h2{font-size:clamp(40px,5.4vw,76px);line-height:.95;letter-spacing:-.055em;margin:16px 0 22px}
-    .lead{max-width:820px;color:#a9c4c7;font-size:clamp(17px,1.65vw,26px);line-height:1.45}
-    .light .lead{color:#61777d}
+    .lead{max-width:820px;color:rgba(255,255,255,.65);font-size:clamp(17px,1.65vw,26px);line-height:1.45}
+    .light .lead{color:rgba(10,0,20,.60)}
     .lead b{color:#fff}.light .lead b{color:var(--ink)}
-    .tagline{display:inline-flex;margin-top:30px;padding:12px 18px;border:1px solid #2d5b62;
-      border-radius:999px;background:rgba(36,184,154,.08);color:#cfe7e6;font-size:13px}
-    .light .tagline{border-color:#cfdee0;background:var(--surface);color:#3d5a60}
+    .tagline{display:inline-flex;margin-top:30px;padding:12px 18px;border:1px solid rgba(255,255,255,.15);
+      border-radius:999px;background:rgba(161,0,255,.08);color:rgba(255,255,255,.75);font-size:13px}
+    .light .tagline{border-color:rgba(10,0,20,.12);background:var(--surface);color:rgba(10,0,20,.60)}
 
     .brand{position:absolute;left:7vw;top:5vh;display:flex;align-items:center;gap:12px}
     .mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
-      background:linear-gradient(145deg,#49d7b6,#148c7b);box-shadow:0 12px 26px rgba(20,220,180,.22)}
+      background:linear-gradient(145deg,#BE82FF,#A100FF);box-shadow:0 12px 26px rgba(161,0,255,.30)}
     .mark svg{width:24px;height:24px;display:block}
     .brand strong{font-size:15px;letter-spacing:-.02em}
+    /* Il segno ">" e' la firma del marchio: sta accanto al nome, sempre viola. */
+    .gt{font-style:normal;color:var(--purple);font-weight:700;margin-left:1px}
+
+    /* Blocco Accenture: fisso, quindi scritto una volta sola e non per slide. */
+    .org{position:fixed;z-index:15;right:7vw;top:5vh;text-align:right;font-size:10px;line-height:1.4}
+    .org .a{display:block;color:var(--purple-light);text-transform:uppercase;
+      letter-spacing:.25em;font-weight:600}
+    .org .b{display:block;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.2em}
+    body.on-light .org .a{color:var(--purple)}
+    body.on-light .org .b{color:rgba(10,0,20,.45)}
     .brand small{display:block;margin-top:1px;color:rgba(255,255,255,.55);font-size:9.5px;
       text-transform:uppercase;letter-spacing:.1em}
-    .light .brand small{color:#7b9096}
+    .light .brand small{color:rgba(10,0,20,.45)}
 
     .number{position:absolute;right:4vw;bottom:-5vh;font-size:40vw;font-weight:950;line-height:.8;
       letter-spacing:-.11em;color:rgba(255,255,255,.035)}
-    .light .number{color:rgba(24,49,56,.04)}
-    .footer-note{position:absolute;left:7vw;bottom:4.5vh;color:#6f8b90;font-size:10px}
+    .light .number{color:rgba(10,0,20,.05)}
+    .footer-note{position:absolute;left:7vw;bottom:4.5vh;color:rgba(255,255,255,.28);font-size:10px}
 
     /* ---------- componenti ---------- */
     .cards{display:grid;gap:13px}
-    .card{padding:20px;border:1px solid #2b565d;border-radius:18px;background:#12414a}
-    .light .card{border-color:#dce6e8;background:var(--surface);box-shadow:0 14px 40px rgba(18,50,58,.07)}
-    .card span{color:#8fb3b6;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
-    .light .card span{color:#7b9096}
+    .card{padding:20px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:#14061F}
+    .light .card{border-color:rgba(10,0,20,.10);background:var(--surface);box-shadow:0 14px 40px rgba(10,0,20,.09)}
+    .card span{color:rgba(255,255,255,.58);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
+    .light .card span{color:rgba(10,0,20,.45)}
     .card strong{display:block;margin-top:7px;font-size:21px;letter-spacing:-.035em;line-height:1.15}
-    .card p{margin:8px 0 0;color:#9dbabd;font-size:13px;line-height:1.5}
-    .light .card p{color:#61777d}
+    .card p{margin:8px 0 0;color:rgba(255,255,255,.55);font-size:13px;line-height:1.5}
+    .light .card p{color:rgba(10,0,20,.60)}
 
-    .quote{padding:24px 0 24px 24px;border-left:4px solid var(--teal);
+    .quote{padding:24px 0 24px 24px;border-left:4px solid var(--purple);
       font-size:clamp(27px,3.5vw,52px);font-weight:850;line-height:1.06;letter-spacing:-.045em}
     .persona{display:flex;align-items:center;gap:15px;margin-top:24px}
     .avatar{width:54px;height:54px;display:grid;place-items:center;border-radius:17px;
-      background:linear-gradient(145deg,#49d7b6,#148c7b);color:#0c3239;font-weight:950;font-size:21px}
+      background:linear-gradient(145deg,#BE82FF,#A100FF);color:#fff;font-weight:950;font-size:21px}
     .persona strong{font-size:16px}
-    .persona small{display:block;margin-top:3px;color:#7b9096}
+    .persona small{display:block;margin-top:3px;color:rgba(10,0,20,.45)}
 
     .rates{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
-    .rate{padding:22px;border-radius:18px;background:#12414a;border-top:4px solid var(--teal)}
-    .rate:nth-child(2){border-color:var(--blue)}
-    .rate:nth-child(3){border-color:var(--gold)}
+    .rate{padding:22px;border-radius:18px;background:#14061F;border-top:4px solid var(--purple)}
+    .rate:nth-child(2){border-color:var(--purple-light)}
+    .rate:nth-child(3){border-color:var(--rose)}
     .rate b{font-size:15px}
-    .rate em{display:block;margin-top:4px;color:#8fb3b6;font-size:11px;font-style:normal;
+    .rate em{display:block;margin-top:4px;color:rgba(255,255,255,.58);font-size:11px;font-style:normal;
       text-transform:uppercase;letter-spacing:.1em}
     .rate strong{display:block;margin:16px 0 6px;font-size:clamp(30px,3.4vw,42px);letter-spacing:-.06em}
-    .rate small{color:#9dbabd;line-height:1.4;display:block}
-    .rate small.warn{color:var(--gold)}
+    .rate small{color:rgba(255,255,255,.55);line-height:1.4;display:block}
+    .rate small.warn{color:var(--rose)}
     .baseline{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
-    .baseline div{padding:14px 18px;border:1px dashed #3a656c;border-radius:14px}
-    .baseline span{display:block;color:#8fb3b6;font-size:11px}
+    .baseline div{padding:14px 18px;border:1px dashed rgba(255,255,255,.14);border-radius:14px}
+    .baseline span{display:block;color:rgba(255,255,255,.58);font-size:11px}
     .baseline strong{display:block;margin-top:4px;font-size:26px;letter-spacing:-.05em}
 
     .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:36px}
     .flow div{position:relative;min-height:168px;padding:20px 15px;border-radius:16px;
-      background:var(--surface);color:var(--ink);box-shadow:0 14px 40px rgba(18,50,58,.07)}
+      background:var(--surface);color:var(--ink);box-shadow:0 14px 40px rgba(10,0,20,.09)}
     .flow div:not(:last-child):after{content:"→";position:absolute;right:-15px;top:44%;z-index:2;
-      color:#9bb2b6;font-size:19px}
+      color:rgba(10,0,20,.30);font-size:19px}
     .flow span{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;
-      background:#dff7f0;color:#0d424a;font-weight:950}
+      background:rgba(161,0,255,.12);color:#A100FF;font-weight:950}
     .flow strong{display:block;margin-top:20px;font-size:15px;letter-spacing:-.02em}
-    .flow small{display:block;margin-top:6px;color:#61777d;font-size:12px;line-height:1.42}
+    .flow small{display:block;margin-top:6px;color:rgba(10,0,20,.60);font-size:12px;line-height:1.42}
 
     .architecture{display:grid;grid-template-columns:1fr 118px 1fr;align-items:center;gap:18px}
     .agents{display:grid;gap:13px}
-    .agent{padding:18px;border:1px solid #2b565d;border-radius:16px;background:#12414a}
+    .agent{padding:18px;border:1px solid rgba(255,255,255,.10);border-radius:16px;background:#14061F}
     .agent b{display:inline-grid;place-items:center;width:31px;height:31px;margin-right:11px;
-      border-radius:10px;background:var(--teal);color:#0c3239;font-size:13px}
+      border-radius:10px;background:var(--purple);color:#fff;font-size:13px}
     .agent span{font-size:16px;font-weight:850}
-    .agent p{margin:7px 0 0 42px;color:#8fb3b6;font-size:12px;line-height:1.45}
-    .tools{padding:20px;border:1px dashed #4a7a80;border-radius:50%;text-align:center;color:#9dbabd}
+    .agent p{margin:7px 0 0 42px;color:rgba(255,255,255,.58);font-size:12px;line-height:1.45}
+    .tools{padding:20px;border:1px dashed rgba(161,0,255,.35);border-radius:50%;text-align:center;color:rgba(255,255,255,.55)}
     .tools strong{display:block;color:#fff;font-size:14px}
     .tools small{display:block;margin-top:6px;font-size:11px;line-height:1.5}
 
     .trace{display:grid;gap:8px;margin-top:8px}
-    .trace code{padding:10px 14px;border-radius:11px;background:#12414a;border:1px solid #2b565d;
-      color:#b7dcd6;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+    .trace code{padding:10px 14px;border-radius:11px;background:#14061F;border:1px solid rgba(255,255,255,.10);
+      color:#D8B6FF;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
     .trace code b{color:#fff;font-weight:700}
-    .impact-bar{margin-top:22px;padding:16px 20px;border-radius:15px;background:#12414a;
-      border-left:4px solid var(--teal)}
-    .impact-bar span{display:block;color:#8fb3b6;font-size:11px;text-transform:uppercase;letter-spacing:.11em}
+    .impact-bar{margin-top:22px;padding:16px 20px;border-radius:15px;background:#14061F;
+      border-left:4px solid var(--purple)}
+    .impact-bar span{display:block;color:rgba(255,255,255,.58);font-size:11px;text-transform:uppercase;letter-spacing:.11em}
     .impact-bar strong{display:block;margin-top:6px;font-size:20px;letter-spacing:-.03em}
 
     .lenses{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:28px}
     .lens{padding:19px 15px;border-radius:16px;background:var(--surface);color:var(--ink);
-      box-shadow:0 14px 40px rgba(18,50,58,.07)}
-    .lens b{display:block;font-size:13px;color:#61777d}
+      box-shadow:0 14px 40px rgba(10,0,20,.09)}
+    .lens b{display:block;font-size:13px;color:rgba(10,0,20,.60)}
     .lens strong{display:block;margin-top:16px;font-size:clamp(18px,1.9vw,24px);letter-spacing:-.04em;line-height:1.1}
-    .lens small{display:block;margin-top:7px;color:#7b9096;font-size:12px;line-height:1.4}
-    .no-winner{margin-top:22px;padding:14px;border:1px solid #cfdee0;border-radius:13px;
-      background:var(--surface);color:#3d5a60;text-align:center;font-weight:800;font-size:14px}
-    .slide:not(.light) .no-winner{border-color:#3a656c;background:transparent;color:#bdd8d8}
+    .lens small{display:block;margin-top:7px;color:rgba(10,0,20,.45);font-size:12px;line-height:1.4}
+    .no-winner{margin-top:22px;padding:14px;border:1px solid rgba(10,0,20,.12);border-radius:13px;
+      background:var(--surface);color:rgba(10,0,20,.60);text-align:center;font-weight:800;font-size:14px}
+    .slide:not(.light) .no-winner{border-color:rgba(255,255,255,.14);background:transparent;color:rgba(255,255,255,.60)}
 
     .scenarios{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:32px}
-    .scn{padding:20px;border-radius:17px;background:#12414a;border:1px solid #2b565d}
+    .scn{padding:20px;border-radius:17px;background:#14061F;border:1px solid rgba(255,255,255,.10)}
     .scn em{display:block;font-size:10px;font-style:normal;font-weight:800;letter-spacing:.11em;
-      text-transform:uppercase;color:var(--teal-soft)}
+      text-transform:uppercase;color:var(--purple-light)}
     .scn strong{display:block;margin-top:9px;font-size:17px;letter-spacing:-.03em}
-    .scn p{margin:12px 0 0;color:#9dbabd;font-size:12.5px;line-height:1.5}
+    .scn p{margin:12px 0 0;color:rgba(255,255,255,.55);font-size:12.5px;line-height:1.5}
     .scn p b{color:#fff}
 
     .missing{display:grid;gap:11px}
     .miss{display:flex;gap:12px;align-items:flex-start;padding:15px 17px;border-radius:14px;
-      background:var(--surface);box-shadow:0 10px 30px rgba(18,50,58,.06)}
+      background:var(--surface);box-shadow:0 10px 30px rgba(10,0,20,.09)}
     .miss i{flex:0 0 26px;width:26px;height:26px;display:grid;place-items:center;border-radius:8px;
-      background:#fff4dd;color:#8a5a0c;font-style:normal;font-weight:950;font-size:12px}
+      background:rgba(255,80,160,.12);color:#FF50A0;font-style:normal;font-weight:950;font-size:12px}
     .miss div strong{display:block;font-size:14px}
-    .miss div p{margin:4px 0 0;color:#61777d;font-size:12px;line-height:1.45}
-    .ask{margin-top:16px;padding:16px 18px;border-radius:14px;border:1px solid #cfdee0;
-      background:#e4f1f0;color:#0d424a;font-size:14px;line-height:1.5}
+    .miss div p{margin:4px 0 0;color:rgba(10,0,20,.60);font-size:12px;line-height:1.45}
+    /* La citazione resta leggibile in neutro: il viola sta sull'etichetta, non sul testo. */
+    .ask{margin-top:16px;padding:16px 18px;border-radius:14px;border:1px solid rgba(161,0,255,.25);
+      background:rgba(161,0,255,.06);color:var(--ink);font-size:14px;line-height:1.5}
     .ask span{display:block;margin-bottom:6px;font-size:10px;font-weight:900;letter-spacing:.12em;
-      text-transform:uppercase;color:var(--primary)}
+      text-transform:uppercase;color:var(--purple)}
 
     .guardrails{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .guard{display:flex;gap:12px;padding:16px;border:1px solid #d6e3e5;border-radius:15px;background:var(--surface)}
+    .guard{display:flex;gap:12px;padding:16px;border:1px solid rgba(10,0,20,.12);border-radius:15px;background:var(--surface)}
     .guard i{flex:0 0 28px;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;
-      background:#dff7f0;color:#118c75;font-style:normal;font-weight:950;font-size:13px}
+      background:rgba(161,0,255,.12);color:#A100FF;font-style:normal;font-weight:950;font-size:13px}
     .guard strong{font-size:13.5px}
-    .guard p{margin:5px 0 0;color:#61777d;font-size:11.5px;line-height:1.45}
+    .guard p{margin:5px 0 0;color:rgba(10,0,20,.60);font-size:11.5px;line-height:1.45}
 
     .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:34px}
-    .stat{padding:22px 20px;border-radius:17px;background:#12414a;border-bottom:4px solid var(--teal)}
+    .stat{padding:22px 20px;border-radius:17px;background:#14061F;border-bottom:4px solid var(--purple)}
     .stat strong{display:block;font-size:clamp(32px,3.6vw,46px);letter-spacing:-.06em}
-    .stat span{display:block;margin-top:8px;color:#9dbabd;font-size:12.5px;line-height:1.4}
+    .stat span{display:block;margin-top:8px;color:rgba(255,255,255,.55);font-size:12.5px;line-height:1.4}
     .split{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:22px}
 
     .score{display:flex;align-items:center;justify-content:center;gap:34px}
     .score div{text-align:center}
-    .score span{display:block;color:#8fb3b6;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    .score span{display:block;color:rgba(255,255,255,.58);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
     .score strong{display:block;margin-top:6px;font-size:clamp(70px,9vw,112px);line-height:1;letter-spacing:-.09em}
-    .score .after strong{color:var(--teal-soft)}
-    .score-arrow{font-size:38px;color:#5a8288}
-    .score-label{margin-top:14px;text-align:center;color:#9dbabd;font-size:14px}
+    .score .after strong{color:var(--purple-light)}
+    .score-arrow{font-size:38px;color:rgba(255,255,255,.35)}
+    .score-label{margin-top:14px;text-align:center;color:rgba(255,255,255,.55);font-size:14px}
     .proof{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:32px}
     .proof .card strong{font-size:18px}
 
     .closing{max-width:1080px}
     .closing h2{font-size:clamp(54px,7.4vw,106px)}
-    .closing .tagline{margin-top:34px;font-size:17px;border-color:#3a757b;background:rgba(36,184,154,.12)}
+    .closing .tagline{margin-top:34px;font-size:17px;border-color:rgba(161,0,255,.35);background:rgba(161,0,255,.12)}
 
     /* ---------- controlli ---------- */
     .controls{position:fixed;z-index:20;right:24px;bottom:20px;display:flex;align-items:center;gap:8px}
-    .controls button{width:38px;height:38px;border:1px solid #3a656c;border-radius:11px;
-      background:#12414a;color:#fff;cursor:pointer;font-size:15px}
-    .controls button:hover{background:#185662}
-    .counter{min-width:60px;text-align:center;color:#8aa8ac;font-size:11px}
+    .controls button{min-width:38px;height:38px;padding:0 10px;border:1px solid rgba(255,255,255,.14);border-radius:11px;
+      background:#14061F;color:#fff;cursor:pointer;font-size:15px}
+    .controls button:hover{background:#200A30}
+    .controls button.on{background:var(--purple);border-color:var(--purple);color:#fff}
+    .counter{min-width:60px;text-align:center;color:rgba(255,255,255,.40);font-size:11px}
     .progress{position:fixed;z-index:20;left:0;bottom:0;height:4px;
-      background:linear-gradient(90deg,#49d7b6,#148c7b);transition:width .35s ease}
+      background:linear-gradient(90deg,#BE82FF,#A100FF);transition:width .35s ease}
+
+    /* ---------- cronometro dei 5 minuti ---------- */
+    /* Sempre visibile: il budget serve mentre parli, non a fine prova. */
+    .clock{position:fixed;z-index:21;left:24px;bottom:18px;display:flex;align-items:center;gap:11px;
+      padding:9px 14px;border:1px solid rgba(255,255,255,.14);border-radius:13px;background:rgba(10,0,20,.92);
+      font-variant-numeric:tabular-nums}
+    .clock.idle{opacity:.5}
+    .clock b{font-size:17px;font-weight:850;letter-spacing:-.02em;color:#fff}
+    .clock .sep{width:1px;height:20px;background:rgba(255,255,255,.14)}
+    .clock .pace{font-size:11px;font-weight:800;color:rgba(255,255,255,.58)}
+    .clock .pace.late{color:#FF50A0}
+    .clock .pace.ahead{color:var(--purple-light)}
+    .clock .hint{font-size:10px;color:rgba(255,255,255,.28)}
+
+    /* ---------- pannello del relatore ---------- */
+    .notes{display:none}
+    .presenter{position:fixed;z-index:22;left:0;right:0;bottom:0;display:none;
+      padding:20px 24px 26px;background:rgba(5,0,8,.97);border-top:1px solid rgba(255,255,255,.10);
+      box-shadow:0 -24px 60px rgba(0,0,0,.45)}
+    .presenter.open{display:block}
+    body.notes-open .controls{bottom:auto;top:20px}
+    body.notes-open .clock{bottom:auto;top:20px}
+    body.notes-open .org{display:none}
+    .presenter-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;
+      margin-bottom:11px;color:rgba(255,255,255,.58);font-size:11px;font-weight:800;
+      letter-spacing:.11em;text-transform:uppercase}
+    .presenter-head em{font-style:normal;color:var(--purple-light)}
+    .presenter-script{max-width:1180px;color:rgba(161,0,255,.07);font-size:19px;line-height:1.45}
+    .presenter-next{margin-top:13px;color:rgba(255,255,255,.28);font-size:12px}
+    .presenter-next b{color:rgba(255,255,255,.55);font-weight:700}
+    .slide-bar{height:3px;margin-bottom:14px;border-radius:99px;background:rgba(255,255,255,.10);overflow:hidden}
+    .slide-bar i{display:block;height:100%;width:0;background:var(--purple);transition:width .3s linear}
+    .slide-bar i.over{background:#FF50A0}
+
+    @media(max-width:900px){
+      .presenter-script{font-size:15px}
+      .clock .hint{display:none}
+    }
 
     @media(max-width:900px){
       .slide{padding:9vh 6vw}
@@ -189,15 +248,17 @@
   </style>
 </head>
 <body>
+<span class="org"><span class="a">Accenture</span><span class="b">Application Engineering</span></span>
+
 <div class="deck">
 
   <!-- 01 · copertina -->
   <section class="slide active" data-title="MutuoChiaro">
-    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>agentic financial inclusion</small></div></div>
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>agentic financial inclusion</small></div></div>
     <div class="grid">
       <div>
         <span class="eyebrow">Agentic Coding · Tema 02 · Inclusione finanziaria</span>
-        <h1>Capisci<br>l'impatto.<br>Decidi tu.</h1>
+        <h1>Capisci<br>l'impatto.<br><span class="grad">Decidi tu.</span></h1>
         <p class="lead">Un sistema agentico che traduce tre offerte di mutuo disomogenee nell'impatto concreto sul bilancio mensile e sulla liquidità di una persona specifica.</p>
         <span class="tagline">Non dice quale mutuo scegliere. Mostra cosa cambia.</span>
       </div>
@@ -212,7 +273,7 @@
 
   <!-- 02 · problema -->
   <section class="slide light" data-title="Problema">
-    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>il problema</small></div></div>
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>il problema</small></div></div>
     <div class="grid">
       <div>
         <span class="eyebrow">01 · Problema concreto</span>
@@ -229,9 +290,10 @@
 
   <!-- 03 · before -->
   <section class="slide" data-title="Prima">
-    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>prima dell'intervento</small></div></div>
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>prima dell'intervento</small></div></div>
     <span class="eyebrow">02 · Before</span>
     <h2>Tre offerte.<br>Tre rate. Nient'altro.</h2>
+    <p class="lead">Questo è il punto di partenza misurato, non un'ipotesi: le tre offerte così come Andrea le riceve. Sotto, la baseline del run prima che il sistema intervenga.</p>
     <div class="rates">
       <div class="rate"><b>Stabilità 20</b><em>Fisso · 20 anni</em><strong>1.231,16 €</strong><small>TAN 3,1% · interessi simulati 75.478 €</small></div>
       <div class="rate"><b>Casa Lunga 30</b><em>Fisso · 30 anni</em><strong>981,77 €</strong><small>TAN 3,45% · interessi simulati 133.437 €</small></div>
@@ -247,9 +309,10 @@
 
   <!-- 04 · percorso -->
   <section class="slide light" data-title="Percorso">
-    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>il percorso</small></div></div>
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>il percorso</small></div></div>
     <span class="eyebrow">03 · Cinque tappe</span>
     <h2>Chiedi. Normalizza.<br>Simula. Verifica. Conferma.</h2>
+    <p class="lead">Ogni tappa sblocca la successiva e lascia eventi verificabili. Nessuna si salta, e il sistema non chiude la sessione da solo: l'ultimo passo è una conferma esplicita di Andrea.</p>
     <div class="flow">
       <div><span>1</span><strong>Profilo</strong><small>Solo i dati con impatto sul confronto. I valori impossibili non entrano nel runtime.</small></div>
       <div><span>2</span><strong>Domanda decisiva</strong><small>Un dato alla volta, scelto per impatto. Non un questionario.</small></div>
@@ -262,7 +325,7 @@
 
   <!-- 05 · architettura -->
   <section class="slide" data-title="Architettura">
-    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>agentic architecture</small></div></div>
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>agentic architecture</small></div></div>
     <div class="grid">
       <div>
         <span class="eyebrow">04 · Agentic depth</span>
@@ -287,7 +350,7 @@
 
   <!-- 06 · domanda decisiva -->
   <section class="slide light" data-title="Domanda decisiva">
-    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>il nucleo agentico</small></div></div>
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>il nucleo agentico</small></div></div>
     <div class="grid">
       <div>
         <span class="eyebrow">05 · Il percorso non è prefissato</span>
@@ -313,9 +376,10 @@
 
   <!-- 07 · MutuoSpecchio -->
   <section class="slide" data-title="MutuoSpecchio">
-    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>MutuoSpecchio</small></div></div>
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>MutuoSpecchio</small></div></div>
     <span class="eyebrow">06 · Confronto normalizzato</span>
     <h2>La rata più bassa<br>non è il costo più basso.</h2>
+    <p class="lead">Le stesse dodici righe per tutte e tre le offerte. Leggendole insieme, la graduatoria che suggerisce la rata si ribalta — e compare un costo che nessuna delle tre offerte poteva mostrare, perché dipende dai dati di Andrea.</p>
     <div class="lenses">
       <div class="lens"><b>Rata iniziale</b><strong>886,52 €</strong><small>Orizzonte Variabile, la più bassa delle tre</small></div>
       <div class="lens"><b>Interessi simulati</b><strong>75.478 €</strong><small>Stabilità 20, che ha la rata più alta</small></div>
@@ -329,7 +393,7 @@
 
   <!-- 08 · scenari -->
   <section class="slide" data-title="Scenari">
-    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>scenari ipotetici</small></div></div>
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>scenari ipotetici</small></div></div>
     <span class="eyebrow">07 · Cosa cambierebbe se</span>
     <h2>Quattro scenari.<br>Ipotesi dichiarate.</h2>
     <div class="scenarios">
@@ -344,7 +408,7 @@
 
   <!-- 09 · dato mancante -->
   <section class="slide light" data-title="Dato mancante">
-    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>failure branch</small></div></div>
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>failure branch</small></div></div>
     <div class="grid">
       <div>
         <span class="eyebrow">08 · Un costo obbligatorio assente</span>
@@ -364,7 +428,7 @@
 
   <!-- 10 · controllo -->
   <section class="slide light" data-title="Controllo">
-    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>risk &amp; clarity</small></div></div>
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>risk &amp; clarity</small></div></div>
     <div class="grid">
       <div>
         <span class="eyebrow">09 · Controllo umano e limiti</span>
@@ -385,9 +449,10 @@
 
   <!-- 11 · osservabilità -->
   <section class="slide" data-title="Osservabilità">
-    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>evidenza eseguibile</small></div></div>
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>evidenza eseguibile</small></div></div>
     <span class="eyebrow">10 · Tutto passa da un kernel unico</span>
     <h2>Non è dichiarato.<br>È tracciato.</h2>
+    <p class="lead">Ogni numero di questo deck viene da un run reale rieseguibile, non da uno screenshot. Le cifre qui sotto sono il conto di quel run.</p>
     <div class="stats">
       <div class="stat"><strong>138</strong><span>eventi nel run canonico, su un vocabolario chiuso di 25 tipi</span></div>
       <div class="stat"><strong>33</strong><span>invocazioni di tool, 11 di skill, 6 di agente</span></div>
@@ -403,7 +468,7 @@
 
   <!-- 12 · impatto -->
   <section class="slide" data-title="Impatto">
-    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>before / after</small></div></div>
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>before / after</small></div></div>
     <span class="eyebrow">11 · Metriche prodotte dal run</span>
     <div class="score">
       <div><span>Prima</span><strong>1</strong></div>
@@ -422,10 +487,10 @@
 
   <!-- 13 · chiusura -->
   <section class="slide" data-title="Chiusura">
-    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro</strong><small>finale</small></div></div>
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>finale</small></div></div>
     <div class="closing">
       <span class="eyebrow">MutuoChiaro</span>
-      <h2>Non scegliamo<br>al posto tuo.</h2>
+      <h2>Non scegliamo<br><span class="grad">al posto tuo.</span></h2>
       <p class="lead">Tre offerte disomogenee diventano trade-off visibili, dati mancanti dichiarati e una domanda da portare in banca. La decisione resta di Andrea.</p>
       <span class="tagline">Capisci l'impatto. Decidi tu.</span>
     </div>
@@ -439,32 +504,172 @@
   <button id="prev" aria-label="Slide precedente">←</button>
   <span class="counter" id="counter">1 / 13</span>
   <button id="next" aria-label="Slide successiva">→</button>
+  <button id="notes-btn" aria-label="Copione del relatore (N)" title="Copione del relatore · N">N</button>
 </div>
+
+<div class="clock idle" id="clock">
+  <b id="elapsed">0:00</b>
+  <span class="sep"></span>
+  <span class="pace" id="pace">5:00 di budget</span>
+  <span class="sep"></span>
+  <span class="hint">T avvia · R azzera</span>
+</div>
+
+<div class="presenter" id="presenter">
+  <div class="slide-bar"><i id="slide-bar"></i></div>
+  <div class="presenter-head">
+    <span id="p-title">Copertina</span>
+    <span><em id="p-budget">18s</em> su questa slide</span>
+  </div>
+  <p class="presenter-script" id="p-script"></p>
+  <p class="presenter-next" id="p-next"></p>
+</div>
+
 <div class="progress" id="progress"></div>
 
 <script>
+  /**
+   * Copione del relatore: una voce per slide, nello stesso ordine del deck.
+   * `s` e' il budget in secondi; la somma fa esattamente 300, cioe' i 5 minuti.
+   * I numeri citati sono quelli del run canonico (docs/BEFORE_AFTER_EVIDENCE.md),
+   * non vanno cambiati qui senza rigenerare le evidenze.
+   */
+  const SCRIPT = [
+    { s: 18, t: 'MutuoChiaro. Andrea ha 32 anni e tre offerte di mutuo davanti. Oggi ne confronta una cosa sola: la rata. In cinque minuti vi mostro come un sistema agentico porta i criteri di confronto da uno a tredici, senza mai dirgli quale mutuo scegliere.' },
+    { s: 22, t: 'Le tre offerte hanno durate diverse, tassi di tipo diverso, costi sparsi in voci diverse. In un caso un costo obbligatorio non e\' nemmeno indicato. La rata resta l\'unico numero omogeneo, quindi diventa il criterio per forza: non perche\' sia il piu\' importante, ma perche\' e\' l\'unico leggibile.' },
+    { s: 26, t: 'Ecco il punto di partenza, e sono numeri veri del run. Stabilita\' 20: rata 1.231 euro. Casa Lunga 30: 982. Orizzonte Variabile: 887. Andrea guarda la terza e si ferma li\'. La baseline misurata e\' impietosa: un solo criterio di confronto usato, zero termini finanziari spiegati, zero dati mancanti individuati. Tenete a mente questi tre numeri, ci torniamo alla fine.' },
+    { s: 20, t: 'Il percorso ha cinque tappe: raccogliamo solo i dati che spostano il confronto, facciamo una domanda alla volta scelta per impatto, normalizziamo le offerte sullo stesso schema, simuliamo quattro scenari dichiarati come ipotesi, e verifichiamo la comprensione prima della conferma. Nessuna tappa si salta.' },
+    { s: 26, t: 'Due agenti e cinque tool deterministici, con le autorita\' separate. L\'orchestratore e\' l\'unico che tocca lo stato. Gli agenti decidono, non calcolano: rate e liquidita\' vivono in un solo file, raggiungibile solo dal registry. Se qualcuno scrive un calcolo inline, tre test si rompono. Non e\' una regola scritta in un documento: e\' verificata.' },
+    { s: 32, t: 'Questo e\' il nucleo agentico, ed e\' la slide su cui vi chiedo attenzione. Il percorso non e\' prefissato. L\'orchestratore passa lo stato all\'agente, riceve i dati mancanti ordinati per impatto e ne sceglie uno: le rate gia\' attive, impatto 0,85. Non un questionario da dodici campi, ma la singola domanda che sposta di piu\' il confronto. A destra c\'e\' la sequenza reale del run, con input e output apribili: non e\' un log scritto a mano.' },
+    { s: 34, t: 'E qui arriva il ribaltamento. Orizzonte Variabile ha la rata piu\' bassa, 887 euro. Ma gli interessi simulati di Stabilita\' 20, quella con la rata piu\' alta, sono 75 mila contro 99 mila. La rata piu\' bassa non e\' il costo piu\' basso. E c\'e\' di peggio: la liquidita\' residua e\' negativa su tutte e tre, perche\' servono circa 110 mila euro contro 100 mila di risparmi. Questo non era scritto in nessuna offerta: dipende dai dati di Andrea.' },
+    { s: 24, t: 'Quattro scenari, ogni ipotesi dichiarata come tale. Se la perizia vale il dieci per cento in meno servono fino a 17.500 euro in piu\' di anticipo. Se i tassi salgono di due punti, il variabile passa da 887 a 1.134 e supera il fisso a trent\'anni. Sono ipotesi, non previsioni, ed e\' etichettato cosi\' anche nei valori derivati.' },
+    { s: 28, t: 'Questo e\' il pezzo di cui vado piu\' fiero: quello che il sistema non fa. Orizzonte Variabile dichiara una polizza obbligatoria e non ne indica il costo. Il sistema non stima, non usa una media, non riempie il buco. Il campo resta null, i totali vengono marcati parziali, e viene generata la domanda da portare in banca. L\'offerta resta nel confronto, in modalita\' parziale.' },
+    { s: 24, t: 'I guardrail non sono promesse. SafetyGuard blocca la parola "migliore", le classifiche e le stime di approvazione prima che arrivino a schermo, ed emette l\'evento. I loop sono limitati: tre giri di domande, tre tentativi di quiz. E il gate finale non chiede ad Andrea di scegliere il mutuo: chiede di prendere atto che questa e\' una simulazione.' },
+    { s: 18, t: 'Tutto questo e\' tracciato, non dichiarato. Centotrentotto eventi su un vocabolario chiuso, ogni chiamata con input e output apribili, 116 test automatici. E se un tool non risponde il run va in ESCALATED: nessun numero improvvisato.' },
+    { s: 18, t: 'I tre numeri dell\'inizio. Criteri di confronto: da uno a tredici. Termini finanziari spiegati: da zero a quattordici. Concetti verificati: tre su tre. Misurati dal MetricsEngine nel run, su una persona sintetica: e\' l\'obiettivo funzionale della demo, non uno studio con utenti reali.' },
+    { s: 10, t: 'Tre offerte illeggibili diventano trade-off visibili e una domanda da portare in banca. La decisione resta di Andrea. Capisci l\'impatto, decidi tu. Grazie.' },
+  ];
+
   const slides = [...document.querySelectorAll('.slide')];
   const counter = document.getElementById('counter');
   const progress = document.getElementById('progress');
   let index = 0;
 
+  // ------------------------------------------------------------- copione
+  const presenter = document.getElementById('presenter');
+  const notesBtn = document.getElementById('notes-btn');
+
+  function renderNotes(){
+    const cue = SCRIPT[index];
+    if (!cue) return;
+    document.getElementById('p-title').textContent = `${String(index + 1).padStart(2,'0')} · ${slides[index].dataset.title}`;
+    document.getElementById('p-budget').textContent = `${cue.s}s`;
+    document.getElementById('p-script').textContent = cue.t;
+    const after = slides[index + 1];
+    document.getElementById('p-next').innerHTML = after
+      ? `Prossima: <b>${after.dataset.title}</b>`
+      : 'Ultima slide.';
+  }
+
+  function toggleNotes(){
+    const open = presenter.classList.toggle('open');
+    document.body.classList.toggle('notes-open', open);
+    notesBtn.classList.toggle('on', open);
+  }
+
+  // ------------------------------------------------- cronometro dei 5 minuti
+  // Parte da sola al primo avanzamento: a nessuno viene in mente di premere
+  // un tasto mentre l'aula sta gia' guardando la copertina.
+  const TOTAL = SCRIPT.reduce((a, c) => a + c.s, 0);
+  const CUM = SCRIPT.reduce((acc, c) => (acc.push((acc[acc.length - 1] || 0) + c.s), acc), []);
+  const elapsedEl = document.getElementById('elapsed');
+  const paceEl = document.getElementById('pace');
+  const clockEl = document.getElementById('clock');
+  const slideBar = document.getElementById('slide-bar');
+  let started = null, frozen = 0;
+
+  const mmss = (sec) => `${Math.floor(sec / 60)}:${String(Math.floor(sec % 60)).padStart(2,'0')}`;
+
+  function elapsed(){
+    return frozen + (started ? (Date.now() - started) / 1000 : 0);
+  }
+
+  function startClock(){
+    if (started) return;
+    started = Date.now();
+    clockEl.classList.remove('idle');
+  }
+
+  function pauseClock(){
+    if (!started) return;
+    frozen = elapsed();
+    started = null;
+  }
+
+  function resetClock(){
+    started = null; frozen = 0;
+    clockEl.classList.add('idle');
+    tick();
+  }
+
+  function tick(){
+    const e = elapsed();
+    elapsedEl.textContent = mmss(e);
+
+    if (!started && frozen === 0) {
+      paceEl.textContent = `${mmss(TOTAL)} di budget`;
+      paceEl.className = 'pace';
+      slideBar.style.width = '0%';
+      return;
+    }
+
+    // Il confronto e' con il tempo entro cui si dovrebbe LASCIARE questa slide.
+    const deadline = CUM[index];
+    const delta = Math.round(e - deadline);
+    if (delta > 0) {
+      paceEl.textContent = `${delta}s di ritardo`;
+      paceEl.className = 'pace late';
+    } else {
+      paceEl.textContent = `${Math.abs(delta)}s di margine`;
+      paceEl.className = 'pace ahead';
+    }
+
+    const from = CUM[index] - SCRIPT[index].s;
+    const onSlide = Math.max(0, e - from);
+    const ratio = onSlide / SCRIPT[index].s;
+    slideBar.style.width = `${Math.min(100, ratio * 100)}%`;
+    slideBar.classList.toggle('over', ratio > 1);
+  }
+  setInterval(tick, 250);
+
+  // ------------------------------------------------------------ navigazione
   function show(next){
     index = (next + slides.length) % slides.length;
     slides.forEach((s, i) => s.classList.toggle('active', i === index));
     counter.textContent = `${index + 1} / ${slides.length}`;
     progress.style.width = `${((index + 1) / slides.length) * 100}%`;
     document.title = `${slides[index].dataset.title} · MutuoChiaro`;
+    document.body.classList.toggle('on-light', slides[index].classList.contains('light'));
+    renderNotes();
+    tick();
   }
 
   document.getElementById('prev').onclick = () => show(index - 1);
-  document.getElementById('next').onclick = () => show(index + 1);
+  document.getElementById('next').onclick = () => { startClock(); show(index + 1); };
+  notesBtn.onclick = toggleNotes;
+
   addEventListener('keydown', e => {
-    if (['ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); show(index + 1); }
+    if (['ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); startClock(); show(index + 1); }
     if (['ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); show(index - 1); }
     if (e.key === 'Home') show(0);
     if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'n' || e.key === 'N') toggleNotes();
+    if (e.key === 't' || e.key === 'T') { started ? pauseClock() : startClock(); }
+    if (e.key === 'r' || e.key === 'R') resetClock();
   });
+
   show(0);
+  tick();
 </script>
 </body>
 </html>

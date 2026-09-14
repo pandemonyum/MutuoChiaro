@@ -1,28 +1,75 @@
 # Presentazione MutuoChiaro
 
-- `index.html`: deck principale, 13 slide. Funziona offline (nessun asset esterno, nessun
-  font remoto) e si controlla con frecce, spazio, Page Up/Down, Home ed End, oppure con i
-  pulsanti in basso a destra.
+- `index.html`: deck principale, 13 slide tarate su **5 minuti esatti**. Funziona offline
+  (nessun asset esterno, nessun font remoto).
 
 Apri il file direttamente nel browser, poi F11 per la modalità a schermo intero.
 
-## Narrazione
+## Stile
 
-| # | Slide | Cosa porta |
+Il deck segue il sistema visivo Accenture del documento dei temi della sfida
+(`hagenthon-temi-sfida-2.html`, non versionato qui): viola `#A100FF` come accento unico,
+fondo `#050008`, il segno `>` accanto al nome come firma di marca, etichette a pillola
+maiuscole e spaziate, una parola in gradiente viola per slide sul concetto portante.
+
+I token stanno in `:root` e sono gli unici colori ammessi:
+
+| Token | Valore | Uso |
 | --- | --- | --- |
-| 01 | Copertina | Persona, problema e risultato del run in tre card |
-| 02 | Problema | Perché la rata diventa il criterio predefinito |
-| 03 | Prima | Le tre offerte come le vede Andrea, e la baseline 1 / 0 / 0 |
-| 04 | Percorso | Le cinque tappe del percorso agentico |
-| 05 | Architettura | Due agenti, cinque skill, cinque tool, autorità separate |
-| 06 | Domanda decisiva | Il nucleo agentico: una domanda scelta per impatto, con la traccia reale |
-| 07 | MutuoSpecchio | La rata più bassa non è il costo più basso |
-| 08 | Scenari | Quattro scenari con ipotesi dichiarate |
-| 09 | Dato mancante | Il failure branch principale: quello che il sistema **non** fa |
-| 10 | Controllo | Guardrail, loop limitati, gate umano |
-| 11 | Osservabilità | Eventi, artifact, test e wiki |
-| 12 | Impatto | Before / after prodotto dal `MetricsEngine` |
-| 13 | Chiusura | La decisione resta all'utente |
+| `--purple` | `#A100FF` | Accento unico, bordi, marchio `>` |
+| `--purple-light` | `#BE82FF` | Testo d'accento su fondo scuro, gradienti |
+| `--rose` | `#FF50A0` | Avvisi e ritardo sul cronometro |
+| `--ink` | `#0A0014` | Testo sulle slide chiare, fondo di quelle scure |
+| `--black` | `#050008` | Fondo pagina |
+
+Slide chiare e scure si alternano: entrambe sono a norma, il contrasto minimo misurato
+è 5,3:1 (viola su bianco e bianco su viola pieno).
+
+## Comandi
+
+| Tasto | Effetto |
+| --- | --- |
+| `→` `spazio` `PagGiù` | Slide successiva (avvia il cronometro al primo colpo) |
+| `←` `PagSu` | Slide precedente |
+| `Home` / `End` | Prima / ultima slide |
+| `N` | Apre e chiude il **copione del relatore** |
+| `T` | Avvia o mette in pausa il cronometro |
+| `R` | Azzera il cronometro |
+
+Il cronometro in basso a sinistra confronta il tempo trascorso con il budget cumulato
+della slide corrente e dice **quanti secondi di margine o di ritardo** hai. La barra sopra
+il copione si riempie man mano che consumi il budget della singola slide e diventa arancione
+quando lo superi.
+
+Il copione (`N`) non è visibile al pubblico solo se usi due schermi: a schermo singolo
+serve per **provare**, non per presentare. Fai una prova con `N` aperto, poi chiudilo.
+
+## Narrazione e budget
+
+Somma dei budget = 300 secondi. Il testo parlato sta in circa 275 secondi a 150 parole
+al minuto: i 25 secondi di scarto sono il margine per le pause.
+
+| # | Slide | Budget | Cosa porta |
+| --- | --- | --- | --- |
+| 01 | Copertina | 18s | Persona, problema e la promessa del "da 1 a 13" |
+| 02 | Problema | 22s | Perché la rata diventa il criterio predefinito |
+| 03 | Prima | 26s | Le tre offerte come le vede Andrea, e la baseline 1 / 0 / 0 |
+| 04 | Percorso | 20s | Le cinque tappe del percorso agentico |
+| 05 | Architettura | 26s | Due agenti, cinque tool, autorità separate e verificate |
+| 06 | Domanda decisiva | 32s | Il nucleo agentico: una domanda scelta per impatto, con la traccia reale |
+| 07 | MutuoSpecchio | 34s | Il ribaltamento: la rata più bassa non è il costo più basso |
+| 08 | Scenari | 24s | Quattro scenari con ipotesi dichiarate |
+| 09 | Dato mancante | 28s | Il failure branch principale: quello che il sistema **non** fa |
+| 10 | Controllo | 24s | Guardrail, loop limitati, gate umano |
+| 11 | Osservabilità | 18s | Eventi, artifact, test e wiki |
+| 12 | Impatto | 18s | Before / after prodotto dal `MetricsEngine` |
+| 13 | Chiusura | 10s | La decisione resta all'utente |
+
+Le due slide più lunghe sono la **06** e la **07**: sono il nucleo agentico e il
+ribaltamento del confronto. Se sei in ritardo, taglia sulla 04 e sulla 11, non su queste.
+
+Il copione vive nell'array `SCRIPT` in fondo a `index.html`, una voce per slide nello
+stesso ordine del deck. Cambiando un budget va tenuta la somma a 300.
 
 ## Provenienza dei dati mostrati
 
