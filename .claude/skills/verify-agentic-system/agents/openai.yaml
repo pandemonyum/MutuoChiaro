@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verify Agentic System"
+  short_description: "Audit an agentic project against executable evidence and failure paths. Use after runtim"
+  brand_color: "#6B4EFF"

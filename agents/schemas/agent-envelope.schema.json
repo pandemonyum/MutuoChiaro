@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentEnvelope",
+  "type": "object",
+  "required": ["status", "output", "evidence", "issues", "nextAction"],
+  "properties": {
+    "status": {"enum": ["success", "needs-data", "human-review", "fallback"]},
+    "output": {},
+    "evidence": {"type": "array", "items": {"type": "string"}},
+    "issues": {"type": "array", "items": {"type": "string"}},
+    "nextAction": {"type": "string"}
+  }
+}

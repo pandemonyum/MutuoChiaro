@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frame Problem"
+  short_description: "Frame a concrete user problem, measurable before/after, non-goals, and agentic justifica"
+  brand_color: "#6B4EFF"

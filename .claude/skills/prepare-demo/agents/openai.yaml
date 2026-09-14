@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prepare Demo"
+  short_description: "Prepare an evidence-backed three-minute demo and criterion-to-evidence matrix. Use only "
+  brand_color: "#6B4EFF"

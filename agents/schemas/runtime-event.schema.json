@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RuntimeEvent",
+  "type": "object",
+  "required": ["runId", "kind", "actor", "status", "message"],
+  "properties": {
+    "runId": {"type": "string"},
+    "kind": {"type": "string"},
+    "actor": {"type": "string"},
+    "status": {"type": "string"},
+    "message": {"type": "string"},
+    "inputRef": {"type": "string"},
+    "outputRef": {"type": "string"},
+    "durationMs": {"type": "number", "minimum": 0}
+  }
+}
