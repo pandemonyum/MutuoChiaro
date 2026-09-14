@@ -542,3 +542,14 @@ svg { display: block; }
 
 /* Il badge di provenienza resta leggibile anche dentro le intestazioni. */
 .compare-table th .source-tag { vertical-align: middle; }
+
+/* Il brief richiede che l'indicazione «Dati sintetici» resti sempre visibile:
+   su schermi stretti viene rimpicciolita, non nascosta. */
+@media (max-width: 740px) {
+  .data-pill {
+    display: inline-flex;
+    font-size: 9px;
+    padding: 4px 8px;
+    letter-spacing: .02em;
+  }
+}

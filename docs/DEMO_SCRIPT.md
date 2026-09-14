@@ -221,4 +221,4 @@ npm run verify
 - [ ] risposta `280` pronta per la domanda decisiva
 - [ ] risposta sbagliata da usare: terza domanda, «Perché la banca aumenta automaticamente
       il prezzo di vendita»
-- [ ] finestra a 1440px o più: sotto i 1080px la barra laterale passa a menu mobile
+- [ ] finestra a 1440px o più: sotto i 940px la barra laterale passa a menu mobile

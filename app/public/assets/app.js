@@ -1084,8 +1084,8 @@
         ['Componente non disponibile', 'Il run è passato in ESCALATED senza produrre numeri sostitutivi.']);
     });
 
-    const replay = $('[data-replay-trace]');
-    if (replay) replay.addEventListener('click', () => {
+    // La pagina puo' avere piu' di un pulsante di riproduzione: si collegano tutti.
+    $$('[data-replay-trace]').forEach((replay) => replay.addEventListener('click', () => {
       const events = $$('.trace-event');
       let index = 0;
       const tick = () => {
@@ -1100,7 +1100,7 @@
         }
       };
       tick();
-    });
+    }));
   }
 
   (async function boot() {
