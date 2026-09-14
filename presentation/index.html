@@ -485,7 +485,26 @@
     <div class="number">12</div>
   </section>
 
-  <!-- 13 · chiusura -->
+  <!-- 13 · evoluzione -->
+  <section class="slide light" data-title="Evoluzione">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>il passo successivo</small></div></div>
+    <div class="grid">
+      <div>
+        <span class="eyebrow">12 · Evoluzione</span>
+        <h2>E se fosse Andrea<br>a <span class="grad">chiedere?</span></h2>
+        <p class="lead">Oggi è il sistema a scegliere la domanda da fare ad Andrea. Il passo successivo ribalta il verso: un assistente a cui Andrea chiede quello che non ha capito, che risponde <b>soltanto</b> con i numeri del suo run e con la loro provenienza.</p>
+        <div class="ask"><span>Esempio di domanda</span>«Perché l'offerta con la rata più bassa mi lascia meno soldi in tasca?»</div>
+      </div>
+      <div class="cards">
+        <div class="card"><span>Cosa farebbe</span><strong>Risponde dalle celle del confronto</strong><p>Ogni risposta cita il valore da cui parte e resta riapribile nella traccia: nessuna frase senza un numero dietro.</p></div>
+        <div class="card"><span>Cosa non farebbe</span><strong>Nessun consiglio, nessuna classifica</strong><p>Passa dallo stesso SafetyGuard: «migliore», graduatorie e stime di approvazione restano bloccate prima dell'interfaccia.</p></div>
+        <div class="card"><span>Sul dato mancante</span><strong>Dice che non lo sa</strong><p>Se il costo della polizza non c'è, non lo stima: ripropone la domanda da portare in banca.</p></div>
+      </div>
+    </div>
+    <div class="number">13</div>
+  </section>
+
+  <!-- 14 · chiusura -->
   <section class="slide" data-title="Chiusura">
     <div class="brand"><span class="mark"><svg viewBox="0 0 64 64"><path d="M18 42V22h5.4l8.6 12.5L40.6 22H46v20h-5.8V31.4L32 43 23.8 31.4V42H18Z" fill="white"/></svg></span><div><strong>MutuoChiaro<i class="gt">&gt;</i></strong><small>finale</small></div></div>
     <div class="closing">
@@ -495,7 +514,7 @@
       <span class="tagline">Capisci l'impatto. Decidi tu.</span>
     </div>
     <div class="footer-note">Dati sintetici · simulazione educativa · nessuna consulenza, proposta o delibera bancaria</div>
-    <div class="number">13</div>
+    <div class="number">14</div>
   </section>
 
 </div>
@@ -536,17 +555,18 @@
    */
   const SCRIPT = [
     { s: 18, t: 'MutuoChiaro. Andrea ha 32 anni e tre offerte di mutuo davanti. Oggi ne confronta una cosa sola: la rata. In cinque minuti vi mostro come un sistema agentico porta i criteri di confronto da uno a tredici, senza mai dirgli quale mutuo scegliere.' },
-    { s: 22, t: 'Le tre offerte hanno durate diverse, tassi di tipo diverso, costi sparsi in voci diverse. In un caso un costo obbligatorio non e\' nemmeno indicato. La rata resta l\'unico numero omogeneo, quindi diventa il criterio per forza: non perche\' sia il piu\' importante, ma perche\' e\' l\'unico leggibile.' },
-    { s: 26, t: 'Ecco il punto di partenza, e sono numeri veri del run. Stabilita\' 20: rata 1.231 euro. Casa Lunga 30: 982. Orizzonte Variabile: 887. Andrea guarda la terza e si ferma li\'. La baseline misurata e\' impietosa: un solo criterio di confronto usato, zero termini finanziari spiegati, zero dati mancanti individuati. Tenete a mente questi tre numeri, ci torniamo alla fine.' },
-    { s: 20, t: 'Il percorso ha cinque tappe: raccogliamo solo i dati che spostano il confronto, facciamo una domanda alla volta scelta per impatto, normalizziamo le offerte sullo stesso schema, simuliamo quattro scenari dichiarati come ipotesi, e verifichiamo la comprensione prima della conferma. Nessuna tappa si salta.' },
-    { s: 26, t: 'Due agenti e cinque tool deterministici, con le autorita\' separate. L\'orchestratore e\' l\'unico che tocca lo stato. Gli agenti decidono, non calcolano: rate e liquidita\' vivono in un solo file, raggiungibile solo dal registry. Se qualcuno scrive un calcolo inline, tre test si rompono. Non e\' una regola scritta in un documento: e\' verificata.' },
-    { s: 32, t: 'Questo e\' il nucleo agentico, ed e\' la slide su cui vi chiedo attenzione. Il percorso non e\' prefissato. L\'orchestratore passa lo stato all\'agente, riceve i dati mancanti ordinati per impatto e ne sceglie uno: le rate gia\' attive, impatto 0,85. Non un questionario da dodici campi, ma la singola domanda che sposta di piu\' il confronto. A destra c\'e\' la sequenza reale del run, con input e output apribili: non e\' un log scritto a mano.' },
-    { s: 34, t: 'E qui arriva il ribaltamento. Orizzonte Variabile ha la rata piu\' bassa, 887 euro. Ma gli interessi simulati di Stabilita\' 20, quella con la rata piu\' alta, sono 75 mila contro 99 mila. La rata piu\' bassa non e\' il costo piu\' basso. E c\'e\' di peggio: la liquidita\' residua e\' negativa su tutte e tre, perche\' servono circa 110 mila euro contro 100 mila di risparmi. Questo non era scritto in nessuna offerta: dipende dai dati di Andrea.' },
-    { s: 24, t: 'Quattro scenari, ogni ipotesi dichiarata come tale. Se la perizia vale il dieci per cento in meno servono fino a 17.500 euro in piu\' di anticipo. Se i tassi salgono di due punti, il variabile passa da 887 a 1.134 e supera il fisso a trent\'anni. Sono ipotesi, non previsioni, ed e\' etichettato cosi\' anche nei valori derivati.' },
-    { s: 28, t: 'Questo e\' il pezzo di cui vado piu\' fiero: quello che il sistema non fa. Orizzonte Variabile dichiara una polizza obbligatoria e non ne indica il costo. Il sistema non stima, non usa una media, non riempie il buco. Il campo resta null, i totali vengono marcati parziali, e viene generata la domanda da portare in banca. L\'offerta resta nel confronto, in modalita\' parziale.' },
-    { s: 24, t: 'I guardrail non sono promesse. SafetyGuard blocca la parola "migliore", le classifiche e le stime di approvazione prima che arrivino a schermo, ed emette l\'evento. I loop sono limitati: tre giri di domande, tre tentativi di quiz. E il gate finale non chiede ad Andrea di scegliere il mutuo: chiede di prendere atto che questa e\' una simulazione.' },
-    { s: 18, t: 'Tutto questo e\' tracciato, non dichiarato. Centotrentotto eventi su un vocabolario chiuso, ogni chiamata con input e output apribili, 116 test automatici. E se un tool non risponde il run va in ESCALATED: nessun numero improvvisato.' },
-    { s: 18, t: 'I tre numeri dell\'inizio. Criteri di confronto: da uno a tredici. Termini finanziari spiegati: da zero a quattordici. Concetti verificati: tre su tre. Misurati dal MetricsEngine nel run, su una persona sintetica: e\' l\'obiettivo funzionale della demo, non uno studio con utenti reali.' },
+    { s: 20, t: 'Le tre offerte hanno durate diverse, tassi di tipo diverso, costi sparsi in voci diverse. In un caso un costo obbligatorio non e\' nemmeno indicato. La rata resta l\'unico numero omogeneo, quindi diventa il criterio per forza: non perche\' sia il piu\' importante, ma perche\' e\' l\'unico leggibile.' },
+    { s: 24, t: 'Ecco il punto di partenza, e sono numeri veri del run. Stabilita\' 20: rata 1.231 euro. Casa Lunga 30: 982. Orizzonte Variabile: 887. Andrea guarda la terza e si ferma li\'. La baseline misurata e\' impietosa: un solo criterio di confronto usato, zero termini finanziari spiegati, zero dati mancanti individuati. Tenete a mente questi tre numeri, ci torniamo alla fine.' },
+    { s: 18, t: 'Il percorso ha cinque tappe: raccogliamo solo i dati che spostano il confronto, facciamo una domanda alla volta scelta per impatto, normalizziamo le offerte sullo stesso schema, simuliamo quattro scenari dichiarati come ipotesi, e verifichiamo la comprensione prima della conferma. Nessuna tappa si salta.' },
+    { s: 22, t: 'Due agenti e cinque tool deterministici, con le autorita\' separate. L\'orchestratore e\' l\'unico che tocca lo stato. Gli agenti decidono, non calcolano: rate e liquidita\' vivono in un solo file, raggiungibile solo dal registry. Se qualcuno scrive un calcolo inline, tre test si rompono. Non e\' una regola scritta in un documento: e\' verificata.' },
+    { s: 31, t: 'Questo e\' il nucleo agentico, ed e\' la slide su cui vi chiedo attenzione. Il percorso non e\' prefissato. L\'orchestratore passa lo stato all\'agente, riceve i dati mancanti ordinati per impatto e ne sceglie uno: le rate gia\' attive, impatto 0,85. Non un questionario da dodici campi, ma la singola domanda che sposta di piu\' il confronto. A destra c\'e\' la sequenza reale del run, con input e output apribili: non e\' un log scritto a mano.' },
+    { s: 33, t: 'E qui arriva il ribaltamento. Orizzonte Variabile ha la rata piu\' bassa, 887 euro. Ma gli interessi simulati di Stabilita\' 20, quella con la rata piu\' alta, sono 75 mila contro 99 mila. La rata piu\' bassa non e\' il costo piu\' basso. E c\'e\' di peggio: la liquidita\' residua e\' negativa su tutte e tre, perche\' servono circa 110 mila euro contro 100 mila di risparmi. Questo non era scritto in nessuna offerta: dipende dai dati di Andrea.' },
+    { s: 23, t: 'Quattro scenari, ogni ipotesi dichiarata come tale. Se la perizia vale il dieci per cento in meno servono fino a 17.500 euro in piu\' di anticipo. Se i tassi salgono di due punti, il variabile passa da 887 a 1.134 e supera il fisso a trent\'anni. Sono ipotesi, non previsioni, ed e\' etichettato cosi\' anche nei valori derivati.' },
+    { s: 26, t: 'Questo e\' il pezzo di cui vado piu\' fiero: quello che il sistema non fa. Orizzonte Variabile dichiara una polizza obbligatoria e non ne indica il costo. Il sistema non stima, non usa una media, non riempie il buco. Il campo resta null, i totali vengono marcati parziali, e viene generata la domanda da portare in banca. L\'offerta resta nel confronto, in modalita\' parziale.' },
+    { s: 23, t: 'I guardrail non sono promesse. SafetyGuard blocca la parola "migliore", le classifiche e le stime di approvazione prima che arrivino a schermo, ed emette l\'evento. I loop sono limitati: tre giri di domande, tre tentativi di quiz. E il gate finale non chiede ad Andrea di scegliere il mutuo: chiede di prendere atto che questa e\' una simulazione.' },
+    { s: 15, t: 'Tutto questo e\' tracciato, non dichiarato. Centotrentotto eventi su un vocabolario chiuso, ogni chiamata con input e output apribili, 116 test automatici. E se un tool non risponde il run va in ESCALATED: nessun numero improvvisato.' },
+    { s: 17, t: 'I tre numeri dell\'inizio. Criteri di confronto: da uno a tredici. Termini finanziari spiegati: da zero a quattordici. Concetti verificati: tre su tre. Misurati dal MetricsEngine nel run, su una persona sintetica: e\' l\'obiettivo funzionale della demo, non uno studio con utenti reali.' },
+    { s: 20, t: 'Un\'ultima cosa, sul dopo. Oggi e\' il sistema a scegliere la domanda; il passo successivo ribalta il verso. Un assistente a cui Andrea chiede quello che non ha capito, che risponde solo con i numeri del suo run e sul dato mancante dice che non lo sa.' },
     { s: 10, t: 'Tre offerte illeggibili diventano trade-off visibili e una domanda da portare in banca. La decisione resta di Andrea. Capisci l\'impatto, decidi tu. Grazie.' },
   ];
 

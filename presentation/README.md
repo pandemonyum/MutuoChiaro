@@ -1,6 +1,6 @@
 # Presentazione MutuoChiaro
 
-- `index.html`: deck principale, 13 slide tarate su **5 minuti esatti**. Funziona offline
+- `index.html`: deck principale, 14 slide tarate su **5 minuti esatti**. Funziona offline
   (nessun asset esterno, nessun font remoto).
 
 Apri il file direttamente nel browser, poi F11 per la modalità a schermo intero.
@@ -52,21 +52,32 @@ al minuto: i 25 secondi di scarto sono il margine per le pause.
 | # | Slide | Budget | Cosa porta |
 | --- | --- | --- | --- |
 | 01 | Copertina | 18s | Persona, problema e la promessa del "da 1 a 13" |
-| 02 | Problema | 22s | Perché la rata diventa il criterio predefinito |
-| 03 | Prima | 26s | Le tre offerte come le vede Andrea, e la baseline 1 / 0 / 0 |
-| 04 | Percorso | 20s | Le cinque tappe del percorso agentico |
-| 05 | Architettura | 26s | Due agenti, cinque tool, autorità separate e verificate |
-| 06 | Domanda decisiva | 32s | Il nucleo agentico: una domanda scelta per impatto, con la traccia reale |
-| 07 | MutuoSpecchio | 34s | Il ribaltamento: la rata più bassa non è il costo più basso |
-| 08 | Scenari | 24s | Quattro scenari con ipotesi dichiarate |
-| 09 | Dato mancante | 28s | Il failure branch principale: quello che il sistema **non** fa |
-| 10 | Controllo | 24s | Guardrail, loop limitati, gate umano |
-| 11 | Osservabilità | 18s | Eventi, artifact, test e wiki |
-| 12 | Impatto | 18s | Before / after prodotto dal `MetricsEngine` |
-| 13 | Chiusura | 10s | La decisione resta all'utente |
+| 02 | Problema | 20s | Perché la rata diventa il criterio predefinito |
+| 03 | Prima | 24s | Le tre offerte come le vede Andrea, e la baseline 1 / 0 / 0 |
+| 04 | Percorso | 18s | Le cinque tappe del percorso agentico |
+| 05 | Architettura | 22s | Due agenti, cinque tool, autorità separate e verificate |
+| 06 | Domanda decisiva | 31s | Il nucleo agentico: una domanda scelta per impatto, con la traccia reale |
+| 07 | MutuoSpecchio | 33s | Il ribaltamento: la rata più bassa non è il costo più basso |
+| 08 | Scenari | 23s | Quattro scenari con ipotesi dichiarate |
+| 09 | Dato mancante | 26s | Il failure branch principale: quello che il sistema **non** fa |
+| 10 | Controllo | 23s | Guardrail, loop limitati, gate umano |
+| 11 | Osservabilità | 15s | Eventi, artifact, test e wiki |
+| 12 | Impatto | 17s | Before / after prodotto dal `MetricsEngine` |
+| 13 | Evoluzione | 20s | L'assistente a cui chiedere, vincolato ai dati del run |
+| 14 | Chiusura | 10s | La decisione resta all'utente |
 
 Le due slide più lunghe sono la **06** e la **07**: sono il nucleo agentico e il
 ribaltamento del confronto. Se sei in ritardo, taglia sulla 04 e sulla 11, non su queste.
+
+## Sulla slide 13
+
+Il brief della sfida mette **«chatbot generici»** fra le cose da evitare, e il deck
+costruisce la propria tesi sul non essere un consulente finanziario AI. La slide
+sull'evoluzione va quindi presentata per quello che dice: non «aggiungiamo una chatbot»,
+ma un assistente che **risponde soltanto con i numeri del run**, cita la cella da cui
+vengono, passa dallo stesso `SafetyGuard` e sul dato mancante dichiara di non sapere
+invece di stimare. Se la si racconta come una chatbot generica, contraddice le slide 09
+e 10 nel giro di un minuto.
 
 Il copione vive nell'array `SCRIPT` in fondo a `index.html`, una voce per slide nello
 stesso ordine del deck. Cambiando un budget va tenuta la somma a 300.
@@ -84,6 +95,10 @@ Ogni numero del deck viene dal run canonico e non è stato scritto a mano:
 | Conteggi di eventi, tool, skill e agent | idem, traccia agentica del run |
 | Before / after (1 → 13, 0 → 14, 3 su 3) | idem, metriche prodotte dal run |
 | 116 test e 31 controlli strutturali | [README.md](../README.md), sezione di verifica |
+
+Unica eccezione: la **slide 13** non contiene misure. È una proposta di evoluzione e non
+descrive codice esistente. Va presentata al futuro — «il passo successivo sarebbe» — non
+come una funzione già disponibile, altrimenti il deck perde la proprietà su cui si regge.
 
 Per rigenerare le evidenze dopo una modifica al runtime:
 
