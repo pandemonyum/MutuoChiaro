@@ -14,3 +14,7 @@ sviluppo e revisione: il runtime usa il feedback definito in
 
 Non duplicare dati numerici delle offerte nei frammenti. Per un importo usare lo stato
 e gli artifact del run; per un dato assente mantenere `null` e dichiararne il limite.
+
+Ogni frammento ha una pagina di contesto in [../../wiki/concetti/](../../wiki/concetti/):
+contiene il perché, le connessioni con gli altri concetti e i limiti noti, non una
+seconda versione del frammento. Per la spiegazione operativa restare qui.

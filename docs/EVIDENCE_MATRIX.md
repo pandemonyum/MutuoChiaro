@@ -112,7 +112,7 @@ con barra laterale condivisa e client unico in
 | G4 | Glossario di 14 termini servito alla UI | `GLOSSARY` in [`syntheticOffers.ts`](../app/src/data/syntheticOffers.ts) | `GET /api/meta` restituisce i 14 termini |
 | G5 | Formattazione italiana di euro e percentuali | `Intl.NumberFormat('it-IT')` in `assets/app.js` e nelle note dei tool | `scenarios.test` > *solo il tasso variabile cambia rata* (nota con virgola decimale) |
 | G6 | Indicazione «Dati sintetici» sempre visibile | `data-pill` nella topbar di tutte e 7 le pagine | ispezione |
-| G7 | Dashboard comprensibile senza aprire la traccia tecnica | la traccia e' una pagina separata sotto «Trasparenza» | ispezione |
+| G7 | Dashboard comprensibile senza aprire la traccia tecnica | la traccia e' una pagina tecnica separata, non presente nella barra laterale del percorso utente, raggiungibile solo via URL diretto | ispezione |
 | G8 | Nessun dato personale reale | persona e offerte sintetiche, nessuna persistenza, nessuna autenticazione | [RISK_AND_CLARITY_NOTE](RISK_AND_CLARITY_NOTE.md) §6 |
 | G9 | Nessun dato inventato nella UI | i valori assenti sono resi «Non disponibile» con etichetta `Mancante`; i nomi tecnici dei campi sono tradotti in etichette leggibili | `FIELD_LABELS` e `cell()` in `assets/app.js` |
 | G10 | Un run interrotto e' dichiarato, non nascosto | `renderEscalation()` mostra un banner con il motivo e l'azione «Nuovo run» | verificato nel browser attivando il ramo «tool non disponibile» |

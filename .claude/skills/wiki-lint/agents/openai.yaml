@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wiki Lint"
+  short_description: "Health-check the project wiki for contradictions, stale claims, orphan pages, and gaps"
+  brand_color: "#6B4EFF"

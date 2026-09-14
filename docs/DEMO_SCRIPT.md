@@ -6,8 +6,10 @@
 cd app && npm install && npm start
 ```
 
-Apri `http://localhost:5173`. L'interfaccia ha una barra laterale con sei tappe del
-percorso più due voci di trasparenza: userai la navigazione, non lo scorrimento.
+Apri `http://localhost:5173`. L'interfaccia ha una barra laterale con le cinque tappe
+del percorso: userai la navigazione, non lo scorrimento. La pagina **Traccia agentica**
+non è in barra laterale (tenuta fuori dal percorso principale dell'utente) ma resta
+raggiungibile digitando `/traccia.html` nella barra degli indirizzi.
 
 Il `runId` è condiviso fra le pagine: puoi spostarti liberamente senza perdere lo stato.
 Per partire da zero, **Profilo e casa → Nuovo run**.

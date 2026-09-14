@@ -10,6 +10,7 @@
     "test": "npm run test --prefix app",
     "start": "npm run start --prefix app",
     "audit:structure": "npm run audit:structure --prefix app",
-    "verify": "npm run verify --prefix app"
+    "wiki:lint": "node scripts/wiki-lint.mjs",
+    "verify": "npm run verify --prefix app && npm run wiki:lint"
   }
 }

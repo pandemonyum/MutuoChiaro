@@ -122,6 +122,10 @@ La struttura di `agents/` riprende quella del progetto di riferimento
 - [agents/evals/demo-cases.md](agents/evals/demo-cases.md) e
   [agents/evals/failure-cases.md](agents/evals/failure-cases.md): casi verificabili con
   rimandi ai test e alle evidenze della demo.
+- [wiki/index.md](wiki/index.md): wiki di progetto, livello che registra cosa abbiamo
+  capito e perché abbiamo scelto così. I contratti restano autorevoli sui doveri dei
+  componenti; la wiki aggiunge contesto, connessioni e dubbi aperti senza ricopiarli.
+  Convenzioni in [wiki/SCHEMA.md](wiki/SCHEMA.md), controllo con `npm run wiki:lint`.
 
 Questi documenti non vengono caricati automaticamente dal runtime e non aggiungono
 agenti selezionabili in VS Code. I componenti eseguibili restano quelli sopra:
@@ -266,6 +270,8 @@ Elenco completo con ipotesi e confine rispetto alla consulenza:
 | [agents/knowledge/index.md](agents/knowledge/index.md) | Conoscenza selettiva per concetto |
 | [agents/evals/](agents/evals/) | Casi canonici e avversariali collegati ai test |
 | [agents/schemas/](agents/schemas/) | Schemi JSON di stato, evento e busta agentica |
+| [wiki/index.md](wiki/index.md) | Wiki di progetto: concetti, componenti, decisioni, domande aperte |
+| [wiki/SCHEMA.md](wiki/SCHEMA.md) | Struttura, convenzioni e procedure della wiki |
 
 ## 15. Provenienza dei dati
 
@@ -295,6 +301,16 @@ MutuoChiaro/
 │   ├── knowledge/              indice e frammenti per concetto
 │   ├── evals/                  casi demo e failure collegati ai test
 │   └── schemas/                schemi JSON allineati al runtime
+├── wiki/
+│   ├── SCHEMA.md               convenzioni e procedure di ingest, query, lint
+│   ├── index.md · log.md       catalogo e registro append-only
+│   ├── domande-aperte.md       dubbi non risolti con la pagina di destinazione
+│   ├── raw/                    fonti grezze, immutabili
+│   ├── concetti/ componenti/   concetti di dominio e nodi del runtime
+│   ├── decisioni/              scelte vincolanti con motivo e alternativa scartata
+│   └── sintesi/                pagine trasversali
+├── scripts/
+│   └── wiki-lint.mjs           parte deterministica del lint della wiki
 └── app/
     ├── src/
     │   ├── core/               types, errori, stato, macchina a stati, registry,

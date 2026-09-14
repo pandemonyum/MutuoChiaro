@@ -21,6 +21,7 @@ come se i due sistemi avessero gli stessi stati, dati o componenti.
 | [knowledge/index.md](knowledge/index.md) | Selezione di un solo frammento per concetto |
 | [evals/demo-cases.md](evals/demo-cases.md) | Casi canonici con evidenze verificabili |
 | [evals/failure-cases.md](evals/failure-cases.md) | Casi avversariali, limiti e test corrispondenti |
+| [../wiki/index.md](../wiki/index.md) | Wiki di progetto: cosa abbiamo capito, perché abbiamo scelto così, cosa resta aperto |
 
 **Confine di esecuzione:** questi Markdown guidano sviluppo e revisione. Non sono prompt
 caricati automaticamente, agenti selezionabili in VS Code o nuovi componenti registrati.
@@ -38,6 +39,13 @@ schemi locali, gia' verificati contro il codice, senza introdurre schemi incompa
 Caricare prima questo indice, poi il solo ruolo pertinente. Per un dubbio educativo
 seguire [knowledge/index.md](knowledge/index.md); per la verifica scegliere il caso
 in `evals/`. Non concatenare tutta la knowledge o la cronologia del run.
+
+**Rapporto con la wiki.** I contratti qui restano autorevoli sui doveri dei componenti;
+le pagine in [../wiki/componenti/](../wiki/componenti/) non li ricopiano, indicano dove
+vive il codice, cosa lo verifica e a quali concetti e decisioni è legato. Per capire
+*perché* una regola esiste, partire da [../wiki/decisioni/](../wiki/decisioni/).
+Convenzioni e procedure della wiki in [../wiki/SCHEMA.md](../wiki/SCHEMA.md);
+il controllo di coerenza è `npm run wiki:lint`.
 
 | Contratto | Definizione nel codice | Test |
 | --- | --- | --- |

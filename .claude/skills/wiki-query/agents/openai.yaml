@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wiki Query"
+  short_description: "Answer a question from the project wiki with citations and file the durable answers ba"
+  brand_color: "#6B4EFF"
