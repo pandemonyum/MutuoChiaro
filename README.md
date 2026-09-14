@@ -198,7 +198,38 @@ Gli identificativi degli artifact sono cliccabili e aprono il contenuto salvato.
 pulsanti attivano i failure branch dimostrativi: **«Inietta output non conforme»** e
 **«Simula tool non disponibile»**.
 
-## 8. Limiti
+## 12. Interfaccia
+
+L'interfaccia parte dal prototipo grafico fornito (`mutuochiaro-ui-prototype`) ed è
+collegata al runtime reale: **nessun numero, testo o evento è precompilato**.
+
+Sette pagine con barra laterale condivisa, in `app/public/`:
+
+| Pagina | File | Contenuto, tutto da API |
+| --- | --- | --- |
+| Panoramica | `index.html` | Dati della persona, avanzamento del percorso, prossima domanda decisiva |
+| Profilo e casa | `profilo.html` | Form legato allo stato, completezza calcolata dall'agente, validazione lato client |
+| Offerte | `offerte.html` | Schede offerta, confronto normalizzato su 12 righe, note dell'Offer Clarity Agent, modifica manuale |
+| MutuoSpecchio | `mutuospecchio.html` | Vista persona/casa/offerta, effetto sintetico, osservazioni, prima/dopo |
+| Scenari | `scenari.html` | Quattro scenari reali, ipotesi dichiarate, avvertenze, confronto per offerta |
+| Comprensione | `comprensione.html` | Quiz dal runtime, feedback mirato, riapertura scenario, human gate |
+| Traccia agentica | `traccia.html` | Eventi reali del run, artifact apribili, failure branch dimostrativi |
+
+Il `runId` è condiviso fra le pagine tramite `sessionStorage`, quindi il percorso resta
+continuo durante la navigazione.
+
+Principi rispettati: badge di provenienza su ogni valore, nessun semaforo di merito
+(i colori codificano la provenienza, non un giudizio), nessuna classifica o vincitore,
+formattazione italiana di euro e percentuali, indicazione «Dati sintetici» sempre
+visibile, layout responsive con menu mobile.
+
+**Cosa è stato cambiato rispetto al prototipo statico:** i valori hardcoded (KPI, scenari,
+quiz, eventi) sono stati sostituiti da rendering dai dati del run; la nota che dichiarava
+la traccia «un mockup UI» è stata rimossa perché la traccia ora è reale; i controlli non
+modellati dal runtime (tipo di contratto, uso dell'immobile) sono disabilitati e dichiarati
+come tali invece di simulare un effetto inesistente.
+
+## 13. Limiti
 
 1. Persona, profilo e offerte sono **interamente sintetici**.
 2. Solo ammortamento francese a rata costante: nessun preammortamento, nessun piano
@@ -219,7 +250,7 @@ pulsanti attivano i failure branch dimostrativi: **«Inietta output non conforme
 Elenco completo con ipotesi e confine rispetto alla consulenza:
 [docs/RISK_AND_CLARITY_NOTE.md](docs/RISK_AND_CLARITY_NOTE.md).
 
-## 9. Dove sono le evidenze
+## 14. Dove sono le evidenze
 
 | Documento | Contenuto |
 | --- | --- |
@@ -236,7 +267,7 @@ Elenco completo con ipotesi e confine rispetto alla consulenza:
 | [agents/evals/](agents/evals/) | Casi canonici e avversariali collegati ai test |
 | [agents/schemas/](agents/schemas/) | Schemi JSON di stato, evento e busta agentica |
 
-## 10. Provenienza dei dati
+## 15. Provenienza dei dati
 
 Ogni numero mostrato nell'interfaccia porta un'etichetta di provenienza:
 
@@ -248,7 +279,7 @@ Ogni numero mostrato nell'interfaccia porta un'etichetta di provenienza:
 | `SCENARIO_ASSUMPTION` | ipotesi | Dipende da un parametro ipotizzato dallo scenario, anche se derivato |
 | `MISSING` | mancante | Dato assente, **non stimato e non sostituito** |
 
-## 11. Struttura del repository
+## 16. Struttura del repository
 
 ```text
 MutuoChiaro/
@@ -275,7 +306,8 @@ MutuoChiaro/
     │   ├── data/               persona, offerte e quiz sintetici
     │   ├── runtime/            composizione e registrazione dei componenti
     │   └── server/             API HTTP e file statici
-    ├── public/                 interfaccia italiana (HTML/CSS/JS, zero dipendenze)
+    ├── public/                 interfaccia italiana: 7 pagine + assets condivisi
+    │   └── assets/             app.js (client live), styles.css, logo.svg
     ├── tests/                  116 test
     └── scripts/                audit strutturale, run di evidenza
 ```

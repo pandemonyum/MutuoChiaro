@@ -11,7 +11,7 @@ runId: `demo-evidence`
 - dopo la risposta (280 €/mese) la fase è `OFFERS_NORMALIZED`
 
 ## Fase D - MutuoSpecchio, scenario base
-| Voce | Offerta Sintetica A - Fisso 20 anni | Offerta Sintetica B - Fisso 30 anni | Offerta Sintetica C - Variabile 30 anni |
+| Voce | Stabilità 20 | Casa Lunga 30 | Orizzonte Variabile |
 | --- | --- | --- | --- |
 | Rata iniziale | 1231,16 € `CALCULATED` | 981,77 € `CALCULATED` | 886,52 € `CALCULATED` |
 | TAN | 3,1% `SYNTHETIC_OFFER` | 3,45% `SYNTHETIC_OFFER` | 2,65% `SYNTHETIC_OFFER` |
@@ -33,7 +33,7 @@ Offerte in confronto parziale: offer-c
 
 ### Scenario base (`BASE`)
 
-| Voce | Offerta Sintetica A - Fisso 20 anni | Offerta Sintetica B - Fisso 30 anni | Offerta Sintetica C - Variabile 30 anni |
+| Voce | Stabilità 20 | Casa Lunga 30 | Orizzonte Variabile |
 | --- | --- | --- | --- |
 | Rata mensile | 1231,16 € `CALCULATED` | 981,77 € `CALCULATED` | 886,52 € `CALCULATED` |
 | Rapporto rata/reddito | 54,72% `CALCULATED` | 43,63% `CALCULATED` | 39,4% `CALCULATED` |
@@ -47,11 +47,11 @@ Ipotesi dichiarate:
 - Perizia pari al prezzo di acquisto.
 
 Avvertenze:
-- Offerta Sintetica C - Variabile 30 anni: il costo della polizza obbligatoria non è presente nell offerta. Costo totale e liquidità necessaria sono sottostimati di un importo non noto.
+- Orizzonte Variabile: il costo della polizza obbligatoria non è presente nell offerta. Costo totale e liquidità necessaria sono sottostimati di un importo non noto.
 
 ### Perizia inferiore del 10% rispetto al prezzo (`APPRAISAL_MINUS_10`)
 
-| Voce | Offerta Sintetica A - Fisso 20 anni | Offerta Sintetica B - Fisso 30 anni | Offerta Sintetica C - Variabile 30 anni |
+| Voce | Stabilità 20 | Casa Lunga 30 | Orizzonte Variabile |
 | --- | --- | --- | --- |
 | Rata mensile | 1208,77 € `SCENARIO_ASSUMPTION` | 963,92 € `SCENARIO_ASSUMPTION` | 816,00 € `SCENARIO_ASSUMPTION` |
 | Rapporto rata/reddito | 53,72% `SCENARIO_ASSUMPTION` | 42,84% `SCENARIO_ASSUMPTION` | 36,27% `SCENARIO_ASSUMPTION` |
@@ -65,14 +65,14 @@ Ipotesi dichiarate:
 - Il mutuo erogabile è limitato dal rapporto massimo prestito/valore dichiarato nell offerta; il valore di riferimento diventa la perizia, non il prezzo.
 
 Avvertenze:
-- Offerta Sintetica A - Fisso 20 anni: con la perizia ipotizzata il mutuo erogabile scende di 4000 €, che diventano anticipo aggiuntivo a carico dell acquirente.
-- Offerta Sintetica B - Fisso 30 anni: con la perizia ipotizzata il mutuo erogabile scende di 4000 €, che diventano anticipo aggiuntivo a carico dell acquirente.
-- Offerta Sintetica C - Variabile 30 anni: il costo della polizza obbligatoria non è presente nell offerta. Costo totale e liquidità necessaria sono sottostimati di un importo non noto.
-- Offerta Sintetica C - Variabile 30 anni: con la perizia ipotizzata il mutuo erogabile scende di 17.500 €, che diventano anticipo aggiuntivo a carico dell acquirente.
+- Stabilità 20: con la perizia ipotizzata il mutuo erogabile scende di 4.000 €, che diventano anticipo aggiuntivo a carico dell acquirente.
+- Casa Lunga 30: con la perizia ipotizzata il mutuo erogabile scende di 4.000 €, che diventano anticipo aggiuntivo a carico dell acquirente.
+- Orizzonte Variabile: il costo della polizza obbligatoria non è presente nell offerta. Costo totale e liquidità necessaria sono sottostimati di un importo non noto.
+- Orizzonte Variabile: con la perizia ipotizzata il mutuo erogabile scende di 17.500 €, che diventano anticipo aggiuntivo a carico dell acquirente.
 
 ### Aumento del tasso di 2 punti percentuali (`RATE_PLUS_2PP`)
 
-| Voce | Offerta Sintetica A - Fisso 20 anni | Offerta Sintetica B - Fisso 30 anni | Offerta Sintetica C - Variabile 30 anni |
+| Voce | Stabilità 20 | Casa Lunga 30 | Orizzonte Variabile |
 | --- | --- | --- | --- |
 | Rata mensile | 1231,16 € `CALCULATED` | 981,77 € `CALCULATED` | 1134,40 € `SCENARIO_ASSUMPTION` |
 | Rapporto rata/reddito | 54,72% `CALCULATED` | 43,63% `CALCULATED` | 50,42% `SCENARIO_ASSUMPTION` |
@@ -87,11 +87,11 @@ Ipotesi dichiarate:
 - Applicato solo alle offerte a tasso variabile.
 
 Avvertenze:
-- Offerta Sintetica C - Variabile 30 anni: il costo della polizza obbligatoria non è presente nell offerta. Costo totale e liquidità necessaria sono sottostimati di un importo non noto.
+- Orizzonte Variabile: il costo della polizza obbligatoria non è presente nell offerta. Costo totale e liquidità necessaria sono sottostimati di un importo non noto.
 
 ### Riduzione del reddito del 20% per sei mesi (`INCOME_MINUS_20_6M`)
 
-| Voce | Offerta Sintetica A - Fisso 20 anni | Offerta Sintetica B - Fisso 30 anni | Offerta Sintetica C - Variabile 30 anni |
+| Voce | Stabilità 20 | Casa Lunga 30 | Orizzonte Variabile |
 | --- | --- | --- | --- |
 | Rata mensile | 1231,16 € `CALCULATED` | 981,77 € `CALCULATED` | 886,52 € `CALCULATED` |
 | Rapporto rata/reddito | 68,4% `SCENARIO_ASSUMPTION` | 54,54% `SCENARIO_ASSUMPTION` | 49,25% `SCENARIO_ASSUMPTION` |
@@ -105,7 +105,7 @@ Ipotesi dichiarate:
 - La differenza mensile è ipotizzata coperta attingendo ai risparmi residui.
 
 Avvertenze:
-- Offerta Sintetica C - Variabile 30 anni: il costo della polizza obbligatoria non è presente nell offerta. Costo totale e liquidità necessaria sono sottostimati di un importo non noto.
+- Orizzonte Variabile: il costo della polizza obbligatoria non è presente nell offerta. Costo totale e liquidità necessaria sono sottostimati di un importo non noto.
 
 ## Failure branch - SafetyGuard su output non conforme
 
@@ -206,14 +206,14 @@ Primi 12 eventi con riferimenti agli artifact:
 | --- | --- | --- | --- | --- | --- |
 | 1 | MortgageJourneyOrchestrator | `run.started` | `-` | `-` | START |
 | 2 | MortgageJourneyOrchestrator -> profile-property-agent | `handoff.started` | `-` | `-` | START |
-| 3 | profile-property-agent | `agent.started` | `art:in:0001:3b33b823` | `-` | - |
+| 3 | profile-property-agent | `agent.started` | `art:in:0001:ddcc17db` | `-` | - |
 | 4 | build-financial-profile | `skill.started` | `art:in:0002:136a5bde` | `-` | - |
 | 5 | build-financial-profile | `skill.completed` | `art:in:0002:136a5bde` | `art:out:0003:ccb7bacd` | - |
 | 6 | select-next-decisive-question | `skill.started` | `art:in:0004:23e85bb0` | `-` | - |
 | 7 | select-next-decisive-question | `skill.completed` | `art:in:0004:23e85bb0` | `art:out:0005:93a466dc` | - |
 | 8 | profile-property-agent | `missing_data.detected` | `-` | `-` | - |
 | 9 | profile-property-agent | `question.selected` | `-` | `-` | - |
-| 10 | profile-property-agent | `agent.completed` | `art:in:0001:3b33b823` | `art:out:0006:79f00a7d` | - |
+| 10 | profile-property-agent | `agent.completed` | `art:in:0001:ddcc17db` | `art:out:0006:79f00a7d` | - |
 | 11 | profile-property-agent -> MortgageJourneyOrchestrator | `handoff.completed` | `-` | `-` | START |
 | 12 | MortgageJourneyOrchestrator | `state.changed` | `-` | `-` | PROFILE_INCOMPLETE |
 

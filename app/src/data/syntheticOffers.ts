@@ -11,7 +11,9 @@ export function buildSyntheticOffers(): MortgageOffer[] {
   return [
     {
       id: 'offer-a',
-      displayName: 'Offerta Sintetica A - Fisso 20 anni',
+      displayName: 'Stabilità 20',
+      bankName: 'Banca Aurora',
+      code: 'SA',
       syntheticData: true,
       amount: 220_000,
       years: 20,
@@ -45,7 +47,9 @@ export function buildSyntheticOffers(): MortgageOffer[] {
     },
     {
       id: 'offer-b',
-      displayName: 'Offerta Sintetica B - Fisso 30 anni',
+      displayName: 'Casa Lunga 30',
+      bankName: 'Banca Quercia',
+      code: 'CL',
       syntheticData: true,
       amount: 220_000,
       years: 30,
@@ -79,7 +83,9 @@ export function buildSyntheticOffers(): MortgageOffer[] {
     },
     {
       id: 'offer-c',
-      displayName: 'Offerta Sintetica C - Variabile 30 anni',
+      displayName: 'Orizzonte Variabile',
+      bankName: 'Banca Cedro',
+      code: 'OV',
       syntheticData: true,
       amount: 220_000,
       years: 30,

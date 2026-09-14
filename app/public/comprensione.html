@@ -51,52 +51,11 @@
         </header>
         
   <div class="layout-main-rail">
-    <section class="quiz-list">
-      <article class="card quiz-card" data-correct-message="Una durata maggiore distribuisce il capitale su più rate, ma può aumentare gli interessi complessivi." data-wrong-message="Confronta durata e costo totale, non soltanto l’importo della rata.">
-        <span class="quiz-number">01</span>
-        <h3>Perché un mutuo con rata mensile più bassa può avere un costo totale maggiore?</h3>
-        <div class="quiz-options">
-          <button class="quiz-option" type="button"><span class="radio"></span>Perché una rata bassa contiene sempre più commissioni.</button>
-          <button class="quiz-option" type="button" data-correct="true"><span class="radio"></span>Perché una durata più lunga può far maturare interessi per più tempo.</button>
-          <button class="quiz-option" type="button"><span class="radio"></span>Perché il prezzo dell’immobile aumenta automaticamente.</button>
-        </div>
-        <div class="quiz-feedback"></div>
-      </article>
-      <article class="card quiz-card" data-correct-message="Nel prototipo soltanto l’offerta variabile viene ricalcolata quando il tasso ipotizzato aumenta." data-wrong-message="Riapri lo scenario “Tasso +2 punti” e osserva quale rata cambia.">
-        <span class="quiz-number">02</span>
-        <h3>Quale tipologia di offerta è influenzata direttamente dallo scenario “Tasso +2 punti”?</h3>
-        <div class="quiz-options">
-          <button class="quiz-option" type="button"> <span class="radio"></span>Tutte le offerte nello stesso modo.</button>
-          <button class="quiz-option" type="button"><span class="radio"></span>Le offerte a tasso fisso.</button>
-          <button class="quiz-option" type="button" data-correct="true"><span class="radio"></span>L’offerta a tasso variabile.</button>
-        </div>
-        <div class="quiz-feedback"></div>
-      </article>
-      <article class="card quiz-card" data-correct-message="Se il valore usato dalla banca è più basso, la quota non coperta dal finanziamento può richiedere più capitale proprio." data-wrong-message="Rivedi lo scenario di perizia inferiore e osserva la liquidità iniziale richiesta.">
-        <span class="quiz-number">03</span>
-        <h3>Perché una perizia inferiore al prezzo può richiedere più liquidità iniziale?</h3>
-        <div class="quiz-options">
-          <button class="quiz-option" type="button" data-correct="true"><span class="radio"></span>Perché il finanziamento può essere calcolato su un valore più basso del prezzo.</button>
-          <button class="quiz-option" type="button"><span class="radio"></span>Perché la banca aumenta automaticamente il prezzo di vendita.</button>
-          <button class="quiz-option" type="button"><span class="radio"></span>Perché il notaio decide la rata mensile.</button>
-        </div>
-        <div class="quiz-feedback"></div>
-      </article>
-    </section>
+    <section class="quiz-list" data-render="quiz"></section>
 
     <aside class="grid">
-      <section class="card card-pad">
-        <div class="card-head"><div><h3>Stato comprensione</h3><p>Risposte corrette nel tentativo corrente.</p></div><b data-quiz-count style="font-size:18px">0 / 3</b></div>
-        <div class="progress-track" style="background:#e5edef"><i data-quiz-progress style="width:0%"></i></div>
-        <p class="card-note">Massimo 3 tentativi. In caso di mancata verifica puoi comunque consultare i risultati, ma lo stato resta esplicito.</p>
-      </section>
-      <section class="card card-pad gate-card">
-        <div class="gate-visual"><span class="gate-lock"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg></span></div>
-        <div class="card-head" style="margin-bottom:8px"><div><h2>Conferma umana finale</h2><p>Il sistema non può completare il run al posto tuo.</p></div></div>
-        <div class="notice notice-warning"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4.5 5v6c0 5 3.2 8.8 7.5 11 4.3-2.2 7.5-6 7.5-11V5z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg><div>MutuoChiaro non fornisce consulenza finanziaria e non prevede l’approvazione della banca.</div></div>
-        <label class="checkbox-row"><input type="checkbox" data-gate-check><span>Dichiaro di aver compreso che la simulazione è educativa, usa dati sintetici e non rappresenta una proposta, una delibera o una raccomandazione finanziaria.</span></label>
-        <button class="btn btn-primary" type="button" data-gate-button disabled style="width:100%;margin-top:15px">Conferma comprensione</button>
-      </section>
+      <section class="card card-pad" data-render="quiz-status"></section>
+      <section class="card card-pad gate-card"><div class="gate-visual"><span class="gate-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg></span></div><div data-render="gate"></div></section>
       <section class="card card-pad" id="limiti">
         <div class="card-head"><div><h3>Limiti del prototipo</h3><p>Esposti prima della conclusione.</p></div></div>
         <div class="tradeoff-list">

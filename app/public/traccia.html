@@ -61,34 +61,28 @@
         <div class="arch-node" data-component="tools"><span class="arch-icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg></span><div class="arch-copy"><strong>Tool deterministici</strong><span>Validazione, formule, scenari e safety</span></div></div>
         <div class="arch-node" data-component="gate"><span class="arch-icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg></span><div class="arch-copy"><strong>Human Gate</strong><span>Conferma esplicita prima di COMPLETED</span></div></div>
       </div>
-      <div class="notice notice-info" style="margin-top:15px"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg><div>I record di questa pagina sono un mockup UI. Nel prototipo completo, inputRef e outputRef devono rimandare agli artifact realmente persistiti dal run.</div></div>
+      <div class="notice notice-info" style="margin-top:15px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg><div>Gli eventi elencati sono quelli realmente emessi dal kernel di invocazione durante questo run. Ogni <code>inputRef</code> e <code>outputRef</code> è un pulsante che apre l’artifact persistito.</div></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="btn btn-secondary" type="button" data-replay-trace>Ripercorri la traccia</button><button class="btn btn-secondary" type="button" data-action="inject">Inietta output non conforme</button><button class="btn btn-secondary" type="button" data-action="outage">Simula tool non disponibile</button></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:14px" data-render="trace-counts"></div>
     </section>
 
     <section class="card trace-panel">
-      <header class="trace-head"><div><h2>Run MC-2026-014</h2><p>PROFILE_INCOMPLETE → OFFERS_NORMALIZED → SCENARIOS_READY</p></div><span class="live-pill">Mock event stream</span></header>
-      <div class="trace-list">
-        <div class="trace-event" data-component="ui"><span class="trace-time">09:42:11.084</span><span class="trace-dot agent"></span><div class="trace-copy"><strong>run.started</strong><span>runId=MC-2026-014 · phase=START</span><span class="trace-refs">input:art_001</span></div><span class="trace-duration">12 ms</span></div>
-        <div class="trace-event" data-component="orchestrator"><span class="trace-time">09:42:11.122</span><span class="trace-dot agent"></span><div class="trace-copy"><strong>state.changed</strong><span>START → PROFILE_INCOMPLETE</span><span class="trace-refs">output:art_002</span></div><span class="trace-duration">4 ms</span></div>
-        <div class="trace-event" data-component="profile-agent"><span class="trace-time">09:42:11.171</span><span class="trace-dot agent"></span><div class="trace-copy"><strong>handoff.started</strong><span>orchestrator → profile-property-agent</span><span class="trace-refs">input:art_003</span></div><span class="trace-duration">—</span></div>
-        <div class="trace-event" data-component="profile-agent"><span class="trace-time">09:42:11.478</span><span class="trace-dot agent"></span><div class="trace-copy"><strong>agent.completed</strong><span>missingFields=[existingMonthlyDebts] · confidence=0.98</span><span class="trace-refs">output:art_004</span></div><span class="trace-duration">307 ms</span></div>
-        <div class="trace-event" data-component="orchestrator"><span class="trace-time">09:42:11.492</span><span class="trace-dot warn"></span><div class="trace-copy"><strong>missing_data.detected</strong><span>field=existingMonthlyDebts · impact=HIGH</span><span class="trace-refs">output:art_005</span></div><span class="trace-duration">6 ms</span></div>
-        <div class="trace-event" data-component="profile-agent"><span class="trace-time">09:42:11.511</span><span class="trace-dot agent"></span><div class="trace-copy"><strong>question.selected</strong><span>“Hai prestiti, finanziamenti o altre rate mensili?”</span><span class="trace-refs">output:art_006</span></div><span class="trace-duration">19 ms</span></div>
-        <div class="trace-event" data-component="tools"><span class="trace-time">09:42:12.003</span><span class="trace-dot tool"></span><div class="trace-copy"><strong>tool.started</strong><span>component=OfferSchemaValidator · offers=3</span><span class="trace-refs">input:art_007</span></div><span class="trace-duration">—</span></div>
-        <div class="trace-event" data-component="tools"><span class="trace-time">09:42:12.035</span><span class="trace-dot warn"></span><div class="trace-copy"><strong>offer.incomplete</strong><span>offer=OV-30 · missing=mandatoryInsuranceCost</span><span class="trace-refs">output:art_008</span></div><span class="trace-duration">32 ms</span></div>
-        <div class="trace-event" data-component="tools"><span class="trace-time">09:42:12.087</span><span class="trace-dot tool"></span><div class="trace-copy"><strong>tool.completed</strong><span>component=MortgageCalculator · calculations=11</span><span class="trace-refs">output:art_009</span></div><span class="trace-duration">52 ms</span></div>
-        <div class="trace-event" data-component="offer-agent"><span class="trace-time">09:42:12.122</span><span class="trace-dot agent"></span><div class="trace-copy"><strong>handoff.completed</strong><span>tradeoffs=3 · recommendation=false</span><span class="trace-refs">output:art_010</span></div><span class="trace-duration">35 ms</span></div>
-        <div class="trace-event" data-component="tools"><span class="trace-time">09:42:12.154</span><span class="trace-dot tool"></span><div class="trace-copy"><strong>scenario.completed</strong><span>scenario=appraisal_minus_10 · warnings=1</span><span class="trace-refs">output:art_011</span></div><span class="trace-duration">31 ms</span></div>
-        <div class="trace-event" data-component="tools"><span class="trace-time">09:42:12.181</span><span class="trace-dot fail"></span><div class="trace-copy"><strong>safety_guard.blocked</strong><span>phrase=“offerta migliore” · rewrite_required=true</span><span class="trace-refs">output:art_012</span></div><span class="trace-duration">8 ms</span></div>
-        <div class="trace-event" data-component="offer-agent"><span class="trace-time">09:42:12.227</span><span class="trace-dot agent"></span><div class="trace-copy"><strong>agent.completed</strong><span>neutral_output=true · sources=6</span><span class="trace-refs">output:art_013</span></div><span class="trace-duration">46 ms</span></div>
-        <div class="trace-event" data-component="orchestrator"><span class="trace-time">09:42:12.260</span><span class="trace-dot agent"></span><div class="trace-copy"><strong>state.changed</strong><span>OFFERS_NORMALIZED → SCENARIOS_READY</span><span class="trace-refs">output:art_014</span></div><span class="trace-duration">7 ms</span></div>
-        <div class="trace-event" data-component="gate"><span class="trace-time">09:42:12.301</span><span class="trace-dot warn"></span><div class="trace-copy"><strong>human_approval.required</strong><span>completion_blocked=true</span><span class="trace-refs">output:art_015</span></div><span class="trace-duration">5 ms</span></div>
-      </div>
+      <header class="trace-head" data-render="trace-head"></header>
+      <div class="field" style="margin:0 0 12px"><div class="input-wrap"><input type="search" id="trace-filter" placeholder="Filtra per componente o tipo di evento"></div><span class="field-hint" data-render="trace-count"></span></div>
+      <div class="trace-list" data-render="trace-list"></div>
     </section>
   </div>
       </div>
     </main>
   </div>
   <div class="toast" role="status" aria-live="polite"><span class="toast-icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>Aggiornamento completato</strong><span>I dati sono stati salvati.</span></div></div>
+  <div id="artifact-dialog" class="artifact-dialog" role="dialog" aria-modal="true" aria-labelledby="artifact-title" hidden>
+    <div class="artifact-inner">
+      <h3 id="artifact-title">Artifact</h3>
+      <pre id="artifact-body" tabindex="0"></pre>
+      <button class="btn btn-primary" type="button" id="artifact-close">Chiudi</button>
+    </div>
+  </div>
   <script src="assets/app.js"></script>
 </body>
 </html>

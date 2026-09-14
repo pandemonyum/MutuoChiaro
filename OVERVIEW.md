@@ -62,7 +62,8 @@ criterio → evidenza vedi [docs/EVIDENCE_MATRIX.md](docs/EVIDENCE_MATRIX.md).
 | Quiz | [`data/quizBank.ts`](app/src/data/quizBank.ts) | Tre domande, risposta corretta, feedback sulla misconcezione, scenario da riaprire, `MAX_QUIZ_ATTEMPTS = 3` |
 | Runtime | [`runtime/buildRuntime.ts`](app/src/runtime/buildRuntime.ts) | Composizione unica: registra 5 tool, 5 skill, 2 agenti |
 | API + statici | [`server/index.ts`](app/src/server/index.ts) | 16 endpoint su `node:http`, zero dipendenze |
-| UI | [`public/`](app/public/) | Interfaccia italiana, badge di provenienza, tooltip, traccia agentica |
+| UI | [`public/`](app/public/) | Sette pagine con barra laterale condivisa (panoramica, profilo, offerte, MutuoSpecchio, scenari, comprensione, traccia), derivate dal prototipo grafico e collegate al runtime |
+| Client UI | [`public/assets/app.js`](app/public/assets/app.js) | Renderizza ogni pagina dai dati del run: nessun valore precompilato, `runId` condiviso via `sessionStorage` |
 
 ---
 

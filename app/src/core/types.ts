@@ -148,6 +148,10 @@ export type RateType = 'FIXED' | 'VARIABLE';
 export interface MortgageOffer {
   id: string;
   displayName: string;
+  /** Nome di fantasia dell'istituto. Nessuna banca reale. */
+  bankName: string;
+  /** Sigla di due lettere usata dall'interfaccia. */
+  code: string;
   syntheticData: true;
   amount: number | null;
   years: number | null;

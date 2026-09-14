@@ -40,7 +40,7 @@ finanziaria.
 
 ### 3.1 Dato mancante nell'offerta (failure branch principale)
 
-`Offerta Sintetica C — Variabile 30 anni` dichiara `insuranceRequired: true` ma **non
+`Orizzonte Variabile` (Banca Cedro, tasso variabile 30 anni) dichiara `insuranceRequired: true` ma **non
 riporta il costo della polizza obbligatoria** (`insuranceCost: null`,
 provenienza `MISSING`).
 

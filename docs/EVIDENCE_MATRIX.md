@@ -67,7 +67,7 @@ cd app && npm run verify
 | D4 | Handoff reali orchestratore ↔ agente | `handoff()` in `mortgageJourneyOrchestrator.ts` | `handoff.started`, `handoff.completed` con status/confidence/nextAction | `journey.e2e` › *handoff reale orchestratore -> Profile & Property Agent* | 0:55–1:15 |
 | D5 | Invocazioni annidate tracciate dallo stesso kernel | `ComponentContext.invoke` in `registry.ts` | sequenza `skill.started` → `tool.started` → `tool.completed` → `skill.completed` | `registry.test` › *le invocazioni annidate passano dallo stesso kernel* | 1:15–1:40 |
 | D6 | Vocabolario di eventi chiuso | `EVENT_KINDS` in [`types.ts`](../app/src/core/types.ts) | — | `registry.test` › *tutti i tipi di evento emessi appartengono al vocabolario dichiarato*; audit | — |
-| D7 | Traccia agentica dall'esecuzione, non statica | sezione «Traccia agentica» in [`app/public/index.html`](../app/public/index.html), `renderTrace` in [`app/public/app.js`](../app/public/app.js) | ogni evento con `seq`, `ts`, `durationMs`, `phaseAfter` | una GET non produce eventi: `view()` non invoca componenti | 0:55, 2:00, extra |
+| D7 | Traccia agentica dall'esecuzione, non statica | [`traccia.html`](../app/public/traccia.html) + `PAGES.trace` in [`assets/app.js`](../app/public/assets/app.js) | ogni evento con `seq`, `ts`, `durationMs`, `phaseAfter` | una GET non produce eventi: `view()` non invoca componenti | 0:55, 2:00, extra |
 | D8 | Lo stato è aggiornato solo dall'orchestratore | il kernel non ha riferimenti in scrittura allo stato | `state.changed` emesso solo da `MortgageJourneyOrchestrator` | `stateMachine.test` › *lo stato mutabile non e accessibile senza il token* | — |
 
 ## E. Gestione dello stato
@@ -99,16 +99,24 @@ cd app && npm run verify
 
 ## G. Interfaccia
 
+L'interfaccia deriva dal prototipo grafico fornito ed e' collegata al runtime: nessun
+valore, testo o evento e' precompilato. Sette pagine in [`app/public/`](../app/public/)
+con barra laterale condivisa e client unico in
+[`assets/app.js`](../app/public/assets/app.js).
+
 | # | Criterio | File | Verifica |
 | --- | --- | --- | --- |
-| G1 | Italiano, responsive, accessibile (skip link, `aria-live`, `scope`, focus visibile, `prefers-contrast`) | [`index.html`](../app/public/index.html), [`styles.css`](../app/public/styles.css) | ispezione; landmark e label presenti nell'albero di accessibilità |
-| G2 | Badge di provenienza su ogni valore | `PROV_BADGE` in [`app/public/app.js`](../app/public/app.js) | audit › *provenienza: ogni riga normalizzata la dichiara* |
-| G3 | Nessun semaforo, medaglia, vincitore o ranking | commento e palette in `styles.css` (i colori codificano la provenienza) | `journey.e2e` › *nessuna classifica e nessun punteggio* |
-| G4 | Tooltip per TAN, TAEG, prestito/valore, costo totale, liquidità residua | `GLOSSARY` in [`syntheticOffers.ts`](../app/src/data/syntheticOffers.ts), `tooltipFor` in `app.js` | 14 termini serviti da `GET /api/meta` |
-| G5 | Formattazione italiana di euro e percentuali | `Intl.NumberFormat('it-IT')` in `app.js` e nei tool | `scenarios.test` › *…marcato come ipotesi* (nota con virgola decimale) |
-| G6 | Indicazione «Dati sintetici» visibile | badge in `index.html`, banner educativo | ispezione |
-| G7 | Dashboard comprensibile senza aprire la traccia tecnica | sezioni separate; la traccia è l'ultima | ispezione |
+| G1 | Italiano, responsive, accessibile (landmark, `aria-label`, `role="tablist"`, menu mobile) | 7 pagine in [`app/public/`](../app/public/), [`assets/styles.css`](../app/public/assets/styles.css) | ispezione nel browser a 1440px |
+| G2 | Badge di provenienza su ogni valore | `PROV` e `cell()` in [`assets/app.js`](../app/public/assets/app.js) | audit > *provenienza: ogni riga normalizzata la dichiara* |
+| G3 | Nessun semaforo, medaglia, vincitore o ranking | classi `source-*` in `assets/styles.css`: i colori codificano la provenienza, non un giudizio | `journey.e2e` > *nessuna classifica e nessun punteggio* |
+| G4 | Glossario di 14 termini servito alla UI | `GLOSSARY` in [`syntheticOffers.ts`](../app/src/data/syntheticOffers.ts) | `GET /api/meta` restituisce i 14 termini |
+| G5 | Formattazione italiana di euro e percentuali | `Intl.NumberFormat('it-IT')` in `assets/app.js` e nelle note dei tool | `scenarios.test` > *solo il tasso variabile cambia rata* (nota con virgola decimale) |
+| G6 | Indicazione «Dati sintetici» sempre visibile | `data-pill` nella topbar di tutte e 7 le pagine | ispezione |
+| G7 | Dashboard comprensibile senza aprire la traccia tecnica | la traccia e' una pagina separata sotto «Trasparenza» | ispezione |
 | G8 | Nessun dato personale reale | persona e offerte sintetiche, nessuna persistenza, nessuna autenticazione | [RISK_AND_CLARITY_NOTE](RISK_AND_CLARITY_NOTE.md) §6 |
+| G9 | Nessun dato inventato nella UI | i valori assenti sono resi «Non disponibile» con etichetta `Mancante`; i nomi tecnici dei campi sono tradotti in etichette leggibili | `FIELD_LABELS` e `cell()` in `assets/app.js` |
+| G10 | Un run interrotto e' dichiarato, non nascosto | `renderEscalation()` mostra un banner con il motivo e l'azione «Nuovo run» | verificato nel browser attivando il ramo «tool non disponibile» |
+| G11 | Un refuso non costa la sessione | validazione lato client su importi negativi, reddito zero e durata fuori intervallo prima della chiamata al runtime | verificato nel browser inserendo risparmi negativi: il run resta in `START` |
 
 ## H. Verifiche eseguibili
 

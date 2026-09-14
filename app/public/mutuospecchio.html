@@ -51,24 +51,11 @@
         </header>
         
   <div class="layout-main-rail">
-    <section class="card mirror-stage">
-      <div class="orbit-node person"><div class="node-label"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg> Persona</div><div class="node-value">€ 2.250 / mese</div><div class="node-note">Reddito dichiarato · rate da completare</div></div>
-      <div class="orbit-node home"><div class="node-label"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 9-8 9 8"/><path d="M5 10v11h14V10M9 21v-7h6v7"/></svg> Casa</div><div class="node-value">€ 300.000</div><div class="node-note">Prezzo · € 28.000 tra spese e lavori</div></div>
-      <div class="mirror-center"><div><strong>MutuoSpecchio</strong><span>Impatto nella tua situazione</span></div></div>
-      <div class="orbit-node offer"><div class="node-label"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-6 9 6M5 10h14M6 10v8M10 10v8M14 10v8M18 10v8M3 21h18M4 18h16"/></svg> Offerta osservata</div><div class="node-value">Stabilità 25</div><div class="node-note">Tasso fisso · 25 anni</div></div>
-    </section>
+    <section class="card mirror-stage" data-render="mirror-stage"></section>
 
     <aside class="grid">
-      <section class="card card-pad">
-        <div class="card-head"><div><h2>Effetto sintetico</h2><p>Valori calcolati nello scenario base.</p></div><span class="source-tag source-calc">Calcolo</span></div>
-        <div class="grid grid-2">
-          <div class="stat-card" style="padding:0"><div class="stat-value">€ 1.046</div><div class="stat-label">Rata mensile</div></div>
-          <div class="stat-card" style="padding:0"><div class="stat-value">46,5%</div><div class="stat-label">Rata / reddito</div></div>
-          <div class="stat-card" style="padding:0"><div class="stat-value">€ 48.000</div><div class="stat-label">Liquidità residua</div></div>
-          <div class="stat-card" style="padding:0"><div class="stat-value">€ 28.000</div><div class="stat-label">Oltre la soglia personale</div></div>
-        </div>
-      </section>
-      <div class="notice notice-warning"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2.5 20h19z"/><path d="M12 9v4M12 17h.01"/></svg><div><strong>Margine da completare.</strong><br>Le rate già attive non sono state dichiarate; il valore disponibile dopo il mutuo è ancora provvisorio.</div></div>
+      <section class="card card-pad"><div class="card-head"><div><h2>Effetto sintetico</h2><p>Valori dello scenario base per l’offerta osservata.</p></div><span class="source-tag source-calc">Calcolo</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px" data-render="mirror-picker"></div><div class="grid grid-2" data-render="mirror-effect"></div></section>
+      <div class="grid" data-render="mirror-alerts"></div>
       <section class="card card-pad">
         <div class="card-head"><div><h3>Provenienza dei numeri</h3><p>Nessun valore viene presentato senza etichetta.</p></div></div>
         <div style="display:flex;gap:7px;flex-wrap:wrap"><span class="source-tag source-user">Utente</span><span class="source-tag source-offer">Offerta</span><span class="source-tag source-calc">Calcolo</span><span class="source-tag source-assumption">Ipotesi</span><span class="source-tag source-missing">Mancante</span></div>
@@ -76,18 +63,11 @@
     </aside>
   </div>
 
-  <div class="section-title"><div><h2>Cosa emerge da questa vista</h2><p>Osservazioni descrittive, non consigli su quale prodotto scegliere.</p></div></div>
-  <div class="grid grid-3">
-    <article class="card card-pad"><div class="tradeoff"><span class="tradeoff-icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M4 6h16M6 6l-3 6h6zM18 6l-3 6h6zM7 21h10"/></svg></span><div><h4>Rata e durata</h4><p>La durata di 25 anni produce una rata maggiore rispetto alla proposta fissa a 30 anni, ma un costo totale simulato più contenuto.</p></div></div></article>
-    <article class="card card-pad"><div class="tradeoff"><span class="tradeoff-icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2s7 7.5 7 13a7 7 0 0 1-14 0c0-5.5 7-13 7-13Z"/></svg></span><div><h4>Liquidità dopo l’acquisto</h4><p>Restano € 48.000 secondo i dati inseriti, cioè € 28.000 oltre la soglia personale impostata.</p></div></div></article>
-    <article class="card card-pad"><div class="tradeoff"><span class="tradeoff-icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4.5 5v6c0 5 3.2 8.8 7.5 11 4.3-2.2 7.5-6 7.5-11V5z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg></span><div><h4>Stabilità del tasso</h4><p>La rata non viene ricalcolata nello scenario di aumento dei tassi, perché questa offerta sintetica è a tasso fisso.</p></div></div></article>
-  </div>
+  <div class="section-title"><div><h2>Cosa emerge da questa vista</h2><p>Osservazioni descrittive prodotte dall’Offer Clarity Agent, non consigli su quale prodotto scegliere.</p></div></div>
+  <div class="grid grid-3" data-render="mirror-observations"></div>
 
   <div class="section-title"><div><h2>Prima e dopo</h2><p>La semplificazione deve migliorare la comprensione, non alterare il significato.</p></div></div>
-  <div class="grid grid-2">
-    <section class="card card-pad" style="background:#fbfcfc"><span class="source-tag source-offer">Prima</span><h3 style="margin:15px 0 8px">“Rata € 928: sembra la più conveniente.”</h3><p class="card-note">L’utente osserva una sola cifra e non vede durata, costo totale, liquidità o condizioni.</p></section>
-    <section class="card card-pad" style="border-color:#bfe4dc;background:#f2fbf8"><span class="source-tag source-calc">Dopo</span><h3 style="margin:15px 0 8px">“La rata è minore perché la durata è più lunga.”</h3><p class="card-note">L’utente collega la rata al costo complessivo e sa quali dati restano incompleti.</p></section>
-  </div>
+  <div class="grid grid-2" data-render="mirror-beforeafter"></div>
       </div>
     </main>
   </div>

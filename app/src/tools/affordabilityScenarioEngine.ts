@@ -33,7 +33,12 @@ const DEFAULT_MAX_LTV_PCT = 80;
 
 /** Formattazione italiana usata nelle note degli scenari. */
 const itNum = (n: number, digits = 2): string =>
-  new Intl.NumberFormat('it-IT', { maximumFractionDigits: digits }).format(n);
+  new Intl.NumberFormat('it-IT', {
+    maximumFractionDigits: digits,
+    // In italiano il raggruppamento parte dalle cinque cifre: qui lo si forza
+    // perché gli importi in nota restano leggibili anche a quattro cifre.
+    useGrouping: 'always',
+  }).format(n);
 
 function calc(ctx: ComponentContext, input: MortgageCalcInput): MortgageCalcOutput {
   // Nessuna formula finanziaria qui: delega al tool dedicato via kernel.

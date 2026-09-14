@@ -311,11 +311,13 @@ function sendJson(res: ServerResponse, status: number, payload: unknown): void {
 }
 
 async function serveStatic(res: ServerResponse, urlPath: string): Promise<void> {
-  const rel = urlPath === '/' ? 'index.html' : normalize(urlPath).replace(/^([/\\])+/, '');
+  let rel = urlPath === '/' ? 'index.html' : normalize(urlPath).replace(/^([/\\])+/, '');
   if (rel.includes('..')) {
     sendJson(res, 400, { error: 'Percorso non consentito.' });
     return;
   }
+  // Percorsi senza estensione: /profilo -> profilo.html
+  if (!extname(rel)) rel += '.html';
   try {
     const file = await readFile(join(PUBLIC_DIR, rel));
     res.writeHead(200, {

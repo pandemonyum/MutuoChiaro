@@ -47,54 +47,41 @@
       <div class="page">
         <header class="page-head">
           <div><span class="eyebrow">Profilo e casa</span><h1>Costruiamo il quadro completo</h1><p>I dati restano separati dalle ipotesi: ogni numero indica la propria provenienza.</p></div>
-          <div class="actions"><button class="btn btn-secondary" type="button" data-toast="Bozza salvata nel run MC-2026-014." data-toast-title="Bozza salvata">Salva bozza</button><a class="btn btn-primary" href="offerte.html">Continua alle offerte <svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+          <div class="actions"><a class="btn btn-primary" href="offerte.html">Continua alle offerte <svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
         </header>
         
   <div class="layout-main-rail">
-    <section class="card">
+    <form class="card" data-render="profile-form" novalidate>
       <div class="form-section">
         <div class="card-head"><div><h2>Situazione economica</h2><p>Dati usati per margine mensile e scenari di sostenibilità.</p></div><span class="source-tag source-user">Dati inseriti</span></div>
         <div class="form-grid">
-          <div class="field"><label>Reddito netto mensile</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" value="2250" aria-label="Reddito netto mensile"></div><span class="field-hint">Importo disponibile ogni mese al netto delle imposte.</span></div>
-          <div class="field"><label>Altre entrate familiari <span>(facoltativo)</span></label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" value="0" aria-label="Altre entrate familiari"></div></div>
-          <div class="field"><label>Rate e debiti mensili</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" placeholder="Dato ancora mancante" aria-label="Rate e debiti mensili"></div><span class="field-hint" style="color:#a34f4f">Dato necessario per completare il margine mensile.</span></div>
-          <div class="field"><label>Tipo di contratto</label><div class="input-wrap"><select aria-label="Tipo di contratto"><option>Tempo indeterminato</option><option>Tempo determinato</option><option>Lavoratore autonomo</option></select></div></div>
-          <div class="field"><label>Risparmi disponibili</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" value="100000" aria-label="Risparmi disponibili"></div></div>
-          <div class="field"><label>Fondo di emergenza da preservare</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" value="20000" aria-label="Fondo di emergenza"></div><span class="field-hint">Una soglia personale, non una raccomandazione.</span></div>
+          <div class="field"><label>Reddito netto mensile</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" name="monthlyNetIncome" aria-label="Reddito netto mensile"></div><span class="field-hint">Importo disponibile ogni mese al netto delle imposte.</span></div>
+          <div class="field"><label>Altre entrate familiari <span>(facoltativo)</span></label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" name="otherMonthlyIncome" aria-label="Altre entrate familiari"></div></div>
+          <div class="field"><label>Rate e debiti mensili</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" placeholder="Dato ancora mancante" name="existingMonthlyDebts" aria-label="Rate e debiti mensili"></div><span class="field-hint" style="color:#a34f4f">Dato necessario per completare il margine mensile.</span></div>
+          <div class="field"><label>Tipo di contratto</label><div class="input-wrap"><select aria-label="Tipo di contratto" disabled><option>Tempo indeterminato</option></select></div><span class="field-hint">Non utilizzato dai calcoli di questo prototipo.</span></div>
+          <div class="field"><label>Risparmi disponibili</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" name="savings" aria-label="Risparmi disponibili"></div></div>
+          <div class="field"><label>Fondo di emergenza da preservare</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" name="emergencyFundMin" aria-label="Fondo di emergenza"></div><span class="field-hint">Una soglia personale, non una raccomandazione.</span></div>
         </div>
       </div>
       <div class="form-section">
         <div class="card-head"><div><h2>Immobile e acquisto</h2><p>Il mutuo viene osservato nel contesto della casa specifica.</p></div><span class="source-tag source-user">Dati inseriti</span></div>
         <div class="form-grid">
-          <div class="field"><label>Prezzo dell’immobile</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" value="300000" aria-label="Prezzo dell'immobile"></div></div>
-          <div class="field"><label>Importo del mutuo ipotizzato</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" value="220000" aria-label="Importo del mutuo"></div></div>
-          <div class="field"><label>Spese accessorie stimate</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" value="18000" aria-label="Spese accessorie"></div><span class="field-hint">Agenzia, notaio, imposte e costi iniziali stimati.</span></div>
-          <div class="field"><label>Lavori previsti</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" value="10000" aria-label="Lavori previsti"></div></div>
-          <div class="field"><label>Durata da esplorare</label><div class="input-wrap"><select aria-label="Durata"><option>25 anni</option><option selected>30 anni</option><option>20 anni</option></select></div></div>
-          <div class="field"><label>Uso dell’immobile</label><div class="input-wrap"><select aria-label="Uso dell'immobile"><option>Prima casa</option><option>Seconda casa</option></select></div></div>
+          <div class="field"><label>Prezzo dell’immobile</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" name="price" aria-label="Prezzo dell'immobile"></div></div>
+          <div class="field"><label>Importo del mutuo ipotizzato</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" name="requestedLoanAmount" aria-label="Importo del mutuo"></div></div>
+          <div class="field"><label>Spese accessorie stimate</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" name="accessoryCosts" aria-label="Spese accessorie"></div><span class="field-hint">Agenzia, notaio, imposte e costi iniziali stimati.</span></div>
+          <div class="field"><label>Lavori previsti</label><div class="input-wrap has-prefix"><span class="input-prefix">€</span><input type="number" name="plannedWorks" aria-label="Lavori previsti"></div></div>
+          <div class="field"><label>Durata da esplorare</label><div class="input-wrap"><input type="number" min="1" max="40" step="1" name="assumedYears" aria-label="Durata da esplorare"></div></div>
+          <div class="field"><label>Uso dell’immobile</label><div class="input-wrap"><select aria-label="Uso dell'immobile" disabled><option>Prima casa</option></select></div><span class="field-hint">Non utilizzato dai calcoli di questo prototipo.</span></div>
         </div>
       </div>
-      <div class="form-section" style="display:flex;justify-content:flex-end;gap:10px"><button class="btn btn-secondary" type="button">Ripristina</button><button class="btn btn-primary" type="button" data-toast="Profilo validato. L’orchestratore ha aggiornato missingData e nextAction." data-toast-title="Profilo aggiornato">Salva e ricalcola</button></div>
-    </section>
+      <div data-render="profile-errors" style="padding:0 22px"></div>
+      <div class="form-section" style="display:flex;justify-content:flex-end;gap:10px"><button class="btn btn-secondary" type="button" data-action="reset-run">Nuovo run</button><button class="btn btn-primary" type="submit">Salva e ricalcola</button></div>
+    </form>
 
     <aside class="grid">
-      <section class="card card-pad question-card">
-        <span class="agent-chip">Prossima domanda decisiva</span>
-        <h3>Hai prestiti, finanziamenti o altre rate attive?</h3>
-        <p>Il campo è vuoto. Senza questo dato il margine mensile non può essere considerato completo.</p>
-        <div class="answer-row" data-answer-group data-target="#profile-result"><button class="answer-btn" type="button">No</button><button class="answer-btn" type="button">Sì, € 150</button></div>
-        <div id="profile-result" class="notice notice-success" hidden style="margin-top:12px"></div>
-      </section>
-      <section class="card card-pad">
-        <div class="card-head"><div><h3>Completezza profilo</h3><p>8 dati disponibili su 9 rilevanti.</p></div></div>
-        <div style="display:flex;align-items:center;justify-content:space-around;gap:20px">
-          <div class="completion-ring" style="--pct:89"><div class="inside"><strong>89%</strong><span>completo</span></div></div>
-          <div class="tradeoff-list" style="flex:1">
-            <div class="tradeoff"><span class="tradeoff-icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><h4>Reddito e risparmi</h4><p>Dati validati</p></div></div>
-            <div class="tradeoff"><span class="tradeoff-icon" style="background:var(--coral-soft);color:var(--coral)"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2.5 20h19z"/><path d="M12 9v4M12 17h.01"/></svg></span><div><h4>Rate esistenti</h4><p>Dato mancante</p></div></div>
-          </div>
-        </div>
-      </section>
+      <section class="card card-pad question-card" data-render="question-profile"></section>
+      <section class="card card-pad"><div class="card-head"><div><h3>Completezza profilo</h3><p>Calcolata dal Profile &amp; Property Agent sui dati con impatto sul confronto.</p></div></div><div data-render="completeness"></div></section>
+      <section class="card card-pad" data-render="profile-summary"></section>
       <div class="notice notice-info"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg><div><strong>Trasparenza del calcolo</strong><br>MutuoChiaro non stima la probabilità di approvazione. La valutazione effettiva appartiene alla banca.</div></div>
     </aside>
   </div>
